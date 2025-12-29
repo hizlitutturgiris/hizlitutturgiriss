@@ -1,45 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HızlıTuttur</title>
-  <meta name="description" content="HızlıTuttur giriş sayfası" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <!-- Yıldırım efekti -->
-  <canvas id="fx" aria-hidden="true"></canvas>
 
-  <!-- ÜST LOGO ALANI (Beyaz) -->
-  <header class="topbar">
-    <div class="container topbar__inner">
-      <a class="brand" href="/" aria-label="HızlıTuttur">
-        <img src="./assets/logo.png" alt="HızlıTuttur Logo" class="brand__logo" />
-      </a>
-    </div>
+  <!-- HEADER -->
+  <header class="header">
+    <img src="assets/logo.png" alt="HızlıTuttur Logo" class="logo">
   </header>
 
-  <!-- SAYFA -->
-  <main class="page">
-    <div class="container card">
-      <!-- BANNER (tıklanabilir) -->
-      <a class="banner" href="https://hizlituttur1.com" target="_blank" rel="noopener noreferrer">
-        <img src="./assets/banner.png" alt="HızlıTuttur Banner" class="banner__img" />
-      </a>
+  <!-- BANNER -->
+  <section class="banner">
+    <a href="t.ly/hizlituttur" target="_blank">
+      <img src="assets/banner.png" alt="HızlıTuttur Banner">
+    </a>
+  </section>
 
-      <!-- CTA BUTON (Hızlıtuttur yazısını kaldırdık; sadece buton) -->
-      <a class="cta" href="https://hizlituttur1.com" target="_blank" rel="noopener noreferrer">
-        Hızlıtuttur’a Giriş İçin Tıkla
-      </a>
+  <!-- CTA (ORTA) -->
+  <section class="cta cta-center">
+    <a href="t.ly/hizlituttur" target="_blank" class="cta-button">
+      Hızlıtuttur'a Giriş için Tıkla
+    </a>
+  </section>
 
-      <footer class="footer">
-        <span>© 2025 HızlıTuttur</span>
-      </footer>
-    </div>
-  </main>
+  <!-- FOOTER -->
+  <footer class="footer">
+    © 2025 HızlıTuttur. Tüm hakları saklıdır.
+  </footer>
 
-  <script src="./lightning.js"></script>
 </body>
 </html>
