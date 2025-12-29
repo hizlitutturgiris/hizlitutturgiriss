@@ -1,36 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HızlıTuttur</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="HızlıTuttur giriş sayfası. Tek tıkla hızlı yönlendirme." />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <img src="assets/logo.png" alt="HızlıTuttur Logo" class="logo">
+<body>
+  <!-- Lightning / Rain canvas overlay -->
+  <canvas id="fxCanvas" aria-hidden="true"></canvas>
+
+  <!-- Header (white background) -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/" aria-label="HızlıTuttur Anasayfa">
+        <img src="assets/logo.png" alt="HızlıTuttur Logo" class="logo" />
+      </a>
+    </div>
   </header>
 
-  <!-- BANNER -->
-  <section class="banner">
-    <a href="https://t.ly/hizlituttur" target="_blank">
-      <img src="assets/banner.png" alt="HızlıTuttur Banner">
-    </a>
-  </section>
+  <main class="page">
+    <div class="container">
+      <section class="card">
 
-  <!-- CTA (ORTA) -->
-  <section class="cta cta-center">
-    <a href="https://t.ly/hizlituttur" target="_blank" class="cta-button">
-      Hızlıtuttur'a Giriş için Tıkla
-    </a>
-  </section>
+        <!-- Banner (clickable) -->
+        <a class="banner" href="https://ORNEK-LINK-1.com" target="_blank" rel="noopener noreferrer">
+          <img src="assets/banner.png" alt="HızlıTuttur Kampanya Banner" />
+        </a>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    © 2025 HızlıTuttur. Tüm hakları saklıdır.
-  </footer>
+        <!-- CTA image (optional). İstersen banner gibi tıklanır -->
+        <!-- assets/cta.png yoksa bu bloğu silebilirsin -->
+        <a class="ctaImage" href="https://t.ly/hizlituttur" target="_blank" rel="noopener noreferrer">
+          <img src="assets/cta.png" alt="HızlıTuttur CTA" />
+        </a>
 
+        <!-- Small description (buton üstünde HızlıTuttur yazısı yok) -->
+        <p class="desc">
+          HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor. Tek tıkla hemen giriş yap.
+        </p>
+
+        <!-- Main button -->
+        <a class="btn" href="https://t.ly/hizlituttur" target="_blank" rel="noopener noreferrer">
+          Hızlıtuttur’a Giriş İçin Tıkla
+        </a>
+
+        <footer class="footer">
+          © <span id="y"></span> HızlıTuttur. Tüm hakları saklıdır.
+        </footer>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+  <script src="lightning.js"></script>
 </body>
 </html>
