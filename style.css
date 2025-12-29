@@ -2,71 +2,66 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-  background: #0f2a1d; /* koyu yeşil */
-  color: #e5ffe5;
+  background: #0f2a1d;
   text-align: center;
+  color: #eaffea;
 }
 
 /* HEADER */
 .header {
-  background: #ffffff; /* BEYAZ */
-  padding: 20px;
-  border-bottom: 1px solid #e5e5e5; /* alt çizgi (şık durur) */
+  background: #ffffff;
+  padding: 18px 0;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .logo {
   max-width: 180px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
 
 /* BANNER */
+.banner {
+  margin: 30px auto 0;
+}
+
 .banner img {
   width: 100%;
   max-width: 1200px;
-  margin: 20px auto;
-  display: block;
-  border-radius: 12px;
-}
-
-/* CONTENT */
-.content {
-  padding: 40px 20px;
-}
-
-.content h1 {
-  color: #7CFF7C; /* açık yeşil */
-  margin-bottom: 15px;
-}
-
-.content p {
-  color: #eaffea;
-  max-width: 600px;
-  margin: auto;
-  line-height: 1.6;
+  border-radius: 14px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.35);
 }
 
 /* CTA */
-.cta {
-  margin: 40px 0;
+.cta-center {
+  margin: 45px 0 70px;
 }
 
-.cta img {
-  max-width: 300px;
-  transition: transform 0.3s;
+.cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #ffd700, #f4c430);
+  color: #0f3d2e;
+  padding: 18px 44px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 12px 32px rgba(255, 215, 0, 0.4);
+  transition: all 0.3s ease;
 }
 
-.cta img:hover {
-  transform: scale(1.05);
+.cta-button:hover {
+  transform: scale(1.07);
+  box-shadow: 0 18px 48px rgba(255, 215, 0, 0.6);
 }
 
 /* FOOTER */
 .footer {
   background: #0b1f16;
-  padding: 15px;
-  color: #FFD700; /* sarı */
+  padding: 16px 10px;
+  color: #ffd700;
   font-size: 14px;
 }
-
