@@ -1,9 +1,14 @@
 (() => {
-  const canvas = document.getElementById("fxCanvas");
-  const ctx = canvas.getContext("2d");
+  const canvas = document.getElementById("fx");
+  const ctx = canvas.getContext("2d", { alpha: true });
 
-  let w = 0, h = 0, dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) return; // hareket istemeyenlerde kapat
+
+  let w = 0, h = 0, dpr = 1;
+
   function resize() {
+    dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
     w = Math.floor(window.innerWidth);
     h = Math.floor(window.innerHeight);
     canvas.width = Math.floor(w * dpr);
@@ -12,133 +17,119 @@
     canvas.style.height = h + "px";
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-  window.addEventListener("resize", resize, { passive: true });
+  window.addEventListener("resize", resize);
   resize();
 
-  // "Rain" streaks (very subtle)
-  const drops = [];
-  const DROP_COUNT = 140;
-  for (let i = 0; i < DROP_COUNT; i++) {
-    drops.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      len: 10 + Math.random() * 18,
-      spd: 6 + Math.random() * 10,
-      a: 0.06 + Math.random() * 0.08
+  // Lightning bolts list
+  const bolts = [];
+  const maxBolts = 8;
+
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function spawnBolt() {
+    if (bolts.length >= maxBolts) return;
+
+    const x0 = rand(0, w);
+    const y0 = rand(-h * 0.2, h * 0.2);
+
+    const segments = Math.floor(rand(10, 22));
+    const stepY = h / segments;
+    let x = x0, y = y0;
+
+    const path = [{ x, y }];
+
+    for (let i = 0; i < segments; i++) {
+      x += rand(-40, 40);
+      y += stepY * rand(0.85, 1.25);
+      path.push({ x, y });
+      if (y > h) break;
+    }
+
+    bolts.push({
+      path,
+      life: 0,
+      ttl: rand(220, 420),  // ms
+      width: rand(1.2, 2.8),
+      glow: rand(8, 16),
+      alpha: rand(0.35, 0.75)
     });
   }
 
-  // Lightning bolts
-  let flash = 0;
-  let boltTimer = 0;
+  // Spawn schedule
+  let nextSpawn = performance.now() + rand(250, 900);
 
-  function rand(min, max){ return min + Math.random() * (max - min); }
+  function drawBolt(bolt, t) {
+    const p = bolt.path;
+    const k = 1 - Math.min(1, bolt.life / bolt.ttl); // fade out
 
-  function drawBolt() {
-    const startX = rand(w * 0.15, w * 0.85);
-    const startY = -20;
-    const endY = rand(h * 0.25, h * 0.9);
-
-    let x = startX;
-    let y = startY;
-
+    // glow
     ctx.save();
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgba(255,210,58,0.9)";
-    ctx.shadowColor = "rgba(70,255,154,0.55)";
-    ctx.shadowBlur = 18;
+    ctx.globalCompositeOperation = "lighter";
+    ctx.globalAlpha = bolt.alpha * k;
 
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+
+    // outer glow (yellow-ish)
+    ctx.strokeStyle = "rgba(245,209,0,0.35)";
+    ctx.lineWidth = bolt.width + bolt.glow * 0.12;
     ctx.beginPath();
-    ctx.moveTo(x, y);
-
-    const segments = 22 + Math.floor(Math.random() * 18);
-    for (let i = 0; i < segments; i++) {
-      const stepY = (endY - startY) / segments;
-      y += stepY;
-      x += rand(-18, 18);
-      ctx.lineTo(x, y);
-    }
+    ctx.moveTo(p[0].x, p[0].y);
+    for (let i = 1; i < p.length; i++) ctx.lineTo(p[i].x, p[i].y);
     ctx.stroke();
 
-    // Secondary faint branch
-    if (Math.random() < 0.55) {
-      ctx.lineWidth = 1.2;
-      ctx.strokeStyle = "rgba(70,255,154,0.55)";
-      ctx.shadowBlur = 10;
-
-      ctx.beginPath();
-      ctx.moveTo(startX, startY);
-      let bx = startX, by = startY;
-      const bSeg = 12 + Math.floor(Math.random() * 10);
-      for (let i = 0; i < bSeg; i++) {
-        by += (endY * 0.7 - startY) / bSeg;
-        bx += rand(-26, 26);
-        ctx.lineTo(bx, by);
-      }
-      ctx.stroke();
-    }
+    // inner core (white)
+    ctx.strokeStyle = "rgba(255,255,255,0.9)";
+    ctx.lineWidth = bolt.width;
+    ctx.beginPath();
+    ctx.moveTo(p[0].x, p[0].y);
+    for (let i = 1; i < p.length; i++) ctx.lineTo(p[i].x, p[i].y);
+    ctx.stroke();
 
     ctx.restore();
-
-    flash = 0.22 + Math.random() * 0.28; // screen flash amount
   }
 
-  function tick() {
+  function flashOverlay(intensity) {
+    // subtle screen flash
+    ctx.save();
+    ctx.globalAlpha = intensity;
+    ctx.fillStyle = "rgba(245,209,0,0.06)";
+    ctx.fillRect(0, 0, w, h);
+    ctx.restore();
+  }
+
+  let last = performance.now();
+  function tick(now) {
+    const dt = now - last;
+    last = now;
+
     ctx.clearRect(0, 0, w, h);
 
-    // Subtle vignette / glow
-    ctx.save();
-    ctx.globalAlpha = 0.06;
-    const grd = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w,h)*0.7);
-    grd.addColorStop(0, "rgba(70,255,154,0.12)");
-    grd.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = grd;
-    ctx.fillRect(0,0,w,h);
-    ctx.restore();
-
-    // Rain
-    ctx.save();
-    ctx.lineWidth = 1;
-    for (const d of drops) {
-      ctx.strokeStyle = `rgba(233,255,243,${d.a})`;
-      ctx.beginPath();
-      ctx.moveTo(d.x, d.y);
-      ctx.lineTo(d.x - 4, d.y + d.len);
-      ctx.stroke();
-
-      d.y += d.spd;
-      d.x -= 1.2;
-
-      if (d.y > h + 30) {
-        d.y = -30;
-        d.x = Math.random() * w;
-      }
-      if (d.x < -50) d.x = w + 50;
-    }
-    ctx.restore();
-
-    // Lightning timing
-    boltTimer -= 1;
-    if (boltTimer <= 0) {
-      if (Math.random() < 0.20) { // chance each cycle
-        drawBolt();
-      }
-      boltTimer = 28 + Math.floor(Math.random() * 55);
+    // spawn
+    if (now >= nextSpawn) {
+      spawnBolt();
+      // “yağma” hissi için bazen hızlı ardışık
+      nextSpawn = now + (Math.random() < 0.35 ? rand(90, 220) : rand(350, 1200));
     }
 
-    // Screen flash
-    if (flash > 0) {
-      ctx.save();
-      ctx.globalAlpha = flash;
-      ctx.fillStyle = "rgba(255,210,58,1)";
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-      flash *= 0.72; // decay
-      if (flash < 0.01) flash = 0;
+    // draw + update
+    let flash = 0;
+    for (let i = bolts.length - 1; i >= 0; i--) {
+      const b = bolts[i];
+      b.life += dt;
+
+      // ilk anda daha parlak
+      if (b.life < 60) flash = Math.max(flash, 0.10);
+
+      drawBolt(b, now);
+
+      if (b.life >= b.ttl) bolts.splice(i, 1);
     }
+
+    if (flash > 0) flashOverlay(flash);
 
     requestAnimationFrame(tick);
   }
 
-  tick();
+  requestAnimationFrame(tick);
 })();
