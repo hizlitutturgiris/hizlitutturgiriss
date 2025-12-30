@@ -1,53 +1,97 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>HızlıTuttur Giriş</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <!-- Lightning Canvas (arkada) -->
+  <canvas id="lightningCanvas" aria-hidden="true"></canvas>
 
-<!-- ⚡ YILDIRIM KATMANI -->
-<div class="lightning-layer"></div>
+  <!-- HEADER -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#" aria-label="HızlıTuttur">
+        <img src="assets/logo.png" alt="HızlıTuttur Logo" />
+      </a>
+    </div>
+  </header>
 
-<!-- HEADER -->
-<header class="header">
-  <img src="assets/logo.png" alt="HızlıTuttur" class="logo">
-</header>
+  <!-- NAV -->
+  <nav class="navwrap">
+    <ul class="nav">
+      <li><a href="#anasayfa">Anasayfa</a></li>
+      <li><a href="#bahis">HızlıTuttur Bahis</a></li>
+      <li><a href="#tv">Canlı HızlıTuttur TV</a></li>
+      <li><a href="#giris">HızlıTuttur Giriş Adresi</a></li>
+      <li><a href="#sanal">Sanal Bahisler</a></li>
+    </ul>
+  </nav>
 
-<!-- BANNER -->
-<section class="container">
-  <div class="banner">
-    <a href="https://hizlituttur1.com" target="_blank">
-      <img src="assets/banner.png" alt="HızlıTuttur Bonus">
-    </a>
-  </div>
-</section>
+  <!-- CONTENT -->
+  <main class="page" id="anasayfa">
+    <!-- Banner (tıklanabilir) -->
+    <section class="hero">
+      <a class="hero-link" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+        <img class="hero-img" src="assets/banner.png" alt="HızlıTuttur Banner" />
+      </a>
+    </section>
 
-<!-- İÇERİK -->
-<main class="container content">
-  <h1>HızlıTuttur</h1>
-  <p>
-    HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor.
-    Tek tıkla hemen giriş yap.
-  </p>
+    <!-- Yazı blokları (aralara yazı eklemek için) -->
+    <section class="content">
+      <h1 class="title">HızlıTuttur</h1>
 
-  <a href="https://hizlituttur1.com" target="_blank" class="cta-btn">
-    Hızlıtuttur’a Giriş İçin Tıkla
-  </a>
-</main>
+      <p class="lead">
+        HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor. Tek tıkla hemen giriş yap.
+      </p>
 
-<!-- FOOTER -->
-<footer class="footer">
-  © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
-</footer>
+      <div class="text-block" id="bahis">
+        <h2>HızlıTuttur Bahis</h2>
+        <p>
+          Bahis dünyasında hızlı oranlar, güncel etkinlikler ve pratik kullanım ile tek noktadan tüm işlemlerini
+          kolayca yapabilirsin. Güncel giriş adresleri ve duyurular burada paylaşılır.
+        </p>
+      </div>
 
-<script src="script.js"></script>
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+      <div class="text-block" id="tv">
+        <h2>Canlı HızlıTuttur TV</h2>
+        <p>
+          Canlı yayınlar, karşılaşmalar ve güncel içerikler ile takipte kal. En iyi deneyim için güncel bağlantıları kullan.
+        </p>
+      </div>
 
+      <div class="text-block" id="giris">
+        <h2>HızlıTuttur Giriş Adresi</h2>
+        <p>
+          Güncel giriş adresi değiştiğinde buradan anında ulaşabilirsin. Tek tıkla yönlendirme ile doğru adrese git.
+        </p>
+      </div>
+
+      <div class="text-block" id="sanal">
+        <h2>Sanal Bahisler</h2>
+        <p>
+          Sanal bahislerde hızlı sonuç, yüksek tempo ve anlık aksiyon! Güncel bağlantılar ve kampanyalar için sayfayı takip et.
+        </p>
+      </div>
+
+      <!-- CTA (tıklanabilir görsel) -->
+      <div class="cta">
+        <a class="cta-link" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+          <img src="assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla!" />
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
