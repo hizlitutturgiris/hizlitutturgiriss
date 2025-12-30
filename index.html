@@ -1,189 +1,103 @@
-:root{
-  --bg-0:#03150f;
-  --bg-1:#062115;
-  --green:#0da86d;
-  --green-2:#0a7a52;
-  --yellow:#ffd22e;
-  --yellow-2:#ffea70;
-  --text:#e8fff3;
-}
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(900px 500px at 50% 30%, rgba(10,168,109,.18), transparent 60%),
-    radial-gradient(700px 450px at 50% 90%, rgba(255,210,46,.10), transparent 55%),
-    linear-gradient(180deg, var(--bg-0), #000);
-  overflow-x:hidden;
-}
+  <title>HızlıTuttur Güncel Giriş Adresi</title>
+  <meta name="description" content="HızlıTuttur güncel giriş adresi ve bağlantılar. Tek tıkla güvenli yönlendirme ile giriş yap." />
 
-/* Lightning overlay */
-#lightning-canvas{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  z-index:1;
-}
-#flash{
-  position:fixed;
-  inset:0;
-  background: radial-gradient(900px 600px at 50% 35%, rgba(255, 223, 110, .22), transparent 60%);
-  opacity:0;
-  pointer-events:none;
-  z-index:2;
-  transition: opacity 120ms linear;
-}
+  <!-- Favicon (sekmedeki ikon) -->
+  <link rel="icon" type="image/png" href="assets/logo.png" />
 
-.page{
-  position:relative;
-  z-index:3;
-}
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+</head>
 
-/* Top bar */
-.topbar{
-  background:#fff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
-.topbar__inner{
-  max-width:1100px;
-  margin:0 auto;
-  padding:10px 14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-}
-.brand{
-  height:40px;
-  width:auto;
-  display:block;
-}
+<body>
+  <!-- Lightning overlay -->
+  <canvas id="lightning-canvas" aria-hidden="true"></canvas>
+  <div id="flash" aria-hidden="true"></div>
 
-/* Nav buttons */
-.nav{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-}
-.nav__btn{
-  text-decoration:none;
-  color:#064b33;               /* yazı yeşil */
-  background: var(--yellow);   /* içi sarı */
-  border: 2px solid #064b33;   /* çerçevesi yeşil */
-  padding:8px 14px;
-  border-radius:999px;
-  font-weight:700;
-  font-size:13px;
-  line-height:1;
-  box-shadow: 0 8px 24px rgba(0,0,0,.18);
-  transition: transform .15s ease, filter .15s ease;
-}
-.nav__btn:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.02);
-}
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <img class="brand" src="assets/logo.png" alt="HızlıTuttur" />
+      <nav class="nav">
+        <a class="nav__btn" href="#giris">Hızlıtuttur Giriş</a>
+        <a class="nav__btn" href="#casino">Hızlıtuttur Casino</a>
+        <a class="nav__btn" href="#spor">Hızlıtuttur Spor</a>
+        <a class="nav__btn" href="#canli">Hızlıtuttur Canlı Casino</a>
+      </nav>
+    </div>
+  </header>
 
-/* Hero */
-.hero{
-  max-width:1100px;
-  margin:0 auto;
-  padding:18px 14px 8px;
-  text-align:center;
-}
+  <main class="page">
+    <section class="hero">
+      <!-- Banner -->
+      <div class="banner">
+        <img src="assets/banner.png" alt="HızlıTuttur %100" />
+      </div>
 
-.banner{
-  max-width:860px;            /* banner çok büyük olmasın */
-  margin:12px auto 0;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow: 0 18px 60px rgba(0,0,0,.55);
-  border:1px solid rgba(255,210,46,.25);
-}
-.banner img{
-  width:100%;
-  height:auto;
-  display:block;
-}
+      <!-- ✅ CTA (dış çerçeve yok!) -->
+      <a
+        class="hero-cta"
+        href="https://hizlituttur1.com/?referralCode=3083672195"
+        target="_blank"
+        rel="noopener"
+        aria-label="Hızlıtuttur'a giriş için tıkla"
+      >
+        <img src="assets/cta.png" alt="Hızlıtuttur'a Giriş İçin Tıkla" />
+      </a>
+    </section>
 
-/* ✅ CTA sadece PNG (dış çerçeve kaldırıldı) */
-.hero-cta{
-  display:inline-block;
-  margin:14px auto 10px;
-  text-decoration:none;
-  border:none;
-  outline:none;
-  background:none;
-  box-shadow:none; /* dış çerçeve yok */
-}
-.hero-cta img{
-  display:block;
-  width:min(720px, 92vw);
-  height:auto;
-  border-radius:18px;
-  box-shadow:none; /* dış çerçeve yok */
-  transform: translateZ(0);
-}
-.hero-cta:hover img{
-  filter: brightness(1.02);
-}
+    <!-- CONTENT -->
+    <section class="content">
+      <div class="card" id="giris">
+        <h2>HızlıTuttur Güncel Giriş Adresi</h2>
+        <p>
+          HızlıTuttur’a en güncel bağlantı üzerinden güvenli şekilde ulaşmak için bu sayfayı kullanabilirsin.
+          Bağlantılar düzenli olarak güncellenir. Tek tıkla yönlendirme ile giriş yap.
+        </p>
+      </div>
 
-/* Content */
-.content{
-  max-width:920px;
-  margin:0 auto;
-  padding:14px 14px 10px;
-  display:grid;
-  gap:14px;
-}
-.card{
-  background: linear-gradient(180deg, rgba(8,56,36,.86), rgba(5,30,20,.86));
-  border:1px solid rgba(255,210,46,.20);
-  border-radius:16px;
-  padding:16px 16px;
-  box-shadow: 0 18px 55px rgba(0,0,0,.45);
-}
-.card h2{
-  margin:0 0 8px;
-  font-size:22px;
-  color: var(--yellow);
-  text-shadow: 0 0 18px rgba(255,210,46,.18);
-}
-.card h3{
-  margin:0 0 8px;
-  font-size:18px;
-  color: var(--yellow);
-}
-.card p{
-  margin:0;
-  color: rgba(232,255,243,.92);
-  line-height:1.6;
-  font-size:14px;
-}
+      <div class="card" id="duyuru">
+        <h3>Güncel Bağlantı ve Duyurular</h3>
+        <p>
+          Giriş adresi değiştiğinde bu sayfa üzerinden anında ulaşabilirsin. Mobil ve masaüstünde hızlı açılır.
+          Kampanyalar ve önemli bilgilendirmeler burada paylaşılır.
+        </p>
+      </div>
 
-/* Footer */
-.footer{
-  padding:18px 14px 22px;
-}
-.footer__inner{
-  max-width:1100px;
-  margin:0 auto;
-  text-align:center;
-  color: rgba(232,255,243,.75);
-  font-size:13px;
-}
+      <div class="card" id="canli">
+        <h3>HızlıTuttur Canlı Casino</h3>
+        <p>
+          Canlı yayınlar, etkinlik içerikleri ve güncel duyurular için resmi yönlendirme bağlantısını kullan.
+          En iyi deneyim için güncel linki tercih et.
+        </p>
+      </div>
 
-/* Mobile tweaks */
-@media (max-width:520px){
-  .brand{ height:36px; }
-  .nav__btn{ font-size:12px; padding:8px 12px; }
-  .card{ padding:14px; }
-  .card h2{ font-size:20px; }
-}
+      <div class="card" id="casino">
+        <h3>HızlıTuttur Casino</h3>
+        <p>
+          Casino içerikleri ve promosyonlar için güncel bağlantıları buradan takip edebilirsin.
+          Güvenli yönlendirme ile doğru adrese git.
+        </p>
+      </div>
+
+      <div class="card" id="spor">
+        <h3>HızlıTuttur Spor</h3>
+        <p>
+          Spor bahisleri ve etkinlik bağlantıları için güncel linkleri kullan. Anlık güncellemeler bu sayfada yer alır.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
+      </div>
+    </footer>
+  </main>
+</body>
+</html>
