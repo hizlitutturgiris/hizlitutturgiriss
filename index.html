@@ -1,90 +1,58 @@
-<!doctype html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hızlıtuttur Giriş</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
+// CHANGE THIS LINK ONCE, everything clickable uses it
+const TARGET_URL = "https://hizlituttur1.com";
 
-  <!-- Lightning rain overlay -->
-  <div id="lightning-layer" aria-hidden="true"></div>
+// Make sure all clickable items go to TARGET_URL
+document.addEventListener("DOMContentLoaded", () => {
+  // Update hero + CTA links safely
+  document.querySelectorAll('a[href="https://hizlituttur1.com"]').forEach(a => {
+    a.href = TARGET_URL;
+  });
 
-  <!-- Top bar (WHITE background) -->
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="#anasayfa" aria-label="Hızlıtuttur">
-        <img src="assets/logo.png" alt="Hızlıtuttur Logo" class="logo" />
-      </a>
+  startLightningRain();
+});
 
-      <nav class="nav">
-        <a class="nav-btn" href="#anasayfa">Anasayfa</a>
-        <a class="nav-btn" href="#bonus">Bonus</a>
-        <a class="nav-btn" href="#giris">Giriş Adresi</a>
-        <a class="nav-btn" href="#haberler">Haberler</a>
-        <a class="nav-btn" href="#iletisim">İletişim</a>
-      </nav>
-    </div>
-  </header>
+function startLightningRain() {
+  const layer = document.getElementById("lightning-layer");
+  if (!layer) return;
 
-  <main id="anasayfa" class="page">
-    <div class="container">
+  // Respect reduced motion
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) return;
 
-      <!-- Banner (clickable) -->
-      <section class="hero">
-        <a class="hero-click" href="https://hizlituttur1.com" target="_blank" rel="noopener">
-          <!-- your banner file name includes spaces; use %20 -->
-          <img class="banner" src="assets/Masa%20üstü%20görünümü.png" alt="Hızlıtuttur Banner" />
-        </a>
-      </section>
+  // spawn bolts
+  const spawn = () => {
+    const bolt = document.createElement("div");
+    bolt.className = "bolt";
+    bolt.textContent = "⚡";
 
-      <!-- Text block 1 -->
-      <section id="haberler" class="text-block">
-        <p class="lead">
-          Hızlıtuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor.
-          Güncel giriş bağlantıları ve duyurular için sayfamızı takip edebilirsin.
-        </p>
-      </section>
+    const x = Math.random() * 100; // vw
+    const size = 16 + Math.random() * 18; // px
+    const dur = 1200 + Math.random() * 1400; // ms
+    const rot = (-20 + Math.random() * 40) + "deg";
 
-      <!-- CTA (image button) -->
-      <section id="giris" class="cta-wrap">
-        <a class="cta-click" href="https://hizlituttur1.com" target="_blank" rel="noopener">
-          <img class="cta-img" src="assets/cta.png" alt="Hızlıtuttur’a Giriş için Tıkla" />
-        </a>
+    bolt.style.left = x + "vw";
+    bolt.style.setProperty("--size", size + "px");
+    bolt.style.setProperty("--dur", dur + "ms");
+    bolt.style.setProperty("--rot", rot);
 
-        <!-- Extra fallback button (optional) -->
-        <a class="cta-btn" href="https://hizlituttur1.com" target="_blank" rel="noopener">
-          Hızlıtuttur’a Giriş için Tıkla
-        </a>
-      </section>
+    layer.appendChild(bolt);
 
-      <!-- Text block 2 (example article) -->
-      <section id="bonus" class="article">
-        <h2>Güncel Bilgilendirme</h2>
-        <p>
-          Bu alana “haber / makale” tarzı içerikler ekleyebiliriz. Örneğin: kampanya duyuruları,
-          güncel giriş adresi bilgilendirmeleri, kullanıcı rehberleri vb.
-        </p>
-        <p>
-          İstersen buraya 3-4 tane ayrı yazı bloğu da eklerim; üst menüde her biri bir bölüme kayar.
-        </p>
-      </section>
+    // cleanup
+    setTimeout(() => bolt.remove(), dur + 200);
+  };
 
-      <section id="iletisim" class="article">
-        <h2>İletişim</h2>
-        <p>
-          İletişim bilgilerini buraya koyabiliriz (Telegram/WhatsApp/Canlı Destek yönlendirme vb).
-        </p>
-      </section>
+  // speed control: lower = more bolts
+  const interval = setInterval(() => {
+    // on mobile, reduce density
+    const isMobile = window.innerWidth < 720;
+    const count = isMobile ? 1 : 2;
+    for (let i = 0; i < count; i++) spawn();
+  }, 180);
 
-      <footer class="footer">
-        <span>© 2025 Hızlıtuttur. Tüm hakları saklıdır.</span>
-      </footer>
-
-    </div>
-  </main>
-
-  <script src="script.js"></script>
-</body>
-</html>
+  // optional: stop when tab hidden (saves CPU)
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      clearInterval(interval);
+    }
+  }, { once: true });
+}
