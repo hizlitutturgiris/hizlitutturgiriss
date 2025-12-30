@@ -1,233 +1,121 @@
-:root{
-  --bg0:#070b08;
-  --bg1:#0b1710;
-  --bg2:#0f2418;
-
-  --green:#18d27a;
-  --green2:#0f7b4a;
-
-  --yellow:#ffd400;
-  --yellow2:#ffea62;
-
-  --text:#e9fff1;
-  --muted:#bfe9d1;
-
-  --card:#0f2318cc;
-  --cardBorder:#ffd40040;
-
-  --shadow: 0 18px 60px rgba(0,0,0,.55);
-  --radius: 18px;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-  background: radial-gradient(1200px 900px at 30% 0%, #12311f 0%, var(--bg0) 55%, #040605 100%);
-  color:var(--text);
-  overflow-x:hidden;
+body {
+  background: #0b2e1c;
+  color: #eafff1;
 }
 
-/* Lightning canvas */
-#lightningCanvas{
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 0;
-  pointer-events: none;
-  opacity: .9;
-  mix-blend-mode: screen;
+/* ÜST MENÜ */
+.top-nav {
+  background: #0f3b25;
+  padding: 14px;
 }
 
-/* layout */
-.wrap{
-  width: min(980px, 92vw);
-  margin: 0 auto;
-}
-
-.topbar{
-  position: sticky;
-  top:0;
-  z-index: 10;
-  background: #ffffff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
-
-.topbar__inner{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 14px 0;
-}
-
-.brand{ display:inline-flex; align-items:center; justify-content:center; }
-.brand__logo{
-  height: 42px;
-  width: auto;
-  display:block;
-}
-
-/* nav buttons */
-.nav{
-  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.86));
-  border-top: 1px solid rgba(0,0,0,.06);
-}
-.nav__inner{
-  display:flex;
-  gap: 10px;
-  justify-content:center;
-  align-items:center;
-  padding: 10px 0 14px;
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.nav__btn{
-  text-decoration:none;
-  color: #0f4a2d;
-  font-weight: 700;
-  font-size: 14px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  border: 2px solid var(--yellow);
-  background: rgba(255, 212, 0, .08);
-  transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
-}
-.nav__btn:hover{
-  transform: translateY(-1px);
-  background: rgba(255, 212, 0, .16);
-  box-shadow: 0 10px 30px rgba(255, 212, 0, .12);
+.menu a {
+  background: #ffd400;
+  color: #0f3b25;
+  border: 2px solid #0f3b25;
+  padding: 10px 18px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
 }
 
-/* main content on top of canvas */
-.main{
+.menu a:hover {
+  background: #ffe86a;
+}
+
+/* BANNER */
+.banner {
   position: relative;
-  z-index: 1;
-  padding: 22px 0 40px;
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 15px;
 }
 
-/* hero */
-.hero{
-  margin-top: 12px;
-  background: linear-gradient(180deg, rgba(20,60,38,.55), rgba(8,18,12,.35));
-  border: 1px solid rgba(255, 212, 0, .14);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 18px;
-}
-
-.hero__bannerLink{
-  display:block;
-  border-radius: 16px;
-  overflow:hidden;
-  border: 1px solid rgba(255,255,255,.10);
-  box-shadow: 0 16px 40px rgba(0,0,0,.45);
-}
-
-.hero__banner{
-  display:block;
+.banner img {
   width: 100%;
-  height: auto;
-  /* banner çok büyümesin */
-  max-height: 360px;
-  object-fit: cover;
+  border-radius: 18px;
+  display: block;
 }
 
-/* CTA */
-.hero__ctaRow{
-  display:flex;
-  justify-content:center;
-  margin-top: 16px;
-}
-
-.ctaBtn{
-  text-decoration:none;
-  color: var(--yellow);
-  font-weight: 900;
-  letter-spacing: .2px;
-  font-size: clamp(16px, 3.8vw, 28px);
-  padding: 16px 22px;
-  border-radius: 999px;
-  border: 2px solid var(--yellow);
-  background: linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.2));
-  box-shadow:
-    0 18px 45px rgba(0,0,0,.45),
-    0 0 0 6px rgba(255, 212, 0, .08);
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-  text-align:center;
-  max-width: 100%;
-}
-.ctaBtn:hover{
-  transform: translateY(-1px);
-  background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.25));
-  box-shadow:
-    0 22px 55px rgba(0,0,0,.55),
-    0 0 0 8px rgba(255, 212, 0, .10);
-}
-
-.ctaBtn--ghost{
-  font-size: 18px;
-  padding: 14px 18px;
-  opacity: .92;
-}
-
-/* cards */
-.cards{
+.cta-wrapper {
   margin-top: 18px;
-  display:flex;
-  flex-direction: column;
-  gap: 14px;
+  text-align: center;
 }
 
-.card{
-  background: var(--card);
-  border: 1px solid var(--cardBorder);
-  border-radius: var(--radius);
-  padding: 18px 18px;
-  box-shadow: 0 12px 38px rgba(0,0,0,.35);
+.cta-btn {
+  background: #ffd400;
+  color: #0f3b25;
+  border: 3px solid #0f3b25;
+  padding: 14px 28px;
+  border-radius: 40px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.card__title{
-  margin: 0 0 8px;
-  color: var(--yellow2);
-  font-weight: 900;
-  font-size: 20px;
-}
-.card__text{
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.55;
-  font-size: 15.5px;
+.cta-btn:hover {
+  background: #ffe86a;
 }
 
-/* bottom cta area */
-.bottomCta{
-  display:flex;
-  justify-content:center;
-  margin-top: 20px;
+/* İÇERİK */
+.content {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 15px;
 }
 
-/* footer */
-.footer{
-  position: relative;
-  z-index: 1;
-  padding: 18px 0 26px;
-  color: rgba(255, 212, 0, .9);
-  text-align:center;
-  border-top: 1px solid rgba(255,255,255,.06);
-  background: linear-gradient(180deg, rgba(0,0,0,.0), rgba(0,0,0,.55));
+.box {
+  background: #ffd400;
+  border: 3px solid #0f3b25;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
-.footer__inner{
-  font-size: 13px;
+.box h3 {
+  color: #0f3b25;
+  margin-bottom: 10px;
 }
 
-/* Mobile tuning */
-@media (max-width: 520px){
-  .brand__logo{ height: 38px; }
-  .hero{ padding: 14px; }
-  .hero__banner{ max-height: 240px; }
-  .nav__btn{ font-size: 13px; padding: 9px 12px; }
-  .card{ padding: 16px; }
+.box p {
+  color: #0f3b25;
+  line-height: 1.5;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #b8f5d3;
+  font-size: 14px;
+}
+
+/* YILDIRIM */
+#lightning {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* MOBİL */
+@media (max-width: 600px) {
+  .cta-btn {
+    font-size: 16px;
+    padding: 12px 20px;
+  }
 }
