@@ -1,109 +1,236 @@
-<!doctype html>
-<html lang="tr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b2a1b" />
+:root{
+  --bg: #08130e;
+  --bg2:#0b1f14;
+  --green:#0f4d31;
+  --green2:#1a6d46;
+  --mint:#7ff2b5;
+  --text:#e9fff3;
+  --muted:#bfead6;
+  --yellow:#ffd400;
+  --yellow2:#ffea73;
 
-  <title>HızlıTuttur | Güncel Giriş Adresi</title>
-  <meta name="description" content="HızlıTuttur güncel giriş adresi ve bağlantılar. Tek tıkla hızlı yönlendirme ile giriş yap." />
+  --radius: 18px;
+  --shadow: 0 18px 70px rgba(0,0,0,.55);
+  --stroke: rgba(255, 212, 0, .55);
+}
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="HızlıTuttur | Güncel Giriş Adresi" />
-  <meta property="og:description" content="HızlıTuttur güncel giriş adresi ve bağlantılar. Tek tıkla hızlı yönlendirme ile giriş yap." />
-  <meta property="og:type" content="website" />
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(255,212,0,.10), transparent 55%),
+    radial-gradient(900px 600px at 20% 20%, rgba(80,255,170,.10), transparent 60%),
+    linear-gradient(180deg, var(--bg), var(--bg2));
+  overflow-x:hidden;
+}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+/* canvas layer */
+#stormCanvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+}
+#flash{
+  position:fixed;
+  inset:0;
+  background: radial-gradient(900px 600px at 50% 20%, rgba(255,212,0,.38), rgba(255,212,0,0));
+  opacity:0;
+  z-index:1;
+  pointer-events:none;
+  transition: opacity 200ms ease;
+}
 
-  <link rel="stylesheet" href="./style.css" />
-</head>
+.container{
+  width:min(980px, calc(100% - 32px));
+  margin-inline:auto;
+}
 
-<body>
-  <!-- Lightning canvas -->
-  <canvas id="stormCanvas" aria-hidden="true"></canvas>
-  <div id="flash" aria-hidden="true"></div>
+/* top logo white */
+.top-logo{
+  background:#fff;
+  position:relative;
+  z-index:5;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+.top-logo__inner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 14px 0;
+}
+.logo-img{
+  height:48px;
+  width:auto;
+  display:block;
+}
 
-  <!-- TOP LOGO BAR (white background) -->
-  <header class="top-logo">
-    <div class="container top-logo__inner">
-      <a class="logo-link" href="#" aria-label="HızlıTuttur">
-        <img class="logo-img" src="./assets/logo.png" alt="HızlıTuttur Logo" />
-      </a>
-    </div>
-  </header>
+/* nav */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:6;
+  background: linear-gradient(180deg, #0b3b25, #0a2f1d);
+  border-bottom:1px solid rgba(255,212,0,.15);
+  backdrop-filter: blur(6px);
+}
+.nav__inner{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  padding: 12px 0;
+}
+.nav__pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px 16px;
+  border-radius:999px;
 
-  <!-- NAV (green bg, yellow pills, green border/text) -->
-  <nav class="nav">
-    <div class="container nav__inner">
-      <a class="nav__pill" href="#tv">Canlı HızlıTuttur TV</a>
-      <a class="nav__pill" href="#giris">HızlıTuttur Giriş Adresi</a>
-    </div>
-  </nav>
+  background: var(--yellow);
+  color: #0b3b25;
+  font-weight:800;
+  text-decoration:none;
 
-  <main class="main">
-    <div class="container">
+  border: 2px solid #0b3b25;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  transition: transform .15s ease, filter .15s ease;
+}
+.nav__pill:hover{ transform: translateY(-1px); filter: brightness(1.03); }
+.nav__pill:active{ transform: translateY(0px) scale(.99); }
 
-      <!-- BANNER (not huge) clickable -->
-      <a class="banner" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-        <img src="./assets/banner.png" alt="HızlıTuttur Kampanya Banner" />
-      </a>
+/* main */
+.main{
+  position:relative;
+  z-index:3;
+  padding: 26px 0 26px;
+}
 
-      <!-- CTA IMAGE BUTTON (cta.png) under banner -->
-      <div class="cta-wrap">
-        <a class="cta-img" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-          <img src="./assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
-        </a>
-      </div>
+/* banner */
+.banner{
+  display:block;
+  margin: 18px auto 14px;
+  border-radius: 22px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,212,0,.22);
+  background: rgba(0,0,0,.25);
+  max-width: 860px;
+}
+.banner img{
+  display:block;
+  width:100%;
+  height:auto;
 
-      <!-- SEO / CONTENT TEXTS (aralara yazı eklemek için hazır bloklar) -->
-      <section class="content">
-        <article class="text-block">
-          <h1>HızlıTuttur Güncel Giriş Adresi</h1>
-          <p>
-            HızlıTuttur üzerinden güncel bağlantılara hızlıca ulaşabilir, tek tıkla yönlendirme ile giriş yapabilirsin.
-            Bu sayfa; güncel giriş adresi, duyurular ve hızlı bağlantılar için hazırlanmıştır.
-          </p>
-        </article>
+  /* banner very huge olmasın */
+  max-height: 340px;
+  object-fit: cover;
+}
+@media (max-width: 520px){
+  .banner img{ max-height: 220px; }
+}
 
-        <article id="tv" class="card">
-          <h2>Canlı HızlıTuttur TV</h2>
-          <p>
-            Canlı yayınlar, etkinlik içerikleri ve güncel duyurular burada paylaşılır. En iyi deneyim için güncel bağlantıları kullan.
-          </p>
-        </article>
+/* CTA image */
+.cta-wrap{
+  display:flex;
+  justify-content:center;
+  margin: 14px 0 18px;
+}
+.cta-wrap--mini{ margin: 14px 0 0; }
 
-        <!-- Araya yeni metin eklemek istersen kopyala-yapıştır -->
-        <article class="text-block">
-          <h3>Güncel Bağlantı ve Duyurular</h3>
-          <p>
-            Giriş adresi değiştiğinde bu sayfa üzerinden anında ulaşabilirsin. Mobil ve masaüstünde hızlı açılır.
-          </p>
-        </article>
+.cta-img{
+  display:inline-block;
+  border-radius: 999px;
+  overflow:hidden;
+  box-shadow: 0 20px 55px rgba(255,212,0,.16), 0 18px 55px rgba(0,0,0,.55);
+  border: 2px solid rgba(255,212,0,.22);
+  transform: translateZ(0);
+  transition: transform .14s ease, filter .14s ease;
+}
+.cta-img:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+.cta-img:active{ transform: translateY(0px) scale(.99); }
 
-        <article id="giris" class="card">
-          <h2>HızlıTuttur Giriş Adresi</h2>
-          <p>
-            Güncel giriş bağlantısı için aşağıdaki butonu kullan. Tek tıkla güvenli yönlendirme ile doğru adrese git.
-          </p>
-          <div class="cta-wrap cta-wrap--mini">
-            <a class="cta-img" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-              <img src="./assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
-            </a>
-          </div>
-        </article>
-      </section>
+.cta-img img{
+  display:block;
+  width:min(560px, 90vw);
+  height:auto;
+}
 
-    </div>
-  </main>
+/* content */
+.content{
+  margin-top: 16px;
+  display:flex;
+  flex-direction:column;
+  gap: 16px;
+}
 
-  <footer class="footer">
-    <div class="container footer__inner">
-      <span>© <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.</span>
-    </div>
-  </footer>
+.text-block{
+  padding: 18px 18px;
+  background: rgba(10, 35, 22, .65);
+  border: 1px solid rgba(255,212,0,.14);
+  border-radius: var(--radius);
+  box-shadow: 0 14px 45px rgba(0,0,0,.45);
+}
+.text-block h1{
+  margin: 0 0 8px;
+  font-size: clamp(22px, 3.2vw, 34px);
+  letter-spacing: .2px;
+  color: var(--mint);
+}
+.text-block h3{
+  margin: 0 0 8px;
+  font-size: clamp(18px, 2.5vw, 22px);
+  color: var(--yellow2);
+}
+.text-block p{
+  margin:0;
+  line-height:1.65;
+  color: var(--muted);
+}
 
-  <script src="./script.js"></script>
-</body>
-</html>
+/* cards */
+.card{
+  padding: 18px 18px;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(13,70,44,.65), rgba(8,35,22,.75));
+  border: 1px solid rgba(255,212,0,.18);
+  box-shadow: 0 16px 55px rgba(0,0,0,.55);
+}
+.card h2{
+  margin:0 0 8px;
+  font-size: 20px;
+  color: var(--yellow);
+}
+.card p{
+  margin:0;
+  line-height:1.65;
+  color: var(--text);
+  opacity:.92;
+}
+
+/* footer */
+.footer{
+  position:relative;
+  z-index:3;
+  padding: 16px 0 22px;
+  border-top: 1px solid rgba(255,212,0,.12);
+  background: rgba(0,0,0,.2);
+}
+.footer__inner{
+  display:flex;
+  justify-content:center;
+  color: rgba(255,255,255,.72);
+  font-size: 13px;
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  #stormCanvas, #flash{ display:none !important; }
+  .nav__pill, .cta-img{ transition:none; }
+}
