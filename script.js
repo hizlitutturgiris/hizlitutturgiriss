@@ -30,7 +30,7 @@
   const rand = (a, b) => a + Math.random() * (b - a);
 
   function makeBolt() {
-    const startX = rand(0.15 * W, 0.85 * W);
+    const startX = rand(0.12 * W, 0.88 * W);
     let x = startX;
     let y = -20;
 
@@ -41,6 +41,7 @@
     let sway = rand(-0.8, 0.8) * 28;
     for (let i = 0; i < segments; i++) {
       y += stepY;
+
       x += rand(-26, 26) + sway * 0.12 + rand(-8, 8);
       if (x < -40) x = -40;
       if (x > W + 40) x = W + 40;
@@ -58,8 +59,8 @@
     return {
       points,
       life: 1,
-      decay: rand(0.05, 0.09),
-      thickness: rand(1.2, 2.6),
+      decay: rand(0.06, 0.11),
+      thickness: rand(1.2, 2.8),
       glow: rand(10, 18),
       alpha: 1
     };
@@ -112,9 +113,8 @@
   }
 
   const bolts = [];
-
-  // ✅ Daha sık çaksın
-  let nextStrikeAt = performance.now() + rand(450, 900);
+  // ✅ Daha sık şimşek: neredeyse sürekli
+  let nextStrikeAt = performance.now() + rand(250, 600);
 
   function tick(now) {
     // trail temizliği
@@ -124,13 +124,12 @@
     if (now >= nextStrikeAt) {
       bolts.push(makeBolt());
 
-      // bazen çift şimşek
-      if (Math.random() < 0.45) bolts.push(makeBolt());
+      // ✅ daha fazla çift/üçlü çakma
+      if (Math.random() < 0.55) bolts.push(makeBolt());
+      if (Math.random() < 0.18) bolts.push(makeBolt());
 
-      doFlash(rand(0.18, 0.34));
-
-      // ✅ aralığı kısalt
-      nextStrikeAt = now + rand(650, 1400);
+      doFlash(rand(0.20, 0.38));
+      nextStrikeAt = now + rand(350, 900);
     }
 
     for (let i = bolts.length - 1; i >= 0; i--) {
