@@ -1,155 +1,111 @@
-(() => {
-  // Footer year
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  // Reduced motion? then stop
-  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  if (reduceMotion) return;
+  <title>HızlıTuttur Güncel Giriş Adresi</title>
+  <meta name="description" content="HızlıTuttur güncel giriş adresi, yönlendirme bağlantıları ve duyurular. HızlıTuttur Giriş, Casino, Spor ve Canlı Casino için tek tıkla erişim." />
 
-  const canvas = document.getElementById("lightning-canvas");
-  const flash = document.getElementById("flash");
-  if (!canvas) return;
+  <!-- Favicon (sekme ikonu) -->
+  <link rel="icon" type="image/png" href="../assets/logo.png" />
 
-  const ctx = canvas.getContext("2d", { alpha: true });
+  <!-- Open Graph (paylaşımda güzel gözüksün) -->
+  <meta property="og:title" content="HızlıTuttur Güncel Giriş Adresi" />
+  <meta property="og:description" content="HızlıTuttur giriş bağlantıları ve duyurular. Tek tıkla yönlendirme." />
+  <meta property="og:image" content="../assets/banner.png" />
+  <meta property="og:type" content="website" />
 
-  let W = 0, H = 0, DPR = 1;
+  <link rel="stylesheet" href="./style.css" />
+</head>
 
-  function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W = Math.floor(window.innerWidth);
-    H = Math.floor(window.innerHeight);
-    canvas.width = Math.floor(W * DPR);
-    canvas.height = Math.floor(H * DPR);
-    canvas.style.width = W + "px";
-    canvas.style.height = H + "px";
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  }
-  window.addEventListener("resize", resize, { passive: true });
-  resize();
+<body>
+  <!-- YILDIRIM ARKA PLAN (içeriğin arkasında) -->
+  <canvas id="stormCanvas" aria-hidden="true"></canvas>
+  <div id="flash" aria-hidden="true"></div>
 
-  // Lightning bolt generator (long, jagged)
-  function makeBolt() {
-    const startX = W * (0.2 + Math.random() * 0.6);
-    const startY = -20;
+  <!-- ÜST BEYAZ BAR (logo arkası beyaz) -->
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="#top" aria-label="HızlıTuttur Ana Sayfa">
+        <img src="../assets/logo.png" alt="HızlıTuttur Logo" />
+      </a>
+    </div>
+  </header>
 
-    const segments = 16 + Math.floor(Math.random() * 10);
-    const stepY = (H + 80) / segments;
+  <!-- NAV BUTONLAR -->
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a class="pill" href="#giris">Hızlıtuttur Giriş</a>
+      <a class="pill" href="#casino">Hızlıtuttur Casino</a>
+      <a class="pill" href="#spor">Hızlıtuttur Spor</a>
+      <a class="pill" href="#canli">Hızlıtuttur Canlı Casino</a>
+    </div>
+  </nav>
 
-    let x = startX;
-    let y = startY;
+  <main id="top" class="wrap main">
+    <!-- BANNER -->
+    <section class="hero">
+      <div class="hero__frame">
+        <img class="hero__img" src="../assets/banner.png" alt="HızlıTuttur Bonus Banner" />
+      </div>
 
-    const points = [{ x, y }];
+      <!-- CTA (resimli buton) -->
+      <div class="ctaWrap">
+        <a
+          class="ctaLink"
+          href="https://hizlituttur1.com/?referralCode=3083672195"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="HızlıTuttur’a giriş için tıkla"
+        >
+          <img class="ctaImg" src="../assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
+        </a>
+      </div>
+    </section>
 
-    for (let i = 0; i < segments; i++) {
-      y += stepY * (0.8 + Math.random() * 0.5);
-      // Jagged movement
-      const sway = 22 + Math.random() * 38; // sideways
-      x += (Math.random() - 0.5) * sway;
+    <!-- SEO / İÇERİK KARTLARI -->
+    <section class="cards">
+      <article id="giris" class="card">
+        <h2>HızlıTuttur Güncel Giriş Adresi</h2>
+        <p>
+          HızlıTuttur’a en güncel bağlantı üzerinden güvenli şekilde ulaşmak için bu sayfayı kullanabilirsin.
+          Bağlantılar düzenli olarak güncellenir. Tek tıkla yönlendirme ile giriş yap.
+        </p>
+      </article>
 
-      // Keep within canvas bounds
-      x = Math.max(20, Math.min(W - 20, x));
-      points.push({ x, y });
+      <article id="casino" class="card">
+        <h2>HızlıTuttur Casino</h2>
+        <p>
+          Casino oyunları ve kampanyalar için güncel bağlantıları bu sayfadan takip edebilirsin.
+          Güvenli erişim için tek noktadan yönlendirme tercih et.
+        </p>
+      </article>
 
-      // Occasionally add branch
-      if (Math.random() < 0.22 && i > 3 && i < segments - 3) {
-        const bx = x + (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 60);
-        const by = y + (10 + Math.random() * 40);
-        points.push({ x: bx, y: by, branch: true });
-      }
-    }
+      <article id="spor" class="card">
+        <h2>HızlıTuttur Spor</h2>
+        <p>
+          Spor bahisleri için güncel giriş adresi değiştiğinde buradan anında ulaşabilirsin.
+          Mobil ve masaüstünde hızlı açılır.
+        </p>
+      </article>
 
-    return {
-      points,
-      life: 1.0,
-      decay: 0.06 + Math.random() * 0.05,
-      thick: 1.6 + Math.random() * 1.2,
-      glow: 18 + Math.random() * 18,
-      flashPower: 0.20 + Math.random() * 0.22
-    };
-  }
+      <article id="canli" class="card">
+        <h2>HızlıTuttur Canlı Casino</h2>
+        <p>
+          Canlı casino yayınları, etkinlik içerikleri ve duyurular için resmi yönlendirme bağlantısını kullan.
+          En iyi deneyim için güncel linki tercih et.
+        </p>
+      </article>
+    </section>
 
-  const bolts = [];
-  let nextStrikeAt = performance.now() + 700 + Math.random() * 1600;
+    <footer class="footer">
+      <div class="footer__inner">
+        © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
+      </div>
+    </footer>
+  </main>
 
-  function doFlash(power) {
-    if (!flash) return;
-    flash.style.opacity = String(power);
-    // quick fade
-    setTimeout(() => {
-      flash.style.opacity = "0";
-    }, 60 + Math.random() * 80);
-  }
-
-  function drawBolt(b) {
-    const alpha = Math.max(0, b.life);
-
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-
-    // glow
-    ctx.shadowColor = `rgba(255, 212, 0, ${0.85 * alpha})`;
-    ctx.shadowBlur = b.glow;
-
-    // core line
-    ctx.strokeStyle = `rgba(255, 232, 120, ${0.9 * alpha})`;
-    ctx.lineWidth = b.thick;
-
-    ctx.beginPath();
-    let moved = false;
-
-    for (let i = 0; i < b.points.length; i++) {
-      const p = b.points[i];
-      if (!moved) {
-        ctx.moveTo(p.x, p.y);
-        moved = true;
-      } else {
-        ctx.lineTo(p.x, p.y);
-      }
-    }
-    ctx.stroke();
-
-    // brighter inner core
-    ctx.shadowBlur = b.glow * 0.55;
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.55 * alpha})`;
-    ctx.lineWidth = Math.max(0.9, b.thick * 0.55);
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  function tick() {
-    const now = performance.now();
-
-    // Clear with slight fade (keeps afterglow)
-    ctx.fillStyle = "rgba(0,0,0,0.22)";
-    ctx.fillRect(0, 0, W, H);
-
-    // Strike scheduling
-    if (now >= nextStrikeAt) {
-      const boltCount = Math.random() < 0.32 ? 2 : 1; // sometimes double strike
-      for (let i = 0; i < boltCount; i++) bolts.push(makeBolt());
-
-      // flash effect
-      const power = bolts[bolts.length - 1]?.flashPower ?? 0.25;
-      doFlash(power);
-
-      // next time
-      nextStrikeAt = now + (900 + Math.random() * 2200);
-    }
-
-    // Draw & decay
-    for (let i = bolts.length - 1; i >= 0; i--) {
-      const b = bolts[i];
-      drawBolt(b);
-      b.life -= b.decay;
-
-      if (b.life <= 0) bolts.splice(i, 1);
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  // start
-  tick();
-})();
+  <script src="./script.js"></script>
+</body>
+</html>
