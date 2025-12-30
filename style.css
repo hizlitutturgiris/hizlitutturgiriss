@@ -1,111 +1,204 @@
-<!doctype html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+:root{
+  --green-0:#04110a;
+  --green-1:#072013;
+  --green-2:#0a2a18;
+  --green-3:#0f3b22;
 
-  <title>HızlıTuttur Güncel Giriş Adresi</title>
-  <meta name="description" content="HızlıTuttur güncel giriş adresi, yönlendirme bağlantıları ve duyurular. HızlıTuttur Giriş, Casino, Spor ve Canlı Casino için tek tıkla erişim." />
+  --yellow:#ffd400;
+  --yellow-soft:#ffe57a;
 
-  <!-- Favicon (sekme ikonu) -->
-  <link rel="icon" type="image/png" href="../assets/logo.png" />
+  --text:#e9fff3;
+  --muted:#bfe9d4;
 
-  <!-- Open Graph (paylaşımda güzel gözüksün) -->
-  <meta property="og:title" content="HızlıTuttur Güncel Giriş Adresi" />
-  <meta property="og:description" content="HızlıTuttur giriş bağlantıları ve duyurular. Tek tıkla yönlendirme." />
-  <meta property="og:image" content="../assets/banner.png" />
-  <meta property="og:type" content="website" />
+  --shadow: 0 18px 60px rgba(0,0,0,.55);
+  --radius: 18px;
+}
 
-  <link rel="stylesheet" href="./style.css" />
-</head>
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+  color:var(--text);
+  background:
+    radial-gradient(1200px 500px at 50% 0%, rgba(255,212,0,.10), transparent 55%),
+    radial-gradient(900px 600px at 15% 10%, rgba(0,255,160,.08), transparent 55%),
+    linear-gradient(180deg, var(--green-1), var(--green-0));
+  overflow-x:hidden;
+}
 
-<body>
-  <!-- YILDIRIM ARKA PLAN (içeriğin arkasında) -->
-  <canvas id="stormCanvas" aria-hidden="true"></canvas>
-  <div id="flash" aria-hidden="true"></div>
+/* Canvas yıldırım */
+#stormCanvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+}
 
-  <!-- ÜST BEYAZ BAR (logo arkası beyaz) -->
-  <header class="topbar">
-    <div class="wrap topbar__inner">
-      <a class="brand" href="#top" aria-label="HızlıTuttur Ana Sayfa">
-        <img src="../assets/logo.png" alt="HızlıTuttur Logo" />
-      </a>
-    </div>
-  </header>
+#flash{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  opacity:0;
+  background: radial-gradient(900px 600px at 50% 20%, rgba(255,212,0,.35), rgba(255,212,0,0));
+  transition: opacity 120ms ease;
+}
 
-  <!-- NAV BUTONLAR -->
-  <nav class="nav">
-    <div class="wrap nav__inner">
-      <a class="pill" href="#giris">Hızlıtuttur Giriş</a>
-      <a class="pill" href="#casino">Hızlıtuttur Casino</a>
-      <a class="pill" href="#spor">Hızlıtuttur Spor</a>
-      <a class="pill" href="#canli">Hızlıtuttur Canlı Casino</a>
-    </div>
-  </nav>
+.wrap{
+  width:min(980px, calc(100% - 28px));
+  margin:0 auto;
+  position:relative;
+  z-index:2;
+}
 
-  <main id="top" class="wrap main">
-    <!-- BANNER -->
-    <section class="hero">
-      <div class="hero__frame">
-        <img class="hero__img" src="../assets/banner.png" alt="HızlıTuttur Bonus Banner" />
-      </div>
+/* Üst logo barı beyaz */
+.topbar{
+  position:relative;
+  z-index:3;
+  background:#ffffff;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+.topbar__inner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 0;
+}
+.brand img{
+  height:44px;
+  width:auto;
+  display:block;
+}
 
-      <!-- CTA (resimli buton) -->
-      <div class="ctaWrap">
-        <a
-          class="ctaLink"
-          href="https://hizlituttur1.com/?referralCode=3083672195"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="HızlıTuttur’a giriş için tıkla"
-        >
-          <img class="ctaImg" src="../assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
-        </a>
-      </div>
-    </section>
+/* Nav alanı yeşil, pill butonlar sarı */
+.nav{
+  position:relative;
+  z-index:3;
+  background: linear-gradient(180deg, rgba(10,42,24,.92), rgba(4,17,10,.92));
+  border-bottom:1px solid rgba(255,212,0,.18);
+}
+.nav__inner{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  padding:12px 0 14px;
+}
 
-    <!-- SEO / İÇERİK KARTLARI -->
-    <section class="cards">
-      <article id="giris" class="card">
-        <h2>HızlıTuttur Güncel Giriş Adresi</h2>
-        <p>
-          HızlıTuttur’a en güncel bağlantı üzerinden güvenli şekilde ulaşmak için bu sayfayı kullanabilirsin.
-          Bağlantılar düzenli olarak güncellenir. Tek tıkla yönlendirme ile giriş yap.
-        </p>
-      </article>
+.pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius:999px;
+  text-decoration:none;
+  background: var(--yellow);
+  color: #0b3a20;
+  border:2px solid #0b3a20;
+  font-weight:700;
+  font-size:14px;
+  line-height:1;
+  box-shadow: 0 10px 25px rgba(0,0,0,.35);
+  transition: transform .12s ease, filter .12s ease;
+}
+.pill:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
 
-      <article id="casino" class="card">
-        <h2>HızlıTuttur Casino</h2>
-        <p>
-          Casino oyunları ve kampanyalar için güncel bağlantıları bu sayfadan takip edebilirsin.
-          Güvenli erişim için tek noktadan yönlendirme tercih et.
-        </p>
-      </article>
+/* Main */
+.main{
+  padding:24px 0 60px;
+}
 
-      <article id="spor" class="card">
-        <h2>HızlıTuttur Spor</h2>
-        <p>
-          Spor bahisleri için güncel giriş adresi değiştiğinde buradan anında ulaşabilirsin.
-          Mobil ve masaüstünde hızlı açılır.
-        </p>
-      </article>
+/* Hero / Banner */
+.hero{
+  margin-top:16px;
+}
 
-      <article id="canli" class="card">
-        <h2>HızlıTuttur Canlı Casino</h2>
-        <p>
-          Canlı casino yayınları, etkinlik içerikleri ve duyurular için resmi yönlendirme bağlantısını kullan.
-          En iyi deneyim için güncel linki tercih et.
-        </p>
-      </article>
-    </section>
+.hero__frame{
+  width:100%;
+  border-radius: 22px;
+  overflow:hidden;
+  background: rgba(0,0,0,.25);
+  border:1px solid rgba(255,212,0,.18);
+  box-shadow: var(--shadow);
+}
 
-    <footer class="footer">
-      <div class="footer__inner">
-        © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
-      </div>
-    </footer>
-  </main>
+.hero__img{
+  width:100%;
+  height:auto;
+  display:block;
+  /* Banner çok büyük görünmesin */
+  max-height: 360px;
+  object-fit: cover;
+  object-position: center;
+}
 
-  <script src="./script.js"></script>
-</body>
-</html>
+/* CTA */
+.ctaWrap{
+  display:flex;
+  justify-content:center;
+  margin:18px 0 14px;
+}
+
+.ctaLink{
+  display:inline-block;
+  border-radius: 999px;
+  padding:10px;
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,212,0,.22);
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+  transition: transform .12s ease, filter .12s ease;
+}
+.ctaLink:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
+.ctaImg{
+  display:block;
+  width:min(680px, 92vw);
+  height:auto;
+  border-radius: 999px;
+}
+
+/* Kartlar */
+.cards{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:14px;
+}
+
+.card{
+  background: linear-gradient(180deg, rgba(15,59,34,.70), rgba(7,32,19,.70));
+  border:1px solid rgba(255,212,0,.18);
+  border-radius: var(--radius);
+  padding:16px 16px 14px;
+  box-shadow: 0 12px 45px rgba(0,0,0,.45);
+}
+
+.card h2{
+  margin:0 0 8px;
+  font-size:18px;
+  line-height:1.2;
+  color: var(--yellow);
+  text-shadow: 0 2px 0 rgba(0,0,0,.25);
+}
+
+.card p{
+  margin:0;
+  color: var(--muted);
+  line-height:1.55;
+  font-size:14.5px;
+}
+
+/* Footer */
+.footer{
+  margin-top:18px;
+  color: rgba(255,212,0,.85);
+  text-align:ce
