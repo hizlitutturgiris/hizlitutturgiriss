@@ -1,127 +1,58 @@
-(() => {
-  const canvas = document.getElementById("fx");
-  const ctx = canvas.getContext("2d", { alpha: true });
+// CHANGE THIS LINK ONCE, everything clickable uses it
+const TARGET_URL = "https://hizlituttur1.com";
 
-  let w = 0, h = 0, dpr = 1;
+// Make sure all clickable items go to TARGET_URL
+document.addEventListener("DOMContentLoaded", () => {
+  // Update hero + CTA links safely
+  document.querySelectorAll('a[href="https://hizlituttur1.com"]').forEach(a => {
+    a.href = TARGET_URL;
+  });
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  startLightningRain();
+});
 
-  function resize() {
-    dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    w = Math.floor(window.innerWidth);
-    h = Math.floor(window.innerHeight);
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    canvas.style.width = w + "px";
-    canvas.style.height = h + "px";
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  window.addEventListener("resize", resize);
-  resize();
+function startLightningRain() {
+  const layer = document.getElementById("lightning-layer");
+  if (!layer) return;
 
-  // Lightning "drop" objects
-  const bolts = [];
-  const MAX_BOLTS = prefersReducedMotion ? 0 : 14;
+  // Respect reduced motion
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) return;
 
-  function rand(min, max) { return Math.random() * (max - min) + min; }
+  // spawn bolts
+  const spawn = () => {
+    const bolt = document.createElement("div");
+    bolt.className = "bolt";
+    bolt.textContent = "⚡";
 
-  function spawnBolt() {
-    const x = rand(0, w);
-    const y = rand(-h * 0.2, h * 0.2);
-    const length = rand(h * 0.35, h * 0.75);
-    const width = rand(1, 2.6);
-    const life = rand(10, 22);
+    const x = Math.random() * 100; // vw
+    const size = 16 + Math.random() * 18; // px
+    const dur = 1200 + Math.random() * 1400; // ms
+    const rot = (-20 + Math.random() * 40) + "deg";
 
-    // Generate jagged path
-    const points = [];
-    let px = x;
-    let py = y;
-    const steps = Math.floor(rand(12, 22));
-    const stepY = length / steps;
+    bolt.style.left = x + "vw";
+    bolt.style.setProperty("--size", size + "px");
+    bolt.style.setProperty("--dur", dur + "ms");
+    bolt.style.setProperty("--rot", rot);
 
-    for (let i = 0; i < steps; i++) {
-      px += rand(-18, 18);
-      py += stepY + rand(-6, 8);
-      points.push([px, py]);
+    layer.appendChild(bolt);
+
+    // cleanup
+    setTimeout(() => bolt.remove(), dur + 200);
+  };
+
+  // speed control: lower = more bolts
+  const interval = setInterval(() => {
+    // on mobile, reduce density
+    const isMobile = window.innerWidth < 720;
+    const count = isMobile ? 1 : 2;
+    for (let i = 0; i < count; i++) spawn();
+  }, 180);
+
+  // optional: stop when tab hidden (saves CPU)
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      clearInterval(interval);
     }
-
-    bolts.push({
-      x, y,
-      width,
-      life,
-      maxLife: life,
-      points
-    });
-
-    // keep list small
-    if (bolts.length > 30) bolts.splice(0, bolts.length - 30);
-  }
-
-  // subtle background flash
-  let flash = 0;
-
-  function drawBolt(b) {
-    const t = b.life / b.maxLife; // 1 -> 0
-    const alpha = Math.max(0, Math.min(1, t));
-
-    ctx.save();
-    ctx.globalAlpha = 0.35 * alpha;
-
-    // glow
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    // Outer glow (yellow)
-    ctx.strokeStyle = "rgba(245, 209, 0, 0.9)";
-    ctx.lineWidth = b.width * 3;
-    ctx.beginPath();
-    ctx.moveTo(b.x, b.y);
-    for (const [px, py] of b.points) ctx.lineTo(px, py);
-    ctx.stroke();
-
-    // Inner line (greenish-white)
-    ctx.globalAlpha = 0.65 * alpha;
-    ctx.strokeStyle = "rgba(230, 255, 245, 1)";
-    ctx.lineWidth = b.width;
-    ctx.beginPath();
-    ctx.moveTo(b.x, b.y);
-    for (const [px, py] of b.points) ctx.lineTo(px, py);
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  function tick() {
-    ctx.clearRect(0, 0, w, h);
-
-    // rare flash
-    if (!prefersReducedMotion && Math.random() < 0.02) flash = 1;
-
-    if (flash > 0) {
-      ctx.save();
-      ctx.globalAlpha = 0.08 * flash;
-      ctx.fillStyle = "rgba(245, 209, 0, 1)";
-      ctx.fillRect(0, 0, w, h);
-      ctx.restore();
-      flash *= 0.85;
-      if (flash < 0.02) flash = 0;
-    }
-
-    // spawn bolts
-    if (!prefersReducedMotion && bolts.length < MAX_BOLTS && Math.random() < 0.12) {
-      spawnBolt();
-    }
-
-    // draw & age
-    for (let i = bolts.length - 1; i >= 0; i--) {
-      const b = bolts[i];
-      drawBolt(b);
-      b.life -= 1;
-      if (b.life <= 0) bolts.splice(i, 1);
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  tick();
-})();
+  }, { once: true });
+}
