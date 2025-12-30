@@ -1,12 +1,28 @@
-// Year
+// Footer year
 document.getElementById("year").textContent = new Date().getFullYear();
 
-// Lightning effect (canvas)
-const canvas = document.getElementById("lightningCanvas");
-const ctx = canvas.getContext("2d");
-const flash = document.querySelector(".flash");
+// Smooth scroll for menu (optional)
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener("click", (e) => {
+    const id = a.getAttribute("href");
+    if (!id || id === "#") return;
+    const el = document.querySelector(id);
+    if (!el) return;
+    e.preventDefault();
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
 
-function resize() {
+/**
+ * LIGHTNING EFFECT (uzun yıldırım çakma)
+ * - Canvas sabit durur
+ * - Belli aralıklarla bir "bolt" çizilir ve hızlıca söner
+ * - Ekranda çok hafif flash hissi verir (sarı)
+ */
+const canvas = document.getElementById("lightningCanvas");
+const ctx = canvas.getContext("2d", { alpha: true });
+
+function resizeCanvas(){
   const dpr = Math.max(1, window.devicePixelRatio || 1);
   canvas.width = Math.floor(window.innerWidth * dpr);
   canvas.height = Math.floor(window.innerHeight * dpr);
@@ -14,115 +30,136 @@ function resize() {
   canvas.style.height = window.innerHeight + "px";
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
-window.addEventListener("resize", resize);
-resize();
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
-function rand(min, max){ return Math.random() * (max - min) + min; }
+// Utility
+const rand = (min, max) => Math.random() * (max - min) + min;
 
-function drawBolt(startX, startY, endY) {
-  // Long bolt segments
+// Create a long lightning path with branching
+function generateBolt(startX, startY, endY){
   const points = [];
-  points.push({ x: startX, y: startY });
-
   let x = startX;
   let y = startY;
 
-  while (y < endY) {
-    y += rand(20, 70);
-    x += rand(-28, 28);
+  points.push({ x, y });
+
+  while (y < endY){
+    const stepY = rand(18, 42);
+    y += stepY;
+    x += rand(-26, 26);
     points.push({ x, y });
   }
 
-  // Main stroke
-  ctx.save();
-  ctx.globalCompositeOperation = "lighter";
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
+  // branches: take some midpoints and create short side bolts
+  const branches = [];
+  const branchCount = Math.random() < 0.8 ? Math.floor(rand(1, 4)) : 0;
 
-  // Glow
-  ctx.strokeStyle = "rgba(255, 212, 0, 0.20)";
-  ctx.lineWidth = 10;
+  for (let i = 0; i < branchCount; i++){
+    const idx = Math.floor(rand(2, points.length - 3));
+    const p = points[idx];
+    const bLen = rand(80, 220);
+    const dir = Math.random() < 0.5 ? -1 : 1;
+
+    const bPts = [];
+    let bx = p.x;
+    let by = p.y;
+    bPts.push({ x: bx, y: by });
+
+    const segs = Math.floor(rand(4, 8));
+    for (let s = 0; s < segs; s++){
+      by += rand(10, 22);
+      bx += dir * rand(18, 40) + rand(-10, 10);
+      bPts.push({ x: bx, y: by });
+      if (Math.hypot(bx - p.x, by - p.y) > bLen) break;
+    }
+    branches.push(bPts);
+  }
+
+  return { main: points, branches };
+}
+
+function drawBoltPath(points, width, alpha){
   ctx.beginPath();
   ctx.moveTo(points[0].x, points[0].y);
-  for (let i=1; i<points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+  for (let i = 1; i < points.length; i++){
+    ctx.lineTo(points[i].x, points[i].y);
+  }
+
+  // Outer glow
+  ctx.strokeStyle = `rgba(255, 212, 0, ${alpha * 0.18})`;
+  ctx.lineWidth = width * 7;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.stroke();
+
+  // Inner glow
+  ctx.strokeStyle = `rgba(255, 240, 120, ${alpha * 0.35})`;
+  ctx.lineWidth = width * 3.2;
   ctx.stroke();
 
   // Core
-  ctx.strokeStyle = "rgba(255, 212, 0, 0.85)";
-  ctx.lineWidth = 2.2;
-  ctx.beginPath();
-  ctx.moveTo(points[0].x, points[0].y);
-  for (let i=1; i<points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+  ctx.strokeStyle = `rgba(255, 255, 255, ${alpha * 0.85})`;
+  ctx.lineWidth = width;
   ctx.stroke();
-
-  // Small branches (a few)
-  for (let b=0; b<3; b++){
-    const idx = Math.floor(rand(2, points.length-2));
-    const p = points[idx];
-    const branchLen = rand(60, 140);
-    const branchDir = rand(-1.2, 1.2);
-    ctx.strokeStyle = "rgba(255, 212, 0, 0.55)";
-    ctx.lineWidth = 1.4;
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    ctx.lineTo(p.x + branchLen*branchDir, p.y + branchLen*0.35);
-    ctx.stroke();
-  }
-
-  ctx.restore();
 }
 
-function flashScreen(intensity=0.35){
-  flash.style.background = `rgba(255, 212, 0, ${intensity})`;
-  setTimeout(()=> flash.style.background = "rgba(255, 212, 0, 0)", 120);
+let flashAlpha = 0;
+let activeBolts = []; // { bolt, life, maxLife, thickness }
+
+function spawnLightning(){
+  const startX = rand(40, window.innerWidth - 40);
+  const startY = rand(-80, 40);
+  const endY = rand(window.innerHeight * 0.55, window.innerHeight + 80);
+  const bolt = generateBolt(startX, startY, endY);
+
+  activeBolts.push({
+    bolt,
+    life: 0,
+    maxLife: rand(220, 420), // ms
+    thickness: rand(1.2, 2.2)
+  });
+
+  // flash
+  flashAlpha = Math.max(flashAlpha, rand(0.08, 0.18));
 }
 
-let fading = false;
+// nice timing (random intervals)
+let nextStrikeAt = performance.now() + rand(1200, 2600);
 
-function strike() {
-  if (fading) return;
-  fading = true;
+function render(t){
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-
-  // Clear with very small alpha to create quick fade tail
-  ctx.clearRect(0,0,w,h);
-
-  // 1-2 long bolts
-  const bolts = Math.random() < 0.65 ? 1 : 2;
-  for (let i=0; i<bolts; i++){
-    const x = rand(w*0.15, w*0.85);
-    drawBolt(x, rand(-20, 40), h + rand(60, 160));
+  // background flash overlay
+  if (flashAlpha > 0.001){
+    ctx.fillStyle = `rgba(255, 212, 0, ${flashAlpha})`;
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+    flashAlpha *= 0.92;
   }
 
-  // Flash (1-2 pulses)
-  flashScreen(rand(0.22, 0.42));
-  if (Math.random() < 0.45) {
-    setTimeout(()=> flashScreen(rand(0.12, 0.28)), rand(90, 160));
-  }
+  // draw bolts with fade
+  activeBolts = activeBolts.filter(b => b.life < b.maxLife);
+  for (const b of activeBolts){
+    b.life += 16.6;
+    const p = b.life / b.maxLife; // 0..1
+    // quick appear, then fade
+    const alpha = p < 0.15 ? (p / 0.15) : (1 - (p - 0.15) / 0.85);
+    const a = Math.max(0, alpha);
 
-  // Fade out quickly
-  let alpha = 1;
-  const fadeTimer = setInterval(() => {
-    alpha -= 0.12;
-    ctx.save();
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = `rgba(0,0,0,${0.22})`;
-    ctx.fillRect(0,0,w,h);
-    ctx.restore();
-
-    if (alpha <= 0) {
-      clearInterval(fadeTimer);
-      ctx.clearRect(0,0,w,h);
-      fading = false;
+    drawBoltPath(b.bolt.main, b.thickness, a);
+    for (const br of b.bolt.branches){
+      drawBoltPath(br, b.thickness * 0.9, a * 0.85);
     }
-  }, 60);
+  }
 
-  // Next strike random
-  const next = rand(1400, 4200);
-  setTimeout(strike, next);
+  // schedule next strike
+  if (t >= nextStrikeAt){
+    // sometimes double strike
+    spawnLightning();
+    if (Math.random() < 0.35) setTimeout(spawnLightning, rand(120, 360));
+    nextStrikeAt = t + rand(1400, 3200);
+  }
+
+  requestAnimationFrame(render);
 }
-
-// Start after a short delay
-setTimeout(strike, rand(900, 1600));
+requestAnimationFrame(render);
