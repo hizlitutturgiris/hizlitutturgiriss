@@ -1,58 +1,96 @@
-// CHANGE THIS LINK ONCE, everything clickable uses it
-const TARGET_URL = "https://hizlituttur1.com";
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b2a1f" />
+  <title>HızlıTuttur Giriş</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
 
-// Make sure all clickable items go to TARGET_URL
-document.addEventListener("DOMContentLoaded", () => {
-  // Update hero + CTA links safely
-  document.querySelectorAll('a[href="https://hizlituttur1.com"]').forEach(a => {
-    a.href = TARGET_URL;
-  });
+<body>
+  <!-- Lightning overlay (tıklamayı engellemez) -->
+  <div class="lightning-layer" aria-hidden="true"></div>
 
-  startLightningRain();
-});
+  <!-- TOP BAR (beyaz arkaplan) -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="/" aria-label="HızlıTuttur">
+        <img src="./assets/logo.png" alt="HızlıTuttur Logo" class="brand-logo" />
+      </a>
+    </div>
+  </header>
 
-function startLightningRain() {
-  const layer = document.getElementById("lightning-layer");
-  if (!layer) return;
+  <!-- NAV -->
+  <nav class="navwrap" aria-label="Site menü">
+    <div class="container">
+      <ul class="menu">
+        <li><a class="menu-btn" href="#anasayfa">Anasayfa</a></li>
+        <li><a class="menu-btn" href="#hizlituttur-bahis">HızlıTuttur Bahis</a></li>
+        <li><a class="menu-btn" href="#canli-tv">Canlı TV</a></li>
+        <li><a class="menu-btn" href="#giris-adresi">Giriş Adresi</a></li>
+        <li><a class="menu-btn" href="#sanal-bahisler">Sanal Bahisler</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  // Respect reduced motion
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
+  <!-- MAIN -->
+  <main id="anasayfa" class="page">
+    <div class="container">
 
-  // spawn bolts
-  const spawn = () => {
-    const bolt = document.createElement("div");
-    bolt.className = "bolt";
-    bolt.textContent = "⚡";
+      <!-- Banner (tıklanınca linke gider) -->
+      <!-- BURAYA hedef linkini yaz: -->
+      <a class="banner" href="https://ornek-link.com" target="_blank" rel="noopener noreferrer">
+        <img src="./assets/banner.png" alt="HızlıTuttur Banner" />
+      </a>
 
-    const x = Math.random() * 100; // vw
-    const size = 16 + Math.random() * 18; // px
-    const dur = 1200 + Math.random() * 1400; // ms
-    const rot = (-20 + Math.random() * 40) + "deg";
+      <!-- Yazı bloğu 1 -->
+      <section class="text-block" id="giris-adresi">
+        <h1>HızlıTuttur Giriş</h1>
+        <p>
+          HızlıTuttur güncel giriş adresi, duyurular ve bilgilendirme içerikleri bu sayfada yer alır.
+          Tek tıkla güvenli şekilde bağlantıya geçebilirsin.
+        </p>
+      </section>
 
-    bolt.style.left = x + "vw";
-    bolt.style.setProperty("--size", size + "px");
-    bolt.style.setProperty("--dur", dur + "ms");
-    bolt.style.setProperty("--rot", rot);
+      <!-- CTA görseli (tıklanınca linke gider) -->
+      <!-- BURAYA hedef linkini yaz: -->
+      <a class="cta" href="https://ornek-link.com" target="_blank" rel="noopener noreferrer">
+        <img src="./assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
+      </a>
 
-    layer.appendChild(bolt);
+      <!-- Yazı bloğu 2 (örnek, istediğin kadar çoğalt) -->
+      <section class="text-block" id="hizlituttur-bahis">
+        <h2>HızlıTuttur Bahis</h2>
+        <p>
+          Günümüzde internetin yaygınlaşmasıyla birlikte spor karşılaşmaları ve farklı oyun türleri
+          dijital platformlara taşındı. Burada bilgilendirme içeriklerini düzenli olarak paylaşacağız.
+        </p>
+      </section>
 
-    // cleanup
-    setTimeout(() => bolt.remove(), dur + 200);
-  };
+      <section class="text-block" id="canli-tv">
+        <h2>Canlı TV</h2>
+        <p>
+          Canlı yayın içerikleri ve duyurular bu alanda yer alacaktır. Menüden ilgili bölüme hızlıca geçebilirsin.
+        </p>
+      </section>
 
-  // speed control: lower = more bolts
-  const interval = setInterval(() => {
-    // on mobile, reduce density
-    const isMobile = window.innerWidth < 720;
-    const count = isMobile ? 1 : 2;
-    for (let i = 0; i < count; i++) spawn();
-  }, 180);
+      <section class="text-block" id="sanal-bahisler">
+        <h2>Sanal Bahisler</h2>
+        <p>
+          Sanal bahislerle ilgili bilgilendirmeleri buraya ekleyebiliriz. İstersen her blok arasına görsel de koyarız.
+        </p>
+      </section>
 
-  // optional: stop when tab hidden (saves CPU)
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      clearInterval(interval);
-    }
-  }, { once: true });
-}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>
