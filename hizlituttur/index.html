@@ -1,81 +1,90 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8">
-  <title>HIZLITUTTUR</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="HızlıTuttur güncel giriş adresi ve yönlendirme platformu.">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HÄ±zlÄ±tuttur GiriÅŸ</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<!-- ÜST BAR -->
-<header class="topbar">
-  <div class="container topbar-inner">
-    <div></div>
+  <!-- Lightning rain overlay -->
+  <div id="lightning-layer" aria-hidden="true"></div>
 
-    <!-- LOGO PNG -->
-    <div class="logo">
-      <img src="assets/logo.png" alt="HızlıTuttur Logo">
+  <!-- Top bar (WHITE background) -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#anasayfa" aria-label="HÄ±zlÄ±tuttur">
+        <img src="assets/logo.png" alt="HÄ±zlÄ±tuttur Logo" class="logo" />
+      </a>
+
+      <nav class="nav">
+        <a class="nav-btn" href="#anasayfa">Anasayfa</a>
+        <a class="nav-btn" href="#bonus">Bonus</a>
+        <a class="nav-btn" href="#giris">GiriÅŸ Adresi</a>
+        <a class="nav-btn" href="#haberler">Haberler</a>
+        <a class="nav-btn" href="#iletisim">Ä°letiÅŸim</a>
+      </nav>
     </div>
+  </header>
 
-    <div></div>
-  </div>
-</header>
+  <main id="anasayfa" class="page">
+    <div class="container">
 
-<!-- MENÜ -->
-<nav class="nav">
-  <div class="container">
-    <ul class="menu">
-      <li><a href="#">Anasayfa</a></li>
-      <li><a href="#">Canlı HızlıTuttur TV</a></li>
-      <li><a href="#">HızlıTuttur Giriş Adresi</a></li>
-      <li><a href="#">Sanal Bahisler</a></li>
-    </ul>
-  </div>
-</nav>
+      <!-- Banner (clickable) -->
+      <section class="hero">
+        <a class="hero-click" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+          <!-- your banner file name includes spaces; use %20 -->
+          <img class="banner" src="assets/Masa%20Ã¼stÃ¼%20gÃ¶rÃ¼nÃ¼mÃ¼.png" alt="HÄ±zlÄ±tuttur Banner" />
+        </a>
+      </section>
 
-<!-- İÇERİK -->
-<main class="container content">
+      <!-- Text block 1 -->
+      <section id="haberler" class="text-block">
+        <p class="lead">
+          HÄ±zlÄ±tuttur ile hÄ±zlÄ±, gÃ¼venli ve kesintisiz deneyim seni bekliyor.
+          GÃ¼ncel giriÅŸ baÄŸlantÄ±larÄ± ve duyurular iÃ§in sayfamÄ±zÄ± takip edebilirsin.
+        </p>
+      </section>
 
-  <!-- BANNER (TIKLANABİLİR) -->
-  <a href="https://hizlituttur1.com" target="_blank" class="clickable">
-    <img src="assets/banner.png" alt="HızlıTuttur Giriş" class="banner">
-  </a>
+      <!-- CTA (image button) -->
+      <section id="giris" class="cta-wrap">
+        <a class="cta-click" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+          <img class="cta-img" src="assets/cta.png" alt="HÄ±zlÄ±tutturâ€™a GiriÅŸ iÃ§in TÄ±kla" />
+        </a>
 
-  <!-- AÇIKLAMA -->
-  <p class="lead">
-    HızlıTuttur, güncel giriş adresleri ve doğru yönlendirme bağlantılarını
-    kullanıcılarla buluşturmak amacıyla hazırlanmış bilgilendirici bir platformdur.
-  </p>
+        <!-- Extra fallback button (optional) -->
+        <a class="cta-btn" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+          HÄ±zlÄ±tutturâ€™a GiriÅŸ iÃ§in TÄ±kla
+        </a>
+      </section>
 
-  <!-- CTA PNG (TIKLANABİLİR) -->
-  <div class="cta-box">
-    <a href="https://hizlituttur1.com" target="_blank" class="clickable">
-      <img src="assets/cta.png" alt="HızlıTuttur Giriş" class="cta">
-    </a>
-  </div>
+      <!-- Text block 2 (example article) -->
+      <section id="bonus" class="article">
+        <h2>GÃ¼ncel Bilgilendirme</h2>
+        <p>
+          Bu alana â€œhaber / makaleâ€ tarzÄ± iÃ§erikler ekleyebiliriz. Ã–rneÄŸin: kampanya duyurularÄ±,
+          gÃ¼ncel giriÅŸ adresi bilgilendirmeleri, kullanÄ±cÄ± rehberleri vb.
+        </p>
+        <p>
+          Ä°stersen buraya 3-4 tane ayrÄ± yazÄ± bloÄŸu da eklerim; Ã¼st menÃ¼de her biri bir bÃ¶lÃ¼me kayar.
+        </p>
+      </section>
 
-  <!-- ALT METİN -->
-  <p>
-    İnternet ortamında erişim adresleri zaman zaman değişebilmektedir.
-    HızlıTuttur, kullanıcıların doğru bağlantıya hızlı ve güvenli
-    şekilde ulaşmasını amaçlar.
-  </p>
+      <section id="iletisim" class="article">
+        <h2>Ä°letiÅŸim</h2>
+        <p>
+          Ä°letiÅŸim bilgilerini buraya koyabiliriz (Telegram/WhatsApp/CanlÄ± Destek yÃ¶nlendirme vb).
+        </p>
+      </section>
 
-</main>
+      <footer class="footer">
+        <span>Â© 2025 HÄ±zlÄ±tuttur. TÃ¼m haklarÄ± saklÄ±dÄ±r.</span>
+      </footer>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="container">
-    © <span id="year"></span> HIZLITUTTUR
-  </div>
-</footer>
+    </div>
+  </main>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
