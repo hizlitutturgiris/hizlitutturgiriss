@@ -1,96 +1,53 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b2a1f" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HızlıTuttur Giriş</title>
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <!-- Lightning overlay (tıklamayı engellemez) -->
-  <div class="lightning-layer" aria-hidden="true"></div>
 
-  <!-- TOP BAR (beyaz arkaplan) -->
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="/" aria-label="HızlıTuttur">
-        <img src="./assets/logo.png" alt="HızlıTuttur Logo" class="brand-logo" />
-      </a>
-    </div>
-  </header>
+<!-- ⚡ YILDIRIM KATMANI -->
+<div class="lightning-layer"></div>
 
-  <!-- NAV -->
-  <nav class="navwrap" aria-label="Site menü">
-    <div class="container">
-      <ul class="menu">
-        <li><a class="menu-btn" href="#anasayfa">Anasayfa</a></li>
-        <li><a class="menu-btn" href="#hizlituttur-bahis">HızlıTuttur Bahis</a></li>
-        <li><a class="menu-btn" href="#canli-tv">Canlı TV</a></li>
-        <li><a class="menu-btn" href="#giris-adresi">Giriş Adresi</a></li>
-        <li><a class="menu-btn" href="#sanal-bahisler">Sanal Bahisler</a></li>
-      </ul>
-    </div>
-  </nav>
+<!-- HEADER -->
+<header class="header">
+  <img src="assets/logo.png" alt="HızlıTuttur" class="logo">
+</header>
 
-  <!-- MAIN -->
-  <main id="anasayfa" class="page">
-    <div class="container">
+<!-- BANNER -->
+<section class="container">
+  <div class="banner">
+    <a href="https://hizlituttur1.com" target="_blank">
+      <img src="assets/banner.png" alt="HızlıTuttur Bonus">
+    </a>
+  </div>
+</section>
 
-      <!-- Banner (tıklanınca linke gider) -->
-      <!-- BURAYA hedef linkini yaz: -->
-      <a class="banner" href="https://ornek-link.com" target="_blank" rel="noopener noreferrer">
-        <img src="./assets/banner.png" alt="HızlıTuttur Banner" />
-      </a>
+<!-- İÇERİK -->
+<main class="container content">
+  <h1>HızlıTuttur</h1>
+  <p>
+    HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor.
+    Tek tıkla hemen giriş yap.
+  </p>
 
-      <!-- Yazı bloğu 1 -->
-      <section class="text-block" id="giris-adresi">
-        <h1>HızlıTuttur Giriş</h1>
-        <p>
-          HızlıTuttur güncel giriş adresi, duyurular ve bilgilendirme içerikleri bu sayfada yer alır.
-          Tek tıkla güvenli şekilde bağlantıya geçebilirsin.
-        </p>
-      </section>
+  <a href="https://hizlituttur1.com" target="_blank" class="cta-btn">
+    Hızlıtuttur’a Giriş İçin Tıkla
+  </a>
+</main>
 
-      <!-- CTA görseli (tıklanınca linke gider) -->
-      <!-- BURAYA hedef linkini yaz: -->
-      <a class="cta" href="https://ornek-link.com" target="_blank" rel="noopener noreferrer">
-        <img src="./assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
-      </a>
+<!-- FOOTER -->
+<footer class="footer">
+  © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
+</footer>
 
-      <!-- Yazı bloğu 2 (örnek, istediğin kadar çoğalt) -->
-      <section class="text-block" id="hizlituttur-bahis">
-        <h2>HızlıTuttur Bahis</h2>
-        <p>
-          Günümüzde internetin yaygınlaşmasıyla birlikte spor karşılaşmaları ve farklı oyun türleri
-          dijital platformlara taşındı. Burada bilgilendirme içeriklerini düzenli olarak paylaşacağız.
-        </p>
-      </section>
+<script src="script.js"></script>
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
 
-      <section class="text-block" id="canli-tv">
-        <h2>Canlı TV</h2>
-        <p>
-          Canlı yayın içerikleri ve duyurular bu alanda yer alacaktır. Menüden ilgili bölüme hızlıca geçebilirsin.
-        </p>
-      </section>
-
-      <section class="text-block" id="sanal-bahisler">
-        <h2>Sanal Bahisler</h2>
-        <p>
-          Sanal bahislerle ilgili bilgilendirmeleri buraya ekleyebiliriz. İstersen her blok arasına görsel de koyarız.
-        </p>
-      </section>
-
-    </div>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
-    </div>
-  </footer>
-
-  <script src="./script.js"></script>
 </body>
 </html>
