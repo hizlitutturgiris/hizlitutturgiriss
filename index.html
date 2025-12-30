@@ -1,99 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HızlıTuttur Giriş</title>
-  <link rel="stylesheet" href="../style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hızlıtuttur Giriş</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .giris-container {
+            width: 100%;
+            max-width: 520px;
+            padding: 15px;
+        }
+
+        .giris-container a {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .giris-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 50px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .giris-container img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Mobilde daha şık dursun */
+        @media (max-width: 480px) {
+            .giris-container {
+                max-width: 100%;
+                padding: 10px;
+            }
+
+            .giris-container img {
+                border-radius: 40px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Lightning / flash effects (background) -->
-  <canvas id="lightningCanvas" aria-hidden="true"></canvas>
-  <div class="flash" aria-hidden="true"></div>
 
-  <!-- TOP BAR (white background + logo) -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a class="brand" href="#" aria-label="HızlıTuttur Ana Sayfa">
-        <img src="../assets/logo.png" alt="HızlıTuttur Logo" class="brand-logo" />
-      </a>
+    <div class="giris-container">
+        <a href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank">
+            <img src="giris-butonu.png" alt="Hızlıtuttur’a Giriş İçin Tıkla">
+        </a>
     </div>
 
-    <!-- Menu buttons -->
-    <nav class="menu" aria-label="Menü">
-      <a class="menu-btn" href="#anasayfa">Anasayfa</a>
-      <a class="menu-btn" href="#bahis">HızlıTuttur Bahis</a>
-      <a class="menu-btn" href="#tv">Canlı HızlıTuttur TV</a>
-      <a class="menu-btn" href="#giris">HızlıTuttur Giriş Adresi</a>
-      <a class="menu-btn" href="#sanal">Sanal Bahisler</a>
-    </nav>
-  </header>
-
-  <main id="anasayfa" class="page">
-    <section class="hero">
-      <!-- Banner (clickable) -->
-      <a class="banner-link" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-        <img class="banner" src="../assets/banner.png" alt="HızlıTuttur Kampanya" />
-      </a>
-
-      <!-- CTA under banner (clickable image optional) -->
-      <div class="cta-wrap">
-        <a class="cta-btn" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-          Hızlıtuttur’a Giriş İçin Tıkla
-        </a>
-
-        <!-- İstersen CTA görselini de kullan: -->
-        <!--
-        <a class="cta-img-link" href="https://hizlituttur1.com" target="_blank" rel="noopener">
-          <img src="../assets/cta.png" alt="Hızlıtuttur’a Giriş İçin Tıkla" class="cta-img"/>
-        </a>
-        -->
-      </div>
-    </section>
-
-    <!-- TEXT SECTIONS (aralara yazılar) -->
-    <section class="content">
-      <article id="bahis" class="card">
-        <h2>HızlıTuttur Bahis</h2>
-        <p>
-          Bahis dünyasında hızlı oranlar, güncel etkinlikler ve pratik kullanım ile tek noktadan tüm işlemlerini
-          kolayca yapabilirsin. Güncel giriş adresleri ve duyurular burada paylaşılır.
-        </p>
-      </article>
-
-      <article id="tv" class="card">
-        <h2>Canlı HızlıTuttur TV</h2>
-        <p>
-          Canlı yayınlar, karşılaşmalar ve güncel içerikler ile takipte kal. En iyi deneyim için güncel bağlantıları
-          kullan.
-        </p>
-      </article>
-
-      <article id="giris" class="card">
-        <h2>HızlıTuttur Giriş Adresi</h2>
-        <p>
-          Güncel giriş adresi değiştiğinde buradan anında ulaşabilirsin. Tek tıkla yönlendirme ile doğru adrese git.
-        </p>
-      </article>
-
-      <article id="sanal" class="card">
-        <h2>Sanal Bahisler</h2>
-        <p>
-          Sanal bahislerde hızlı sonuç, yüksek tempo ve anlık aksiyon! Güncel bağlantılar ve kampanyalar için sayfayı
-          takip et.
-        </p>
-      </article>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-      © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
-    </div>
-  </footer>
-
-  <script src="../script.js"></script>
 </body>
 </html>
-
