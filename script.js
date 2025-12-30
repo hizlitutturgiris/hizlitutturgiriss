@@ -1,210 +1,218 @@
-(() => {
-  // YEAR
-  const y = document.getElementById("year");
-  if (y) y.textContent = new Date().getFullYear();
+:root{
+  --bg0:#06150f;
+  --bg1:#0a2418;
+  --panel:#0c2f1f;
+  --panel2:#0a281a;
 
-  // Respect reduced motion
-  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) return;
+  --green:#0c6b43;
+  --green2:#16a06a;
 
-  const canvas = document.getElementById("stormCanvas");
-  const flash = document.getElementById("flash");
-  const ctx = canvas.getContext("2d", { alpha: true });
+  --yellow:#ffd200;
+  --yellow2:#ffea66;
 
-  // Settings
-  const cfg = {
-    // Bolt frequency
-    minInterval: 900,
-    maxInterval: 2400,
+  --text:#e8fff3;
+  --muted:#bfe9d3;
 
-    // Bolt shape
-    boltSegments: [14, 22],      // how many zig-zag points
-    boltStepY: [18, 34],         // vertical step range
-    boltJitterX: [18, 46],       // horizontal jitter range
-    branchChance: 0.38,
-    branchMax: 2,
+  --shadow: 0 18px 55px rgba(0,0,0,.55);
+  --radius: 18px;
+}
 
-    // Style
-    colorMain: "rgba(255, 212, 0, 0.95)",
-    colorGlow: "rgba(255, 228, 120, 0.50)",
-    glowBlur: 18,
-    mainWidth: 2.3,
-    glowWidth: 9,
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 700px at 50% 15%, rgba(255,210,0,.08), transparent 60%),
+    radial-gradient(900px 700px at 20% 40%, rgba(22,160,106,.10), transparent 65%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
+  overflow-x:hidden;
+}
 
-    // Flash
-    flashMax: 0.38
-  };
+/* canvas & flash overlay */
+#lightningCanvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+  pointer-events:none;
+}
+#flashOverlay{
+  position:fixed;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background: radial-gradient(900px 500px at 50% 25%, rgba(255,210,0,.24), transparent 65%);
+  opacity:0;
+  transition: opacity 120ms ease;
+}
 
-  let W = 0, H = 0, DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-  function resize() {
-    W = Math.floor(window.innerWidth);
-    H = Math.floor(window.innerHeight);
-    canvas.width = Math.floor(W * DPR);
-    canvas.height = Math.floor(H * DPR);
-    canvas.style.width = W + "px";
-    canvas.style.height = H + "px";
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  }
-  window.addEventListener("resize", resize, { passive: true });
-  resize();
+.wrap{
+  width:min(980px, 92vw);
+  margin:0 auto;
+  position:relative;
+  z-index:2; /* above lightning */
+}
 
-  // Utility
-  const rand = (a, b) => a + Math.random() * (b - a);
-  const randi = (a, b) => Math.floor(rand(a, b + 1));
+/* HEADER */
+.header{
+  background:#fff; /* requested white background */
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 16px 0;
+}
+.logo{
+  height: 42px;
+  width:auto;
+  display:block;
+}
+@media (max-width:480px){
+  .logo{ height: 36px; }
+}
 
-  function makeBolt(startX, startY = -20, maxY = H * rand(0.55, 0.92)) {
-    const pts = [];
-    pts.push({ x: startX, y: startY });
+/* NAV */
+.nav{
+  background: linear-gradient(180deg, rgba(12,47,31,.92), rgba(8,32,21,.92));
+  border-bottom: 1px solid rgba(255,210,0,.18);
+  backdrop-filter: blur(8px);
+}
+.nav-inner{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap; /* mobile */
+  padding: 12px 0;
+}
+.nav-pill{
+  text-decoration:none;
+  color:#0b3d27;          /* green text */
+  background: var(--yellow);
+  border: 2px solid #0b3d27; /* green border */
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing:.2px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.20);
+  transition: transform .15s ease, filter .15s ease;
+}
+.nav-pill:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+.nav-pill:active{ transform: translateY(0); }
 
-    const segCount = randi(cfg.boltSegments[0], cfg.boltSegments[1]);
-    let x = startX;
-    let y = startY;
+/* MAIN */
+.main{
+  padding: 26px 0 18px;
+}
 
-    for (let i = 0; i < segCount; i++) {
-      y += rand(cfg.boltStepY[0], cfg.boltStepY[1]);
-      x += rand(-cfg.boltJitterX[1], cfg.boltJitterX[1]);
+/* HERO */
+.hero{
+  text-align:center;
+}
+.banner-card{
+  background: linear-gradient(180deg, rgba(255,210,0,.10), rgba(12,47,31,.45));
+  border: 1px solid rgba(255,210,0,.18);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 14px;
+  margin: 10px auto 14px;
+  width: min(860px, 100%);
+}
+.banner{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius: calc(var(--radius) - 8px);
+  /* banner not huge */
+  max-height: 360px;
+  object-fit: cover;
+}
+@media (max-width:600px){
+  .banner{ max-height: 240px; }
+  .banner-card{ padding: 10px; }
+}
 
-      // keep inside screen a bit
-      x = Math.max(20, Math.min(W - 20, x));
+.cta-row{
+  display:flex;
+  justify-content:center;
+  margin: 6px 0 8px;
+}
+.cta-link{ display:inline-block; }
+.cta-img{
+  width: min(520px, 90vw);
+  height:auto;
+  display:block;
+  filter: drop-shadow(0 18px 30px rgba(0,0,0,.55));
+  transition: transform .15s ease, filter .15s ease;
+}
+.cta-link:hover .cta-img{
+  transform: translateY(-2px) scale(1.01);
+  filter: drop-shadow(0 22px 38px rgba(0,0,0,.62));
+}
+.cta-link:active .cta-img{ transform: translateY(0) scale(1.0); }
 
-      pts.push({ x, y });
-      if (y >= maxY) break;
-    }
-    return pts;
-  }
+.hero-note{
+  max-width: 760px;
+  margin: 10px auto 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 14.5px;
+}
 
-  function drawPath(points, width, strokeStyle, blur = 0) {
-    ctx.save();
-    ctx.lineJoin = "round";
-    ctx.lineCap = "round";
-    ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = width;
-    ctx.shadowColor = strokeStyle;
-    ctx.shadowBlur = blur;
+/* CARDS */
+.cards{
+  margin-top: 22px;
+  display:grid;
+  gap: 14px;
+}
+.card{
+  background: linear-gradient(180deg, rgba(12,47,31,.88), rgba(10,40,26,.88));
+  border: 1px solid rgba(255,210,0,.18);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 36px rgba(0,0,0,.45);
+  padding: 16px 16px 14px;
+}
+.card h2{
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: var(--yellow);
+  text-shadow: 0 0 18px rgba(255,210,0,.15);
+}
+.card p{
+  margin:0;
+  color: rgba(232,255,243,.92);
+  line-height: 1.62;
+  font-size: 14.5px;
+}
 
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-    for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i].x, points[i].y);
-    }
-    ctx.stroke();
-    ctx.restore();
-  }
+/* CTA bottom (optional) */
+.cta-bottom{
+  margin: 18px 0 6px;
+  display:flex;
+  justify-content:center;
+}
+.cta-img--bottom{
+  width: min(520px, 92vw);
+}
 
-  function branchFrom(points) {
-    // take a point somewhere mid
-    if (points.length < 6) return null;
-    const idx = randi(2, Math.max(3, points.length - 3));
-    const p = points[idx];
-
-    // branch goes sideways and down
-    const dir = Math.random() < 0.5 ? -1 : 1;
-    const branchPts = [{ x: p.x, y: p.y }];
-
-    const count = randi(5, 10);
-    let x = p.x;
-    let y = p.y;
-    for (let i = 0; i < count; i++) {
-      y += rand(14, 26);
-      x += dir * rand(10, 38) + rand(-8, 8);
-      x = Math.max(10, Math.min(W - 10, x));
-      branchPts.push({ x, y });
-      if (y > H * 0.95) break;
-    }
-    return branchPts;
-  }
-
-  // Bolt “lifetime” for a quick fade
-  const bolts = [];
-  function spawnBolt() {
-    const x = rand(40, W - 40);
-    const main = makeBolt(x);
-
-    const bolt = {
-      main,
-      branches: [],
-      born: performance.now(),
-      life: rand(120, 220)
-    };
-
-    // branches
-    let branches = 0;
-    if (Math.random() < cfg.branchChance) {
-      const maxB = randi(1, cfg.branchMax);
-      for (let i = 0; i < maxB; i++) {
-        const b = branchFrom(main);
-        if (b) {
-          bolt.branches.push(b);
-          branches++;
-        }
-      }
-    }
-
-    bolts.push(bolt);
-
-    // Flash pulse
-    if (flash) {
-      flash.style.opacity = String(rand(cfg.flashMax * 0.6, cfg.flashMax));
-      setTimeout(() => {
-        flash.style.opacity = "0";
-      }, randi(80, 160));
-    }
-  }
-
-  // Schedule
-  let nextAt = performance.now() + rand(cfg.minInterval, cfg.maxInterval);
-
-  function render(now) {
-    // clear with slight trail (stormy glow)
-    ctx.clearRect(0, 0, W, H);
-
-    // subtle ambient glow vignette
-    ctx.save();
-    ctx.globalAlpha = 0.10;
-    const g = ctx.createRadialGradient(W * 0.5, H * 0.15, 30, W * 0.5, H * 0.15, Math.max(W, H));
-    g.addColorStop(0, "rgba(255,212,0,0.10)");
-    g.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
-    ctx.restore();
-
-    // spawn new bolt
-    if (now >= nextAt) {
-      // sometimes double strike
-      spawnBolt();
-      if (Math.random() < 0.22) setTimeout(spawnBolt, randi(70, 160));
-
-      nextAt = now + rand(cfg.minInterval, cfg.maxInterval);
-    }
-
-    // draw bolts
-    for (let i = bolts.length - 1; i >= 0; i--) {
-      const b = bolts[i];
-      const age = now - b.born;
-      const t = Math.min(1, age / b.life);
-      const alpha = 1 - t;
-
-      ctx.save();
-      ctx.globalAlpha = alpha;
-
-      // glow layer
-      drawPath(b.main, cfg.glowWidth, cfg.colorGlow, cfg.glowBlur);
-      // main bright line
-      drawPath(b.main, cfg.mainWidth, cfg.colorMain, 8);
-
-      // branches thinner
-      for (const br of b.branches) {
-        drawPath(br, cfg.glowWidth * 0.65, "rgba(255, 228, 120, 0.35)", 14);
-        drawPath(br, cfg.mainWidth * 0.8, "rgba(255, 212, 0, 0.85)", 6);
-      }
-
-      ctx.restore();
-
-      if (t >= 1) bolts.splice(i, 1);
-    }
-
-    requestAnimationFrame(render);
-  }
-
-  requestAnimationFrame(render);
-})();
+/* FOOTER */
+.footer{
+  margin-top: 14px;
+  padding: 18px 0 26px;
+  border-top: 1px solid rgba(255,210,0,.14);
+  background: rgba(0,0,0,.18);
+}
+.footer-inner{
+  text-align:center;
+  color: rgba(232,255,243,.70);
+  font-size: 13px;
+}
