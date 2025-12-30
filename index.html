@@ -7,11 +7,9 @@
   <title>HızlıTuttur Güncel Giriş Adresi</title>
   <meta name="description" content="HızlıTuttur güncel giriş adresi ve bağlantılar. Tek tıkla güvenli yönlendirme ile giriş yap." />
 
-  <!-- ✅ DÜZGÜN FAVICON -->
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-  <meta name="theme-color" content="#03150f" />
+  <!-- Favicon (sekmedeki ikon) -->
+  <link rel="icon" href="assets/logo.png" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/logo.png" />
 
   <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
@@ -25,8 +23,11 @@
   <!-- TOP BAR -->
   <header class="topbar">
     <div class="topbar__inner">
-      <img class="brand" src="assets/logo.png" alt="HızlıTuttur" />
-      <nav class="nav">
+      <a class="brandwrap" href="#top" aria-label="HızlıTuttur Ana Sayfa">
+        <img class="brand" src="assets/logo.png" alt="HızlıTuttur" />
+      </a>
+
+      <nav class="nav" aria-label="HızlıTuttur Menü">
         <a class="nav__btn" href="#giris">Hızlıtuttur Giriş</a>
         <a class="nav__btn" href="#casino">Hızlıtuttur Casino</a>
         <a class="nav__btn" href="#spor">Hızlıtuttur Spor</a>
@@ -35,41 +36,64 @@
     </div>
   </header>
 
-  <main class="page">
+  <main class="page" id="top">
     <section class="hero">
+      <!-- Banner -->
       <div class="banner">
         <img src="assets/banner.png" alt="HızlıTuttur %100" />
       </div>
 
+      <!-- CTA -->
       <a
         class="hero-cta"
         href="https://hizlituttur1.com/?referralCode=3083672195"
         target="_blank"
         rel="noopener"
+        aria-label="Hızlıtuttur'a giriş için tıkla"
       >
-        <img src="assets/cta.png" alt="HızlıTuttur Giriş" />
+        <img src="assets/cta.png" alt="Hızlıtuttur'a Giriş İçin Tıkla" />
       </a>
     </section>
 
+    <!-- CONTENT -->
     <section class="content">
       <div class="card" id="giris">
         <h2>HızlıTuttur Güncel Giriş Adresi</h2>
-        <p>HızlıTuttur’a en güncel bağlantı üzerinden güvenli şekilde ulaş.</p>
+        <p>
+          HızlıTuttur’a en güncel bağlantı üzerinden güvenli şekilde ulaşmak için bu sayfayı kullanabilirsin.
+          Bağlantılar düzenli olarak güncellenir. Tek tıkla yönlendirme ile giriş yap.
+        </p>
+      </div>
+
+      <div class="card" id="duyuru">
+        <h3>Güncel Bağlantı ve Duyurular</h3>
+        <p>
+          Giriş adresi değiştiğinde bu sayfa üzerinden anında ulaşabilirsin. Mobil ve masaüstünde hızlı açılır.
+          Kampanyalar ve önemli bilgilendirmeler burada paylaşılır.
+        </p>
       </div>
 
       <div class="card" id="canli">
         <h3>HızlıTuttur Canlı Casino</h3>
-        <p>Canlı casino deneyimi için güncel bağlantıyı kullan.</p>
+        <p>
+          Canlı yayınlar, etkinlik içerikleri ve güncel duyurular için resmi yönlendirme bağlantısını kullan.
+          En iyi deneyim için güncel linki tercih et.
+        </p>
       </div>
 
       <div class="card" id="casino">
         <h3>HızlıTuttur Casino</h3>
-        <p>Casino içerikleri ve promosyonlar burada.</p>
+        <p>
+          Casino içerikleri ve promosyonlar için güncel bağlantıları buradan takip edebilirsin.
+          Güvenli yönlendirme ile doğru adrese git.
+        </p>
       </div>
 
       <div class="card" id="spor">
         <h3>HızlıTuttur Spor</h3>
-        <p>Spor bahisleri için en güncel linkler.</p>
+        <p>
+          Spor bahisleri ve etkinlik bağlantıları için güncel linkleri kullan. Anlık güncellemeler bu sayfada yer alır.
+        </p>
       </div>
     </section>
 
