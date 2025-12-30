@@ -3,8 +3,33 @@
   const yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // Reduced motion -> no lightning
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+  // --- NAV MARQUEE (butonlar yavaş yavaş kayar) ---
+  const track = document.getElementById("navTrack");
+  if (track) {
+    // Reduced motion varsa kaydırmayı kapat, wrap olsun
+    if (reduceMotion) {
+      document.body.classList.add("reduce-motion");
+    } else {
+      // Track içeriğini kopyala -> kesintisiz akış
+      const children = Array.from(track.children);
+      children.forEach((node) => {
+        const clone = node.cloneNode(true);
+        clone.setAttribute("aria-hidden", "true");
+        clone.classList.add("is-clone");
+        track.appendChild(clone);
+      });
+
+      // Track genişliğini ölçüp animasyon mesafesi için CSS değişkeni ayarla
+      requestAnimationFrame(() => {
+        const originalWidth = children.reduce((sum, el) => sum + el.getBoundingClientRect().width, 0);
+        track.style.setProperty("--loop-x", `${Math.ceil(originalWidth)}px`);
+      });
+    }
+  }
+
+  // --- LIGHTNING ---
   if (reduceMotion) return;
 
   const canvas = document.getElementById("lightning-canvas");
@@ -35,22 +60,21 @@
     let y = -20;
 
     const points = [{ x, y }];
-    const segments = Math.floor(rand(14, 22));
-    const stepY = (H + 60) / segments;
+    const segments = Math.floor(rand(16, 26));
+    const stepY = (H + 70) / segments;
 
-    let sway = rand(-0.8, 0.8) * 28;
+    let sway = rand(-0.9, 0.9) * 30;
     for (let i = 0; i < segments; i++) {
       y += stepY;
-
-      x += rand(-26, 26) + sway * 0.12 + rand(-8, 8);
-      if (x < -40) x = -40;
-      if (x > W + 40) x = W + 40;
+      x += rand(-28, 28) + sway * 0.12 + rand(-10, 10);
+      if (x < -50) x = -50;
+      if (x > W + 50) x = W + 50;
 
       points.push({ x, y });
 
-      if (Math.random() < 0.22 && i > 3 && i < segments - 3) {
-        const bx = x + rand(-90, 90);
-        const by = y + rand(-30, 30);
+      if (Math.random() < 0.24 && i > 3 && i < segments - 3) {
+        const bx = x + rand(-95, 95);
+        const by = y + rand(-35, 35);
         points.push({ x: bx, y: by, branch: true });
         points.push({ x, y, branchReturn: true });
       }
@@ -59,9 +83,9 @@
     return {
       points,
       life: 1,
-      decay: rand(0.06, 0.11),
-      thickness: rand(1.2, 2.8),
-      glow: rand(10, 18),
+      decay: rand(0.06, 0.10),
+      thickness: rand(1.3, 2.8),
+      glow: rand(12, 20),
       alpha: 1
     };
   }
@@ -69,7 +93,7 @@
   function doFlash(power) {
     if (!flash) return;
     flash.style.opacity = String(power);
-    setTimeout(() => (flash.style.opacity = "0"), 90);
+    setTimeout(() => (flash.style.opacity = "0"), 110);
   }
 
   function drawBolt(b) {
@@ -105,7 +129,7 @@
     ctx.stroke();
 
     ctx.shadowBlur = 0;
-    ctx.lineWidth = Math.max(0.8, b.thickness * 0.7);
+    ctx.lineWidth = Math.max(0.85, b.thickness * 0.7);
     ctx.strokeStyle = `rgba(255, 210, 70, ${0.35 * b.alpha})`;
     ctx.stroke();
 
@@ -113,23 +137,22 @@
   }
 
   const bolts = [];
-  // ✅ Daha sık şimşek: neredeyse sürekli
-  let nextStrikeAt = performance.now() + rand(250, 600);
+  // Daha sık şimşek: aralıkları düşürdük
+  let nextStrikeAt = performance.now() + rand(420, 900);
 
   function tick(now) {
-    // trail temizliği
-    ctx.fillStyle = "rgba(0,0,0,0.14)";
+    // izleri daha hızlı temizle
+    ctx.fillStyle = "rgba(0,0,0,0.18)";
     ctx.fillRect(0, 0, W, H);
 
     if (now >= nextStrikeAt) {
       bolts.push(makeBolt());
 
-      // ✅ daha fazla çift/üçlü çakma
-      if (Math.random() < 0.55) bolts.push(makeBolt());
-      if (Math.random() < 0.18) bolts.push(makeBolt());
+      // bazen çift şimşek
+      if (Math.random() < 0.45) bolts.push(makeBolt());
 
       doFlash(rand(0.20, 0.38));
-      nextStrikeAt = now + rand(350, 900);
+      nextStrikeAt = now + rand(520, 1100);
     }
 
     for (let i = bolts.length - 1; i >= 0; i--) {
