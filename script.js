@@ -30,27 +30,26 @@
   const rand = (a, b) => a + Math.random() * (b - a);
 
   function makeBolt() {
-    const startX = rand(0.12 * W, 0.88 * W);
+    const startX = rand(0.15 * W, 0.85 * W);
     let x = startX;
-    let y = -24;
+    let y = -20;
 
     const points = [{ x, y }];
-    const segments = Math.floor(rand(16, 26));
-    const stepY = (H + 90) / segments;
+    const segments = Math.floor(rand(14, 22));
+    const stepY = (H + 60) / segments;
 
-    const sway = rand(-1, 1) * 34;
+    let sway = rand(-0.8, 0.8) * 28;
     for (let i = 0; i < segments; i++) {
       y += stepY;
-
-      x += rand(-30, 30) + sway * 0.10 + rand(-10, 10);
-      x = Math.max(-60, Math.min(W + 60, x));
+      x += rand(-26, 26) + sway * 0.12 + rand(-8, 8);
+      if (x < -40) x = -40;
+      if (x > W + 40) x = W + 40;
 
       points.push({ x, y });
 
-      // more branches for richer look
-      if (Math.random() < 0.28 && i > 3 && i < segments - 3) {
-        const bx = x + rand(-120, 120);
-        const by = y + rand(-40, 40);
+      if (Math.random() < 0.22 && i > 3 && i < segments - 3) {
+        const bx = x + rand(-90, 90);
+        const by = y + rand(-30, 30);
         points.push({ x: bx, y: by, branch: true });
         points.push({ x, y, branchReturn: true });
       }
@@ -59,9 +58,9 @@
     return {
       points,
       life: 1,
-      decay: rand(0.06, 0.11),
-      thickness: rand(1.4, 2.9),
-      glow: rand(12, 22),
+      decay: rand(0.05, 0.09),
+      thickness: rand(1.2, 2.6),
+      glow: rand(10, 18),
       alpha: 1
     };
   }
@@ -69,20 +68,18 @@
   function doFlash(power) {
     if (!flash) return;
     flash.style.opacity = String(power);
-    setTimeout(() => (flash.style.opacity = "0"), 110);
+    setTimeout(() => (flash.style.opacity = "0"), 90);
   }
 
   function drawBolt(b) {
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
 
-    // glow
-    ctx.shadowColor = "rgba(255, 220, 110, 0.98)";
+    ctx.shadowColor = "rgba(255, 220, 110, 0.95)";
     ctx.shadowBlur = b.glow;
 
-    // core
     ctx.lineWidth = b.thickness;
-    ctx.strokeStyle = `rgba(255, 235, 150, ${0.98 * b.alpha})`;
+    ctx.strokeStyle = `rgba(255, 230, 140, ${0.95 * b.alpha})`;
 
     ctx.beginPath();
     let moved = false;
@@ -106,10 +103,9 @@
     }
     ctx.stroke();
 
-    // afterglow
     ctx.shadowBlur = 0;
-    ctx.lineWidth = Math.max(0.9, b.thickness * 0.7);
-    ctx.strokeStyle = `rgba(255, 210, 70, ${0.40 * b.alpha})`;
+    ctx.lineWidth = Math.max(0.8, b.thickness * 0.7);
+    ctx.strokeStyle = `rgba(255, 210, 70, ${0.35 * b.alpha})`;
     ctx.stroke();
 
     ctx.restore();
@@ -117,25 +113,24 @@
 
   const bolts = [];
 
-  // ✅ daha sık çaksın
-  let nextStrikeAt = performance.now() + rand(350, 800);
+  // ✅ Daha sık çaksın
+  let nextStrikeAt = performance.now() + rand(450, 900);
 
   function tick(now) {
-    // slow fade (trail)
-    ctx.fillStyle = "rgba(0,0,0,0.16)";
+    // trail temizliği
+    ctx.fillStyle = "rgba(0,0,0,0.14)";
     ctx.fillRect(0, 0, W, H);
 
     if (now >= nextStrikeAt) {
       bolts.push(makeBolt());
 
-      // ✅ daha sık çift/üçlü çakma
-      if (Math.random() < 0.55) bolts.push(makeBolt());
-      if (Math.random() < 0.18) bolts.push(makeBolt());
+      // bazen çift şimşek
+      if (Math.random() < 0.45) bolts.push(makeBolt());
 
-      doFlash(rand(0.22, 0.40));
+      doFlash(rand(0.18, 0.34));
 
-      // ✅ sürekli ama doğal aralık
-      nextStrikeAt = now + rand(420, 1100);
+      // ✅ aralığı kısalt
+      nextStrikeAt = now + rand(650, 1400);
     }
 
     for (let i = bolts.length - 1; i >= 0; i--) {
