@@ -1,115 +1,237 @@
 :root{
   --bg-0:#03150f;
+  --bg-1:#062115;
   --green:#0da86d;
+  --green-2:#0a7a52;
   --yellow:#ffd22e;
+  --yellow-2:#ffea70;
   --text:#e8fff3;
 }
 
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
+html{ scroll-behavior:smooth; }
 
 body{
   margin:0;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
   color:var(--text);
-  background: linear-gradient(180deg, var(--bg-0), #000);
+  background:
+    radial-gradient(900px 500px at 50% 30%, rgba(10,168,109,.18), transparent 60%),
+    radial-gradient(700px 450px at 50% 90%, rgba(255,210,46,.10), transparent 55%),
+    linear-gradient(180deg, var(--bg-0), #000);
   overflow-x:hidden;
 }
 
-/* Lightning */
-#lightning-canvas,#flash{
+/* Lightning overlay (header'ın ALTINDA) */
+#lightning-canvas{
   position:fixed;
   inset:0;
+  width:100%;
+  height:100%;
   pointer-events:none;
+  z-index:0;
 }
-#lightning-canvas{ z-index:1; }
-#flash{ z-index:2; opacity:0; }
+#flash{
+  position:fixed;
+  inset:0;
+  background: radial-gradient(900px 600px at 50% 35%, rgba(255, 223, 110, .22), transparent 60%);
+  opacity:0;
+  pointer-events:none;
+  z-index:1;
+  transition: opacity 120ms linear;
+}
 
-.page{ position:relative; z-index:3; }
+.page{
+  position:relative;
+  z-index:2;
+}
 
-/* ✅ TOPBAR MOBİL FIX */
+/* Top bar (mobilde yarım görünmesin) */
 .topbar{
+  position: sticky;
+  top: 0;
+  z-index: 20;
   background:#fff;
-  position:sticky;
-  top:0;
-  z-index:50;
-  padding-top: env(safe-area-inset-top);
-  border-bottom:1px solid rgba(0,0,0,.1);
+  border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
 .topbar__inner{
   max-width:1100px;
-  margin:auto;
-  padding:10px;
+  margin:0 auto;
+  padding:10px 14px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
 }
 
+.brandwrap{
+  display:flex;
+  align-items:center;
+  text-decoration:none;
+}
 .brand{
-  height:36px;
+  height:40px;
+  width:auto;
+  display:block;
 }
 
+/* Nav buttons */
 .nav{
   display:flex;
   gap:10px;
-  overflow-x:auto;
-  white-space:nowrap;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
 }
-.nav::-webkit-scrollbar{ display:none; }
 
 .nav__btn{
-  background:var(--yellow);
+  text-decoration:none;
   color:#064b33;
-  border:2px solid #064b33;
+  background: var(--yellow);
+  border: 2px solid #064b33;
   padding:8px 14px;
   border-radius:999px;
-  font-weight:700;
-  text-decoration:none;
-  flex-shrink:0;
+  font-weight:800;
+  font-size:13px;
+  line-height:1;
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  transition: transform .15s ease, filter .15s ease;
+  white-space:nowrap;
+}
+
+.nav__btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
 }
 
 /* Hero */
 .hero{
   max-width:1100px;
-  margin:auto;
-  padding:16px;
+  margin:0 auto;
+  padding:18px 14px 8px;
   text-align:center;
 }
 
 .banner{
   max-width:860px;
-  margin:auto;
+  margin:12px auto 0;
   border-radius:16px;
   overflow:hidden;
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+  border:1px solid rgba(255,210,46,.25);
 }
-.banner img{ width:100%; }
+.banner img{
+  width:100%;
+  height:auto;
+  display:block;
+}
 
+/* CTA sadece PNG */
+.hero-cta{
+  display:inline-block;
+  margin:14px auto 10px;
+  text-decoration:none;
+  border:none;
+  outline:none;
+  background:none;
+  box-shadow:none;
+}
 .hero-cta img{
+  display:block;
   width:min(720px, 92vw);
+  height:auto;
   border-radius:18px;
+  box-shadow:none;
+  transform: translateZ(0);
+}
+.hero-cta:hover img{
+  filter: brightness(1.02);
 }
 
 /* Content */
 .content{
   max-width:920px;
-  margin:auto;
-  padding:14px;
+  margin:0 auto;
+  padding:14px 14px 10px;
   display:grid;
   gap:14px;
 }
 
 .card{
-  background:rgba(5,30,20,.9);
+  background: linear-gradient(180deg, rgba(8,56,36,.86), rgba(5,30,20,.86));
+  border:1px solid rgba(255,210,46,.20);
   border-radius:16px;
-  padding:16px;
+  padding:16px 16px;
+  box-shadow: 0 18px 55px rgba(0,0,0,.45);
 }
 
-.card h2,.card h3{ color:var(--yellow); }
+.card h2{
+  margin:0 0 8px;
+  font-size:22px;
+  color: var(--yellow);
+  text-shadow: 0 0 18px rgba(255,210,46,.18);
+}
+.card h3{
+  margin:0 0 8px;
+  font-size:18px;
+  color: var(--yellow);
+}
+.card p{
+  margin:0;
+  color: rgba(232,255,243,.92);
+  line-height:1.6;
+  font-size:14px;
+}
 
+/* Footer */
 .footer{
+  padding:18px 14px 22px;
+}
+.footer__inner{
+  max-width:1100px;
+  margin:0 auto;
   text-align:center;
-  padding:20px;
+  color: rgba(232,255,243,.75);
   font-size:13px;
+}
+
+/* Mobile: Butonlar yarım görünmesin -> yatay scroll menü */
+@media (max-width:720px){
+  .topbar__inner{
+    flex-direction:column;
+    align-items:stretch;
+    gap:8px;
+    padding:10px 12px 12px;
+  }
+
+  .brandwrap{
+    justify-content:center;
+  }
+  .brand{ height:38px; }
+
+  .nav{
+    flex-wrap:nowrap;              /* tek satır */
+    overflow-x:auto;               /* taşarsa kaydır */
+    -webkit-overflow-scrolling:touch;
+    justify-content:flex-start;
+    padding-bottom:4px;
+    gap:8px;
+  }
+
+  /* scroll bar gizle (kötü durmasın) */
+  .nav::-webkit-scrollbar{ height:0; }
+  .nav{ scrollbar-width:none; }
+
+  .nav__btn{
+    font-size:12px;
+    padding:8px 12px;
+  }
+}
+
+/* Çok küçük ekran */
+@media (max-width:520px){
+  .card{ padding:14px; }
+  .card h2{ font-size:20px; }
 }
