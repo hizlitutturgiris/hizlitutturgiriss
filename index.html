@@ -2,133 +2,89 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HızlıTuttur Giriş</title>
-  <meta name="description" content="HızlıTuttur giriş sayfası" />
-  <link rel="stylesheet" href="./style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hızlıtuttur Giriş</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <!-- Yıldırım yağma efekti (canvas) -->
-  <canvas id="fx" aria-hidden="true"></canvas>
 
-  <!-- ÜST BAR (Beyaz arkaplan) -->
+  <!-- Lightning rain overlay -->
+  <div id="lightning-layer" aria-hidden="true"></div>
+
+  <!-- Top bar (WHITE background) -->
   <header class="topbar">
     <div class="container topbar-inner">
-      <a class="brand" href="#home" aria-label="HızlıTuttur">
-        <img src="./assets/logo.png" alt="HızlıTuttur Logo" class="logo" />
+      <a class="brand" href="#anasayfa" aria-label="Hızlıtuttur">
+        <img src="assets/logo.png" alt="Hızlıtuttur Logo" class="logo" />
       </a>
-    </div>
 
-    <!-- NAV (sarı çerçeveli / yeşil yazı) -->
-    <nav class="nav">
-      <div class="container nav-inner">
+      <nav class="nav">
         <a class="nav-btn" href="#anasayfa">Anasayfa</a>
-        <a class="nav-btn" href="#giris">HızlıTuttur Giriş Adresi</a>
-        <a class="nav-btn" href="#canli">Canlı HızlıTuttur TV</a>
-        <a class="nav-btn" href="#sanal">Sanal Bahisler</a>
-        <!-- İstediğin gibi: Röportajlar / Casino / Bahis kaldırıldı -->
-      </div>
-    </nav>
+        <a class="nav-btn" href="#bonus">Bonus</a>
+        <a class="nav-btn" href="#giris">Giriş Adresi</a>
+        <a class="nav-btn" href="#haberler">Haberler</a>
+        <a class="nav-btn" href="#iletisim">İletişim</a>
+      </nav>
+    </div>
   </header>
 
-  <main id="home">
-    <!-- HERO -->
-    <section class="hero" id="anasayfa">
-      <div class="container hero-grid">
-        <!-- Banner (tıklanabilir) -->
-        <a class="banner-link" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-          <img class="banner" src="./assets/banner.png" alt="HızlıTuttur Banner" />
+  <main id="anasayfa" class="page">
+    <div class="container">
+
+      <!-- Banner (clickable) -->
+      <section class="hero">
+        <a class="hero-click" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+          <!-- your banner file name includes spaces; use %20 -->
+          <img class="banner" src="assets/Masa%20üstü%20görünümü.png" alt="Hızlıtuttur Banner" />
+        </a>
+      </section>
+
+      <!-- Text block 1 -->
+      <section id="haberler" class="text-block">
+        <p class="lead">
+          Hızlıtuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor.
+          Güncel giriş bağlantıları ve duyurular için sayfamızı takip edebilirsin.
+        </p>
+      </section>
+
+      <!-- CTA (image button) -->
+      <section id="giris" class="cta-wrap">
+        <a class="cta-click" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+          <img class="cta-img" src="assets/cta.png" alt="Hızlıtuttur’a Giriş için Tıkla" />
         </a>
 
-        <!-- Başlık + açıklama + buton -->
-        <div class="hero-text">
-          <h1 class="title">HızlıTuttur</h1>
-          <p class="subtitle">
-            HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor.
-            Tek tıkla hemen giriş yap.
-          </p>
+        <!-- Extra fallback button (optional) -->
+        <a class="cta-btn" href="https://hizlituttur1.com" target="_blank" rel="noopener">
+          Hızlıtuttur’a Giriş için Tıkla
+        </a>
+      </section>
 
-          <!-- Alttaki buton: "HızlıTuttur" yazısını kaldırıp butonu direkt koyuyoruz -->
-          <a class="cta" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-            HızlıTuttur’a Giriş İçin Tıkla
-          </a>
-
-          <p class="note">
-            * Linkleri sonra değiştireceğiz kanka: ORNEK-LINK yazan yerlere kendi linklerini yapıştır.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- YAZI BLOĞU 1 (örnek: betyap tarzı aralara yazılar) -->
-    <section class="content" id="giris">
-      <div class="container">
-        <h2 class="section-title">HızlıTuttur Giriş Adresi</h2>
-        <p class="text">
-          HızlıTuttur resmi giriş adresleri ve güncel bağlantılar burada paylaşılır. Güncel giriş adresi,
-          yeni adres gibi bilgilere sayfamızdan ulaşabilirsiniz.
+      <!-- Text block 2 (example article) -->
+      <section id="bonus" class="article">
+        <h2>Güncel Bilgilendirme</h2>
+        <p>
+          Bu alana “haber / makale” tarzı içerikler ekleyebiliriz. Örneğin: kampanya duyuruları,
+          güncel giriş adresi bilgilendirmeleri, kullanıcı rehberleri vb.
         </p>
-
-        <!-- Ortaya CTA görseli koymak istersen (tıklanabilir) -->
-        <div class="center">
-          <a class="img-cta" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-            <!-- İstersen cta.png koy, yoksa bu kısmı silebilirsin -->
-            <!-- <img src="./assets/cta.png" alt="Hemen giriş" /> -->
-            <span class="img-cta-btn">HEMEN ÜYE OL</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- YAZI BLOĞU 2 -->
-    <section class="content alt" id="canli">
-      <div class="container">
-        <h2 class="section-title">Canlı HızlıTuttur TV</h2>
-        <p class="text">
-          Canlı yayınlar ve etkinlik duyuruları bu alanda listelenir. Buraya kısa haber/duyuru metinleri,
-          kampanya detayları veya giriş linkleri ekleyebiliriz.
+        <p>
+          İstersen buraya 3-4 tane ayrı yazı bloğu da eklerim; üst menüde her biri bir bölüme kayar.
         </p>
+      </section>
 
-        <!-- Örnek: küçük kartlar -->
-        <div class="cards">
-          <a class="card" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-            <h3>Güncel Link 1</h3>
-            <p>Tek tıkla giriş bağlantısı.</p>
-          </a>
-
-          <a class="card" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-            <h3>Güncel Link 2</h3>
-            <p>Yedek bağlantı – hızlı erişim.</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- YAZI BLOĞU 3 -->
-    <section class="content" id="sanal">
-      <div class="container">
-        <h2 class="section-title">Sanal Bahisler</h2>
-        <p class="text">
-          Sanal bahisler, turnuvalar ve duyurular burada yer alır. Bu alana uzun açıklamalar da ekleyebiliriz.
+      <section id="iletisim" class="article">
+        <h2>İletişim</h2>
+        <p>
+          İletişim bilgilerini buraya koyabiliriz (Telegram/WhatsApp/Canlı Destek yönlendirme vb).
         </p>
+      </section>
 
-        <!-- Alt CTA (tıklanabilir) -->
-        <div class="center">
-          <a class="cta cta-wide" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-            HızlıTuttur’a Giriş İçin Tıkla
-          </a>
-        </div>
-      </div>
-    </section>
+      <footer class="footer">
+        <span>© 2025 Hızlıtuttur. Tüm hakları saklıdır.</span>
+      </footer>
+
+    </div>
   </main>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <span>© 2025 HızlıTuttur. Tüm hakları saklıdır.</span>
-    </div>
-  </footer>
-
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
