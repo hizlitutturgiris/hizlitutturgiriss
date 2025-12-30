@@ -1,155 +1,192 @@
-(() => {
-  // Footer year
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+// Yıl
+document.getElementById("year").textContent = new Date().getFullYear();
 
-  // Reduced motion? then stop
-  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-  if (reduceMotion) return;
+// Kullanıcı "az hareket" seçtiyse efekti kapatalım
+const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const canvas = document.getElementById("lightning-canvas");
-  const flash = document.getElementById("flash");
-  if (!canvas) return;
+const canvas = document.getElementById("stormCanvas");
+const ctx = canvas.getContext("2d", { alpha: true });
+const flash = document.getElementById("flash");
 
-  const ctx = canvas.getContext("2d", { alpha: true });
+let W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-  let W = 0, H = 0, DPR = 1;
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = Math.floor(window.innerWidth);
+  H = Math.floor(window.innerHeight);
+  canvas.width = Math.floor(W * dpr);
+  canvas.height = Math.floor(H * dpr);
+  canvas.style.width = W + "px";
+  canvas.style.height = H + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener("resize", resize);
+resize();
 
-  function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W = Math.floor(window.innerWidth);
-    H = Math.floor(window.innerHeight);
-    canvas.width = Math.floor(W * DPR);
-    canvas.height = Math.floor(H * DPR);
-    canvas.style.width = W + "px";
-    canvas.style.height = H + "px";
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+function rand(min, max) { return Math.random() * (max - min) + min; }
+function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+// Tek bir büyük yıldırım (çatallı) üret
+function makeBolt() {
+  const startX = rand(W * 0.15, W * 0.85);
+  const startY = -20;
+  const endX = startX + rand(-W * 0.18, W * 0.18);
+  const endY = rand(H * 0.45, H * 0.95);
+
+  const points = [];
+  const steps = Math.floor(rand(14, 22));
+  let x = startX, y = startY;
+
+  points.push({ x, y });
+
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    // Düşüş yönü + rastgele kırılma
+    const targetX = startX + (endX - startX) * t;
+    const jitter = rand(-18, 18) * (1 - t) + rand(-8, 8);
+    x = targetX + jitter;
+    y = startY + (endY - startY) * t + rand(-8, 8);
+    points.push({ x, y });
   }
-  window.addEventListener("resize", resize, { passive: true });
-  resize();
 
-  // Lightning bolt generator (long, jagged)
-  function makeBolt() {
-    const startX = W * (0.2 + Math.random() * 0.6);
-    const startY = -20;
+  // Çatallar
+  const branches = [];
+  const branchCount = Math.floor(rand(1, 3));
+  for (let b = 0; b < branchCount; b++) {
+    const fromIndex = Math.floor(rand(4, steps - 4));
+    const base = points[fromIndex];
+    const bSteps = Math.floor(rand(6, 10));
+    const bPoints = [{ x: base.x, y: base.y }];
 
-    const segments = 16 + Math.floor(Math.random() * 10);
-    const stepY = (H + 80) / segments;
+    let bx = base.x, by = base.y;
+    let angle = rand(-0.9, 0.9);
+    for (let j = 1; j <= bSteps; j++) {
+      const tt = j / bSteps;
+      bx += Math.cos(angle) * rand(10, 24) + rand(-6, 6);
+      by += rand(12, 28);
+      // biraz aşağı & sağ/sol
+      bPoints.push({ x: bx, y: by });
+      angle += rand(-0.25, 0.25);
+      // kısa kalsın diye hızla inceltelim
+      if (tt > 0.85) break;
+    }
+    branches.push(bPoints);
+  }
 
-    let x = startX;
-    let y = startY;
+  return {
+    points,
+    branches,
+    life: 0,
+    maxLife: rand(260, 520), // ms
+    thickness: rand(2.2, 3.6),
+    glow: rand(12, 20),
+    alpha: 1
+  };
+}
 
-    const points = [{ x, y }];
+let bolts = [];
+let lastTime = performance.now();
+let nextStrikeAt = performance.now() + rand(900, 2200);
 
-    for (let i = 0; i < segments; i++) {
-      y += stepY * (0.8 + Math.random() * 0.5);
-      // Jagged movement
-      const sway = 22 + Math.random() * 38; // sideways
-      x += (Math.random() - 0.5) * sway;
+// Ekrana hızlı bir "parlama" ver
+function doFlash(strength = 1) {
+  flash.style.opacity = String(clamp(0.55 * strength, 0.25, 0.65));
+  setTimeout(() => (flash.style.opacity = "0"), 120);
+}
 
-      // Keep within canvas bounds
-      x = Math.max(20, Math.min(W - 20, x));
-      points.push({ x, y });
+// Çakma anı
+function strike() {
+  // 1 veya 2 yıldırım aynı anda (çok nadir)
+  const count = Math.random() < 0.18 ? 2 : 1;
+  for (let i = 0; i < count; i++) bolts.push(makeBolt());
 
-      // Occasionally add branch
-      if (Math.random() < 0.22 && i > 3 && i < segments - 3) {
-        const bx = x + (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 60);
-        const by = y + (10 + Math.random() * 40);
-        points.push({ x: bx, y: by, branch: true });
-      }
+  doFlash(count === 2 ? 1.15 : 1);
+
+  // Bir sonraki çakma: 2.2s - 6.5s arası
+  nextStrikeAt = performance.now() + rand(2200, 6500);
+}
+
+// Çizim
+function drawBoltPath(path, thickness, alpha, glow) {
+  ctx.save();
+
+  // Parlama (glow)
+  ctx.globalCompositeOperation = "lighter";
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  // Dış glow
+  ctx.strokeStyle = `rgba(255, 212, 0, ${0.22 * alpha})`;
+  ctx.lineWidth = thickness + glow;
+  ctx.beginPath();
+  ctx.moveTo(path[0].x, path[0].y);
+  for (let i = 1; i < path.length; i++) ctx.lineTo(path[i].x, path[i].y);
+  ctx.stroke();
+
+  // Orta glow
+  ctx.strokeStyle = `rgba(255, 230, 120, ${0.35 * alpha})`;
+  ctx.lineWidth = thickness + glow * 0.55;
+  ctx.beginPath();
+  ctx.moveTo(path[0].x, path[0].y);
+  for (let i = 1; i < path.length; i++) ctx.lineTo(path[i].x, path[i].y);
+  ctx.stroke();
+
+  // Ana çizgi
+  ctx.strokeStyle = `rgba(255, 245, 190, ${0.95 * alpha})`;
+  ctx.lineWidth = thickness;
+  ctx.beginPath();
+  ctx.moveTo(path[0].x, path[0].y);
+  for (let i = 1; i < path.length; i++) ctx.lineTo(path[i].x, path[i].y);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function tick(now) {
+  const dt = now - lastTime;
+  lastTime = now;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Yıldırım yokken bile hafif vignette için çok az karartma
+  ctx.save();
+  ctx.globalCompositeOperation = "source-over";
+  ctx.fillStyle = "rgba(0,0,0,0.10)";
+  ctx.fillRect(0, 0, W, H);
+  ctx.restore();
+
+  if (!reduceMotion && now >= nextStrikeAt) strike();
+
+  // Boltları güncelle/çiz
+  for (let i = bolts.length - 1; i >= 0; i--) {
+    const b = bolts[i];
+    b.life += dt;
+
+    const t = b.life / b.maxLife;
+    // İlk an çok parlak, sonra hızlı sönüş
+    b.alpha = clamp(1 - Math.pow(t, 0.85), 0, 1);
+
+    // Hafif “titreme” hissi: noktaları çok az oynat
+    const jittered = b.points.map((p, idx) => {
+      const j = (1 - idx / b.points.length) * 0.9;
+      return { x: p.x + rand(-1.2, 1.2) * j, y: p.y + rand(-1.2, 1.2) * j };
+    });
+
+    drawBoltPath(jittered, b.thickness, b.alpha, b.glow);
+
+    // Branch'ler
+    for (const br of b.branches) {
+      const jitteredBr = br.map((p, idx) => {
+        const j = (1 - idx / br.length) * 0.7;
+        return { x: p.x + rand(-1.0, 1.0) * j, y: p.y + rand(-1.0, 1.0) * j };
+      });
+      drawBoltPath(jitteredBr, Math.max(1.4, b.thickness - 0.9), b.alpha * 0.85, b.glow * 0.75);
     }
 
-    return {
-      points,
-      life: 1.0,
-      decay: 0.06 + Math.random() * 0.05,
-      thick: 1.6 + Math.random() * 1.2,
-      glow: 18 + Math.random() * 18,
-      flashPower: 0.20 + Math.random() * 0.22
-    };
+    if (b.life >= b.maxLife) bolts.splice(i, 1);
   }
 
-  const bolts = [];
-  let nextStrikeAt = performance.now() + 700 + Math.random() * 1600;
+  requestAnimationFrame(tick);
+}
 
-  function doFlash(power) {
-    if (!flash) return;
-    flash.style.opacity = String(power);
-    // quick fade
-    setTimeout(() => {
-      flash.style.opacity = "0";
-    }, 60 + Math.random() * 80);
-  }
-
-  function drawBolt(b) {
-    const alpha = Math.max(0, b.life);
-
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-
-    // glow
-    ctx.shadowColor = `rgba(255, 212, 0, ${0.85 * alpha})`;
-    ctx.shadowBlur = b.glow;
-
-    // core line
-    ctx.strokeStyle = `rgba(255, 232, 120, ${0.9 * alpha})`;
-    ctx.lineWidth = b.thick;
-
-    ctx.beginPath();
-    let moved = false;
-
-    for (let i = 0; i < b.points.length; i++) {
-      const p = b.points[i];
-      if (!moved) {
-        ctx.moveTo(p.x, p.y);
-        moved = true;
-      } else {
-        ctx.lineTo(p.x, p.y);
-      }
-    }
-    ctx.stroke();
-
-    // brighter inner core
-    ctx.shadowBlur = b.glow * 0.55;
-    ctx.strokeStyle = `rgba(255, 255, 255, ${0.55 * alpha})`;
-    ctx.lineWidth = Math.max(0.9, b.thick * 0.55);
-    ctx.stroke();
-
-    ctx.restore();
-  }
-
-  function tick() {
-    const now = performance.now();
-
-    // Clear with slight fade (keeps afterglow)
-    ctx.fillStyle = "rgba(0,0,0,0.22)";
-    ctx.fillRect(0, 0, W, H);
-
-    // Strike scheduling
-    if (now >= nextStrikeAt) {
-      const boltCount = Math.random() < 0.32 ? 2 : 1; // sometimes double strike
-      for (let i = 0; i < boltCount; i++) bolts.push(makeBolt());
-
-      // flash effect
-      const power = bolts[bolts.length - 1]?.flashPower ?? 0.25;
-      doFlash(power);
-
-      // next time
-      nextStrikeAt = now + (900 + Math.random() * 2200);
-    }
-
-    // Draw & decay
-    for (let i = bolts.length - 1; i >= 0; i--) {
-      const b = bolts[i];
-      drawBolt(b);
-      b.life -= b.decay;
-
-      if (b.life <= 0) bolts.splice(i, 1);
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  // start
-  tick();
-})();
+requestAnimationFrame(tick);
