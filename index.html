@@ -2,115 +2,92 @@
 <html lang="tr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="HızlıTuttur güncel giriş adresi, yeni bağlantılar ve duyurular. Tek tıkla güvenli yönlendirme." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HızlıTuttur Güncel Giriş Adresi</title>
 
-  <link rel="stylesheet" href="./style.css" />
+  <!-- SEO -->
+  <meta name="description" content="HızlıTuttur güncel giriş adresi, duyurular ve hızlı yönlendirme bağlantıları. Tek tıkla giriş için resmi yönlendirme sayfası." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="HızlıTuttur Güncel Giriş Adresi" />
+  <meta property="og:description" content="Tek tıkla hızlı yönlendirme. Güncel giriş adresi ve bağlantılar burada." />
+  <meta property="og:type" content="website" />
+
+  <!-- TAB ICON (favicon) -->
+  <!-- assets/favicon.png dosyasını ekleyince otomatik çalışır -->
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <!-- Lightning canvas (click-through) -->
+  <!-- Lightning + Flash -->
   <canvas id="lightningCanvas" aria-hidden="true"></canvas>
-  <div id="flashOverlay" aria-hidden="true"></div>
+  <div id="flash" aria-hidden="true"></div>
 
-  <!-- HEADER (white background like you wanted) -->
-  <header class="header">
-    <div class="wrap header-inner">
-      <a class="brand" href="#top" aria-label="HızlıTuttur">
-        <img src="./assets/logo.png" alt="HızlıTuttur Logo" class="logo" />
-      </a>
+  <!-- HEADER (WHITE) -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <img class="logo" src="assets/logo.png" alt="HızlıTuttur" />
     </div>
   </header>
 
-  <!-- NAV (yellow boxes, green border, green text) -->
-  <nav class="nav" id="top">
-    <div class="wrap nav-inner">
-      <a class="nav-pill" href="#giris">Hızlıtuttur Giriş</a>
-      <a class="nav-pill" href="#casino">Hızlıtuttur Casino</a>
-      <a class="nav-pill" href="#spor">Hızlıtuttur Spor</a>
-      <a class="nav-pill" href="#canli">Hızlıtuttur Canlı Casino</a>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a class="nav__pill" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">Hızlıtuttur Giriş</a>
+      <a class="nav__pill" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">Hızlıtuttur Casino</a>
+      <a class="nav__pill" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">Hızlıtuttur Spor</a>
+      <a class="nav__pill" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">Hızlıtuttur Canlı Casino</a>
     </div>
   </nav>
 
-  <main class="wrap main">
+  <main class="wrap">
     <!-- HERO -->
     <section class="hero">
-      <div class="banner-card">
-        <img class="banner" src="./assets/banner.png" alt="HızlıTuttur Kampanya Banner" />
-      </div>
-
-      <!-- CTA under banner (image button) -->
-      <div class="cta-row">
-        <a class="cta-link"
-           href="https://hizlituttur1.com/?referralCode=3083672195"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="HızlıTuttur'a giriş için tıkla">
-          <img src="./assets/cta.png" alt="Hızlıtuttur'a Giriş İçin Tıkla" class="cta-img" />
-        </a>
-      </div>
-
-      <!-- small info -->
-      <p class="hero-note">
-        HızlıTuttur için <strong>güncel giriş adresi</strong> ve <strong>yeni bağlantılar</strong> burada paylaşılır.
-        Tek tıkla yönlendirme ile doğru adrese ulaş.
-      </p>
-    </section>
-
-    <!-- SEO / CONTENT CARDS -->
-    <section class="cards">
-      <article class="card" id="giris">
-        <h2>HızlıTuttur Giriş</h2>
-        <p>
-          Güncel giriş bağlantısı değiştiğinde bu sayfa üzerinden anında ulaşabilirsin.
-          Mobil ve masaüstünde hızlı açılır, tek tıkla güvenli yönlendirme sağlar.
-        </p>
-      </article>
-
-      <article class="card" id="casino">
-        <h2>HızlıTuttur Casino</h2>
-        <p>
-          Casino içerikleri, kampanyalar ve duyurular düzenli olarak güncellenir.
-          En iyi deneyim için her zaman en güncel bağlantıyı kullan.
-        </p>
-      </article>
-
-      <article class="card" id="spor">
-        <h2>HızlıTuttur Spor</h2>
-        <p>
-          Spor tarafında hızlı erişim, güncel bağlantılar ve bilgilendirmeler burada yer alır.
-          Tek sayfadan takip ederek doğru adrese kolayca gidebilirsin.
-        </p>
-      </article>
-
-      <article class="card" id="canli">
-        <h2>HızlıTuttur Canlı Casino</h2>
-        <p>
-          Canlı casino içerikleri ve güncel bağlantılar için bu sayfayı takip et.
-          Yönlendirme butonuna tıklayıp doğrudan giriş yapabilirsin.
-        </p>
-      </article>
-    </section>
-
-    <!-- CTA again (optional, nice for conversion) -->
-    <section class="cta-bottom">
-      <a class="cta-link"
-         href="https://hizlituttur1.com/?referralCode=3083672195"
-         target="_blank"
-         rel="noopener noreferrer"
-         aria-label="HızlıTuttur'a giriş için tıkla (alt)">
-        <img src="./assets/cta.png" alt="Hızlıtuttur'a Giriş İçin Tıkla" class="cta-img cta-img--bottom" />
+      <!-- Banner (clickable) -->
+      <a class="bannerLink" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
+        <img class="banner" src="assets/banner.png" alt="HızlıTuttur Kampanya Banner" />
       </a>
+
+      <!-- CTA Image Button -->
+      <a class="ctaLink" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener" aria-label="HızlıTuttur’a giriş için tıkla">
+        <img class="ctaImg" src="assets/cta.png" alt="Hızlıtuttur’a Giriş İçin Tıkla" />
+      </a>
+
+      <!-- SEO / Content blocks -->
+      <div class="content">
+        <article class="card">
+          <h1>HızlıTuttur Güncel Giriş Adresi</h1>
+          <p>
+            HızlıTuttur’a en güncel bağlantı üzerinden güvenli şekilde ulaşmak için bu sayfayı kullanabilirsin.
+            Bağlantılar düzenli olarak güncellenir. Tek tıkla yönlendirme ile giriş yap.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2>Güncel Bağlantı ve Duyurular</h2>
+          <p>
+            Giriş adresi değiştiğinde bu sayfa üzerinden anında ulaşabilirsin. Mobil ve masaüstünde hızlı açılır.
+            Kampanyalar ve önemli bilgilendirmeler burada paylaşılır.
+          </p>
+        </article>
+
+        <article class="card">
+          <h2>HızlıTuttur Canlı Casino</h2>
+          <p>
+            Canlı yayınlar, etkinlik içerikleri ve güncel duyurular için resmi yönlendirme bağlantısını kullan.
+            En iyi deneyim için güncel linki tercih et.
+          </p>
+        </article>
+      </div>
     </section>
+
+    <footer class="footer">
+      <small>© <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.</small>
+    </footer>
   </main>
 
-  <footer class="footer">
-    <div class="wrap footer-inner">
-      <span>© <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.</span>
-    </div>
-  </footer>
-
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
