@@ -1,394 +1,134 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0f2a1c" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HızlıTuttur Giriş</title>
-
-  <style>
-    :root{
-      --bg:#0f2a1c;          /* koyu yeşil */
-      --bg2:#123523;         /* koyu yeşil 2 */
-      --card:#0f2f20;        /* kart */
-      --text:#e8fff2;        /* açık yazı */
-      --muted:#bfe8d0;       /* soluk yazı */
-      --accent:#35d07f;      /* açık yeşil */
-      --yellow:#ffd200;      /* sarı */
-      --border: rgba(255,255,255,.12);
-      --shadow: 0 16px 60px rgba(0,0,0,.35);
-      --radius: 18px;
-      --max: 980px;
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 600px at 50% -10%, rgba(53,208,127,.18), transparent 55%),
-                  radial-gradient(900px 500px at 80% 10%, rgba(255,210,0,.10), transparent 60%),
-                  linear-gradient(180deg, var(--bg), var(--bg2));
-      color:var(--text);
-      overflow-x:hidden;
-    }
-
-    /* ŞİMŞEK EFEKTİ CANVAS */
-    #fx {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: .65;
-      filter: drop-shadow(0 0 10px rgba(255,210,0,.20));
-    }
-
-    /* ÜST LOGO BARI (beyaz) */
-    header{
-      position: relative;
-      z-index: 2;
-      background: #fff;          /* istedin: beyaz */
-      border-bottom: 1px solid rgba(0,0,0,.08);
-    }
-    .topbar{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 14px 16px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      text-decoration:none;
-    }
-    .brand img{
-      height: 42px;
-      width:auto;
-      display:block;
-    }
-
-    /* İÇERİK */
-    main{
-      position: relative;
-      z-index: 2;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 22px 16px 46px;
-    }
-
-    .card{
-      background: rgba(15,47,32,.72);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 18px;
-      backdrop-filter: blur(10px);
-    }
-
-    /* Banner alanı */
-    .hero{
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-
-    .banner-wrap{
-      border-radius: calc(var(--radius) - 6px);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-    }
-    .banner-link{
-      display:block;
-      text-decoration:none;
-    }
-    .banner{
-      width:100%;
-      height:auto;          /* mobil bozulma fix */
-      display:block;
-      aspect-ratio: 16 / 6; /* görüntü oranını koru */
-      object-fit: cover;
-    }
-
-    /* CTA buton resim veya normal buton */
-    .ctaRow{
-      display:flex;
-      justify-content:center;
-      padding-top: 4px;
-    }
-    .ctaImgLink{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      border-radius: 999px;
-      border: 1px solid rgba(255,210,0,.55);
-      box-shadow: 0 14px 40px rgba(0,0,0,.28);
-      overflow:hidden;
-      background: rgba(0,0,0,.08);
-      transition: transform .12s ease, filter .12s ease;
-    }
-    .ctaImgLink:hover{ transform: translateY(-1px); filter: brightness(1.03); }
-    .ctaImg{
-      display:block;
-      height: 44px;
-      width:auto;
-      padding: 6px 14px;
-    }
-
-    /* CTA resim yoksa fallback buton */
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding: 12px 18px;
-      border-radius: 999px;
-      color: #082013;
-      background: linear-gradient(180deg, var(--yellow), #ffbf00);
-      border: 0;
-      font-weight: 800;
-      letter-spacing:.2px;
-      cursor:pointer;
-      text-decoration:none;
-      box-shadow: 0 14px 40px rgba(0,0,0,.28);
-    }
-
-    /* Yazı blokları (makale/section) */
-    .article{
-      margin-top: 18px;
-      padding: 16px 18px;
-      border-radius: var(--radius);
-      background: rgba(0,0,0,.12);
-      border: 1px solid rgba(255,255,255,.10);
-    }
-    .article h2{
-      margin:0 0 8px;
-      font-size: 18px;
-      color: var(--accent);
-      letter-spacing:.2px;
-    }
-    .article p{
-      margin:0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 14.5px;
-    }
-    .article a{
-      color: var(--yellow);
-      text-decoration: none;
-      border-bottom: 1px dashed rgba(255,210,0,.55);
-    }
-    .article a:hover{ opacity:.9; }
-
-    footer{
-      margin-top: 18px;
-      text-align:center;
-      color: rgba(255,255,255,.70);
-      font-size: 12px;
-    }
-
-    /* Mobil düzen */
-    @media (max-width: 520px){
-      .brand img{ height: 34px; }
-      .card{ padding: 14px; }
-      .ctaImg{ height: 42px; }
-      .banner{ aspect-ratio: 16 / 9; } /* mobilde daha iyi */
-    }
-
-    /* Hareket azaltma tercihine saygı */
-    @media (prefers-reduced-motion: reduce){
-      #fx{ display:none; }
-      .ctaImgLink{ transition:none; }
-    }
-  </style>
+  <meta name="description" content="HızlıTuttur giriş sayfası" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
-  <!-- ŞİMŞEK EFEKTİ -->
-  <canvas id="fx"></canvas>
+  <!-- Yıldırım yağma efekti (canvas) -->
+  <canvas id="fx" aria-hidden="true"></canvas>
 
-  <!-- ÜST BEYAZ LOGO -->
-  <header>
-    <div class="topbar">
-      <a class="brand" href="/" aria-label="HızlıTuttur">
-        <img src="assets/logo.png" alt="HızlıTuttur Logo" />
+  <!-- ÜST BAR (Beyaz arkaplan) -->
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#home" aria-label="HızlıTuttur">
+        <img src="./assets/logo.png" alt="HızlıTuttur Logo" class="logo" />
       </a>
     </div>
+
+    <!-- NAV (sarı çerçeveli / yeşil yazı) -->
+    <nav class="nav">
+      <div class="container nav-inner">
+        <a class="nav-btn" href="#anasayfa">Anasayfa</a>
+        <a class="nav-btn" href="#giris">HızlıTuttur Giriş Adresi</a>
+        <a class="nav-btn" href="#canli">Canlı HızlıTuttur TV</a>
+        <a class="nav-btn" href="#sanal">Sanal Bahisler</a>
+        <!-- İstediğin gibi: Röportajlar / Casino / Bahis kaldırıldı -->
+      </div>
+    </nav>
   </header>
 
-  <main>
-    <section class="card hero">
-
-      <!-- Banner (tıklanınca linke gitsin) -->
-      <div class="banner-wrap">
+  <main id="home">
+    <!-- HERO -->
+    <section class="hero" id="anasayfa">
+      <div class="container hero-grid">
+        <!-- Banner (tıklanabilir) -->
         <a class="banner-link" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
-          <img class="banner" src="assets/banner.png" alt="HızlıTuttur Banner" />
-        </a>
-      </div>
-
-      <!-- ALTTA YAZI KALDIRILDI: burada sadece CTA var -->
-      <div class="ctaRow">
-        <!-- CTA PNG varsa -->
-        <a class="ctaImgLink" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener" aria-label="HızlıTuttur Giriş">
-          <img class="ctaImg" src="assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
+          <img class="banner" src="./assets/banner.png" alt="HızlıTuttur Banner" />
         </a>
 
-        <!-- CTA resmin yoksa üstteki <a> yerine bunu açabilirsin:
-        <a class="btn" href="https://SENIN-LINKIN-BURAYA.com" target="_blank" rel="noopener">HızlıTuttur’a Giriş</a>
-        -->
+        <!-- Başlık + açıklama + buton -->
+        <div class="hero-text">
+          <h1 class="title">HızlıTuttur</h1>
+          <p class="subtitle">
+            HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor.
+            Tek tıkla hemen giriş yap.
+          </p>
+
+          <!-- Alttaki buton: "HızlıTuttur" yazısını kaldırıp butonu direkt koyuyoruz -->
+          <a class="cta" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
+            HızlıTuttur’a Giriş İçin Tıkla
+          </a>
+
+          <p class="note">
+            * Linkleri sonra değiştireceğiz kanka: ORNEK-LINK yazan yerlere kendi linklerini yapıştır.
+          </p>
+        </div>
       </div>
     </section>
 
-    <!-- ✅ ARALARA EKLENECEK YAZI BÖLÜMLERİ -->
-    <section class="article">
-      <h2>HızlıTuttur Güncel Giriş Adresi</h2>
-      <p>
-        HızlıTuttur’a tek tıkla güvenli giriş yapabilirsiniz. Güncel bağlantılar ve duyurular bu sayfada paylaşılır.
-        Dilerseniz <a href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">buradan giriş</a> yapın.
-      </p>
+    <!-- YAZI BLOĞU 1 (örnek: betyap tarzı aralara yazılar) -->
+    <section class="content" id="giris">
+      <div class="container">
+        <h2 class="section-title">HızlıTuttur Giriş Adresi</h2>
+        <p class="text">
+          HızlıTuttur resmi giriş adresleri ve güncel bağlantılar burada paylaşılır. Güncel giriş adresi,
+          yeni adres gibi bilgilere sayfamızdan ulaşabilirsiniz.
+        </p>
+
+        <!-- Ortaya CTA görseli koymak istersen (tıklanabilir) -->
+        <div class="center">
+          <a class="img-cta" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
+            <!-- İstersen cta.png koy, yoksa bu kısmı silebilirsin -->
+            <!-- <img src="./assets/cta.png" alt="Hemen giriş" /> -->
+            <span class="img-cta-btn">HEMEN ÜYE OL</span>
+          </a>
+        </div>
+      </div>
     </section>
 
-    <section class="article">
-      <h2>Bonus ve Kampanyalar</h2>
-      <p>
-        Yeni kampanyalar, bonus duyuruları ve özel fırsatlar düzenli olarak güncellenir. Her zaman güncel bağlantı
-        üzerinden devam etmeniz önerilir.
-      </p>
+    <!-- YAZI BLOĞU 2 -->
+    <section class="content alt" id="canli">
+      <div class="container">
+        <h2 class="section-title">Canlı HızlıTuttur TV</h2>
+        <p class="text">
+          Canlı yayınlar ve etkinlik duyuruları bu alanda listelenir. Buraya kısa haber/duyuru metinleri,
+          kampanya detayları veya giriş linkleri ekleyebiliriz.
+        </p>
+
+        <!-- Örnek: küçük kartlar -->
+        <div class="cards">
+          <a class="card" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
+            <h3>Güncel Link 1</h3>
+            <p>Tek tıkla giriş bağlantısı.</p>
+          </a>
+
+          <a class="card" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
+            <h3>Güncel Link 2</h3>
+            <p>Yedek bağlantı – hızlı erişim.</p>
+          </a>
+        </div>
+      </div>
     </section>
 
-    <section class="article">
-      <h2>Güvenli ve Hızlı Deneyim</h2>
-      <p>
-        Kesintisiz erişim için bu sayfayı favorilerinize ekleyebilirsiniz. Bağlantı açılmadığında sayfayı yenileyin
-        veya farklı tarayıcıdan deneyin.
-      </p>
-    </section>
+    <!-- YAZI BLOĞU 3 -->
+    <section class="content" id="sanal">
+      <div class="container">
+        <h2 class="section-title">Sanal Bahisler</h2>
+        <p class="text">
+          Sanal bahisler, turnuvalar ve duyurular burada yer alır. Bu alana uzun açıklamalar da ekleyebiliriz.
+        </p>
 
-    <footer>© 2025 HızlıTuttur. Tüm hakları saklıdır.</footer>
+        <!-- Alt CTA (tıklanabilir) -->
+        <div class="center">
+          <a class="cta cta-wide" href="https://hizlituttur1.com/?referralCode=3083672195" target="_blank" rel="noopener">
+            HızlıTuttur’a Giriş İçin Tıkla
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script>
-    // -----------------------------
-    // YILDIRIM / ŞİMŞEK YAĞMA EFEKTİ
-    // -----------------------------
-    const canvas = document.getElementById("fx");
-    const ctx = canvas.getContext("2d");
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© 2025 HızlıTuttur. Tüm hakları saklıdır.</span>
+    </div>
+  </footer>
 
-    function resize(){
-      const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-      canvas.width = Math.floor(innerWidth * dpr);
-      canvas.height = Math.floor(innerHeight * dpr);
-      canvas.style.width = innerWidth + "px";
-      canvas.style.height = innerHeight + "px";
-      ctx.setTransform(dpr,0,0,dpr,0,0);
-    }
-    window.addEventListener("resize", resize);
-    resize();
-
-    const prefersReduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if(prefersReduce){
-      // motion azalt seçiliyse efekt kapalı
-    } else {
-
-      // Yağan ince çizgiler (yağmur gibi)
-      const drops = Array.from({length: 70}, () => ({
-        x: Math.random() * innerWidth,
-        y: Math.random() * innerHeight,
-        v: 3 + Math.random() * 7,
-        l: 8 + Math.random() * 18,
-        w: 1 + Math.random() * 1.2
-      }));
-
-      // Şimşek patlamaları
-      let flash = 0;
-
-      function bolt(x0, y0){
-        const points = [];
-        let x = x0, y = y0;
-        points.push([x,y]);
-        const steps = 18 + Math.floor(Math.random()*18);
-        for(let i=0;i<steps;i++){
-          x += (Math.random()-0.5) * 60;
-          y += (innerHeight/steps) * (0.7 + Math.random()*0.6);
-          points.push([x,y]);
-        }
-        return points;
-      }
-
-      function drawBolt(points){
-        ctx.save();
-        ctx.globalCompositeOperation = "lighter";
-
-        // dış parıltı
-        ctx.beginPath();
-        ctx.moveTo(points[0][0], points[0][1]);
-        for(let i=1;i<points.length;i++) ctx.lineTo(points[i][0], points[i][1]);
-        ctx.lineWidth = 6;
-        ctx.strokeStyle = "rgba(255,210,0,.14)";
-        ctx.stroke();
-
-        // iç çizgi
-        ctx.beginPath();
-        ctx.moveTo(points[0][0], points[0][1]);
-        for(let i=1;i<points.length;i++) ctx.lineTo(points[i][0], points[i][1]);
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "rgba(255,255,255,.55)";
-        ctx.stroke();
-
-        ctx.restore();
-      }
-
-      let lastBolt = 0;
-
-      function tick(t){
-        ctx.clearRect(0,0,innerWidth,innerHeight);
-
-        // yağmur çizgileri
-        ctx.save();
-        ctx.globalCompositeOperation = "lighter";
-        for(const d of drops){
-          d.y += d.v;
-          d.x += d.v * 0.22; // hafif çapraz
-          if(d.y > innerHeight + 30){ d.y = -30; d.x = Math.random() * innerWidth; }
-
-          ctx.beginPath();
-          ctx.lineWidth = d.w;
-          ctx.strokeStyle = "rgba(53,208,127,.14)";
-          ctx.moveTo(d.x, d.y);
-          ctx.lineTo(d.x - 6, d.y - d.l);
-          ctx.stroke();
-        }
-        ctx.restore();
-
-        // ara ara şimşek
-        if(t - lastBolt > (2200 + Math.random()*3200)){
-          lastBolt = t;
-          flash = 1; // ekran flaşı
-          const startX = Math.random() * innerWidth;
-          const pts = bolt(startX, -10);
-          drawBolt(pts);
-        }
-
-        // flash efekti
-        if(flash > 0){
-          ctx.save();
-          ctx.globalCompositeOperation = "lighter";
-          ctx.fillStyle = `rgba(255,255,255,${0.16 * flash})`;
-          ctx.fillRect(0,0,innerWidth,innerHeight);
-          ctx.restore();
-          flash *= 0.88;
-          if(flash < 0.02) flash = 0;
-        }
-
-        requestAnimationFrame(tick);
-      }
-
-      requestAnimationFrame(tick);
-    }
-  </script>
+  <script src="./script.js"></script>
 </body>
 </html>
