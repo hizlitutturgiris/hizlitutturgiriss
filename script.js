@@ -1,172 +1,142 @@
 (() => {
   // Footer year
-  const yearEl = document.getElementById("year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  const y = document.getElementById("year");
+  if (y) y.textContent = String(new Date().getFullYear());
 
   // Respect reduced motion
-  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) return;
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
   const canvas = document.getElementById("lightningCanvas");
+  const flash = document.getElementById("flash");
+  if (!canvas || reduceMotion) return;
+
   const ctx = canvas.getContext("2d", { alpha: true });
 
-  let w = 0, h = 0;
-  function resize() {
-    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    w = Math.floor(window.innerWidth * dpr);
-    h = Math.floor(window.innerHeight * dpr);
-    canvas.width = w;
-    canvas.height = h;
-    canvas.style.width = "100%";
-    canvas.style.height = "100%";
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(1, 1);
-  }
+  let W = 0, H = 0, dpr = 1;
+  const resize = () => {
+    dpr = Math.max(1, Math.floor(window.devicePixelRatio || 1));
+    W = Math.floor(window.innerWidth);
+    H = Math.floor(window.innerHeight);
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
   window.addEventListener("resize", resize, { passive: true });
   resize();
 
   // Helpers
   const rand = (min, max) => Math.random() * (max - min) + min;
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-  function makeBolt() {
-    // start near top, end near bottom
-    const startX = rand(w * 0.1, w * 0.9);
-    const startY = rand(-h * 0.05, h * 0.15);
-    const endX   = startX + rand(-w * 0.25, w * 0.25);
-    const endY   = rand(h * 0.65, h * 1.05);
+  function drawBolt(startX, startY, endX, endY, depth = 0) {
+    // Long bolt with jitter & occasional branches
+    const segments = 28 + Math.floor(rand(0, 18)); // long
+    const dx = (endX - startX) / segments;
+    const dy = (endY - startY) / segments;
 
-    const points = [];
-    const steps = Math.floor(rand(18, 32)); // long lightning
-    let x = startX, y = startY;
+    let x = startX;
+    let y = startY;
 
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps;
-      const targetX = startX + (endX - startX) * t;
-      const targetY = startY + (endY - startY) * t;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
 
-      // jitter more in the middle for “stormy” vibe
-      const jitter = (1 - Math.abs(0.5 - t) * 2); // 0 edges, 1 mid
-      x = targetX + rand(-w * 0.02, w * 0.02) * (0.35 + jitter);
-      y = targetY + rand(-h * 0.008, h * 0.008) * (0.35 + jitter);
+    for (let i = 1; i <= segments; i++) {
+      // Stronger jitter in the middle
+      const t = i / segments;
+      const jitter = (1 - Math.abs(0.5 - t) * 2) * 18; // peak at middle
+      x = startX + dx * i + rand(-jitter, jitter);
+      y = startY + dy * i + rand(-jitter, jitter * 0.7);
 
-      points.push({ x, y });
-    }
+      ctx.lineTo(x, y);
 
-    // branches
-    const branches = [];
-    const branchCount = Math.floor(rand(1, 4));
-    for (let b = 0; b < branchCount; b++) {
-      const forkAt = Math.floor(rand(6, steps - 6));
-      const fork = [points[forkAt]];
-      let bx = points[forkAt].x;
-      let by = points[forkAt].y;
-      const len = Math.floor(rand(6, 12));
-      for (let i = 1; i < len; i++) {
-        bx += rand(-w * 0.03, w * 0.03);
-        by += rand(h * 0.01, h * 0.04);
-        fork.push({ x: bx, y: by });
+      // Branch
+      if (depth < 2 && Math.random() < 0.08) {
+        const bx = x + rand(-220, 220);
+        const by = y + rand(80, 280);
+        drawBolt(x, y, bx, by, depth + 1);
       }
-      branches.push(fork);
     }
-
-    return { points, branches, life: rand(0.18, 0.32) };
+    ctx.stroke();
   }
 
-  function drawBolt(bolt, alpha) {
-    // Yellow lightning + glow
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
+  function flashOn() {
+    if (!flash) return;
+    flash.classList.add("on");
+    setTimeout(() => flash.classList.remove("on"), 160);
+  }
 
-    // glow layer
+  function strike() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Choose a bolt direction: from top to somewhere lower
+    const startX = rand(W * 0.15, W * 0.85);
+    const startY = rand(-30, 40);
+    const endX = startX + rand(-W * 0.25, W * 0.25);
+    const endY = rand(H * 0.45, H * 0.92);
+
+    // Yellow glow layers (outer -> inner)
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.shadowColor = "rgba(246,212,74,0.95)";
-    ctx.shadowBlur = 22;
 
-    // main bolt
-    ctx.strokeStyle = `rgba(246,212,74,${0.85 * alpha})`;
-    ctx.lineWidth = Math.max(2, Math.min(4, (w / 700)));
+    // Outer glow
+    ctx.globalCompositeOperation = "source-over";
+    ctx.strokeStyle = "rgba(255, 212, 0, 0.16)";
+    ctx.lineWidth = 10;
+    drawBolt(startX, startY, endX, endY);
 
-    ctx.beginPath();
-    bolt.points.forEach((p, i) => {
-      if (i === 0) ctx.moveTo(p.x, p.y);
-      else ctx.lineTo(p.x, p.y);
-    });
-    ctx.stroke();
+    // Mid glow
+    ctx.strokeStyle = "rgba(255, 212, 0, 0.28)";
+    ctx.lineWidth = 6;
+    drawBolt(startX, startY, endX, endY);
 
-    // core bright line
-    ctx.shadowBlur = 8;
-    ctx.strokeStyle = `rgba(255,255,255,${0.75 * alpha})`;
-    ctx.lineWidth = Math.max(1, Math.min(2.2, (w / 1300)));
-    ctx.beginPath();
-    bolt.points.forEach((p, i) => {
-      if (i === 0) ctx.moveTo(p.x, p.y);
-      else ctx.lineTo(p.x, p.y);
-    });
-    ctx.stroke();
+    // Core bright
+    ctx.strokeStyle = "rgba(255, 245, 190, 0.95)";
+    ctx.lineWidth = 2.2;
+    drawBolt(startX, startY, endX, endY);
 
-    // branches
-    bolt.branches.forEach(branch => {
-      ctx.shadowBlur = 18;
-      ctx.strokeStyle = `rgba(246,212,74,${0.65 * alpha})`;
-      ctx.lineWidth = Math.max(1.2, Math.min(2.8, (w / 900)));
-      ctx.beginPath();
-      branch.forEach((p, i) => {
-        if (i === 0) ctx.moveTo(p.x, p.y);
-        else ctx.lineTo(p.x, p.y);
-      });
-      ctx.stroke();
-    });
+    flashOn();
 
-    ctx.restore();
-  }
+    // Fade out smoothly
+    const fadeStart = performance.now();
+    const fadeDur = 520;
 
-  let activeBolts = [];
-  let lastSpawn = 0;
-  let nextDelay = rand(900, 1700);
+    function fade(now) {
+      const t = (now - fadeStart) / fadeDur;
+      const a = clamp(1 - t, 0, 1);
+      ctx.clearRect(0, 0, W, H);
 
-  function flash() {
-    document.body.classList.remove("flash");
-    // force reflow
-    void document.body.offsetWidth;
-    document.body.classList.add("flash");
-    setTimeout(() => document.body.classList.remove("flash"), 520);
-  }
+      ctx.strokeStyle = `rgba(255, 212, 0, ${0.16 * a})`;
+      ctx.lineWidth = 10;
+      drawBolt(startX, startY, endX, endY);
 
-  function tick(ts) {
-    // fade old frame
-    ctx.clearRect(0, 0, w, h);
+      ctx.strokeStyle = `rgba(255, 212, 0, ${0.28 * a})`;
+      ctx.lineWidth = 6;
+      drawBolt(startX, startY, endX, endY);
 
-    // spawn occasionally (stormy)
-    if (ts - lastSpawn > nextDelay) {
-      const b1 = makeBolt();
-      activeBolts.push({ bolt: b1, born: ts });
-      if (Math.random() < 0.35) {
-        // double strike
-        const b2 = makeBolt();
-        activeBolts.push({ bolt: b2, born: ts + rand(40, 120) });
-      }
-      if (Math.random() < 0.55) flash();
+      ctx.strokeStyle = `rgba(255, 245, 190, ${0.95 * a})`;
+      ctx.lineWidth = 2.2;
+      drawBolt(startX, startY, endX, endY);
 
-      lastSpawn = ts;
-      nextDelay = rand(850, 1700);
+      if (t < 1) requestAnimationFrame(fade);
+      else ctx.clearRect(0, 0, W, H);
     }
-
-    // draw bolts with life fade
-    activeBolts = activeBolts.filter(item => {
-      const age = (ts - item.born) / 1000;
-      if (age < 0) return true; // scheduled
-      const life = item.bolt.life;
-      const t = age / life;
-      if (t >= 1) return false;
-
-      const alpha = (t < 0.25) ? (t / 0.25) : (1 - (t - 0.25) / 0.75);
-      drawBolt(item.bolt, Math.max(0, Math.min(1, alpha)));
-      return true;
-    });
-
-    requestAnimationFrame(tick);
+    requestAnimationFrame(fade);
   }
 
-  requestAnimationFrame(tick);
+  // Random storm timing
+  function loop() {
+    // Sometimes double strike
+    const doDouble = Math.random() < 0.22;
+
+    strike();
+    if (doDouble) setTimeout(strike, rand(80, 180));
+
+    const next = rand(1400, 3800); // stormy but not too much
+    setTimeout(loop, next);
+  }
+
+  // Start after short delay
+  setTimeout(loop, 900);
 })();
