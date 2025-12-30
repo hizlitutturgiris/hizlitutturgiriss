@@ -19,7 +19,7 @@ body{
   overflow-x:hidden;
 }
 
-/* Lightning overlay */
+/* Lightning */
 #lightning-canvas{
   position:fixed;
   inset:0;
@@ -88,52 +88,63 @@ body{
   white-space:nowrap;
 }
 
-/* Hero */
+/* HERO – ALT BOŞLUK AZALTILDI */
 .hero{
   max-width:1100px;
   margin:0 auto;
-  padding:18px 14px 0; /* ⬅️ alt padding azaltıldı */
+  padding:18px 14px 0; /* ⬅️ önemli */
   text-align:center;
 }
 
+.banner{
+  max-width:860px;
+  margin:12px auto 0;
+  border-radius:16px;
+  overflow:hidden;
+}
+.banner img{ width:100%; }
 
-/* Content */
+.hero-cta{
+  display:inline-block;
+  margin:10px auto 4px; /* ⬅️ CTA alt boşluk azaltıldı */
+}
+.hero-cta img{
+  width:min(720px, 92vw);
+  border-radius:18px;
+}
+
+/* CONTENT – ÜSTTEN DAHA YAKIN */
 .content{
   max-width:920px;
-  margin:auto;
-  padding:16px;
+  margin:0 auto;
+  padding:8px 14px 10px; /* ⬅️ önemli */
   display:grid;
-  gap:16px;
+  gap:12px; /* ⬅️ kartlar yakın */
 }
+
 .card{
-  background:rgba(8,56,36,.9);
-  padding:18px;
+  background: linear-gradient(180deg, rgba(8,56,36,.86), rgba(5,30,20,.86));
+  border:1px solid rgba(255,210,46,.20);
   border-radius:16px;
-  border:1px solid rgba(255,210,46,.2);
+  padding:16px;
 }
 .card h2,.card h3{ color:var(--yellow); }
 .card p{ line-height:1.7; }
 
-/* ⭐ SARİ PREMIUM HIZLI ÖDEME KARTI */
+/* ⭐ SARİ PREMIUM GARANTİ */
 .card--highlight{
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 210, 46, 0.28),
-      rgba(8, 56, 36, 0.92)
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255,210,46,.28),
+    rgba(8,56,36,.92)
+  );
   border:2px solid var(--yellow);
   box-shadow:
     0 0 35px rgba(255,210,46,.35),
     inset 0 0 18px rgba(255,210,46,.18);
 }
 .card--highlight h2{
-  color:var(--yellow);
   text-shadow:0 0 22px rgba(255,210,46,.45);
-}
-.card--highlight p{
-  color:#f7fff7;
-  font-size:14.5px;
 }
 
 /* Footer */
@@ -142,4 +153,3 @@ body{
   text-align:center;
   font-size:13px;
 }
-
