@@ -1,100 +1,128 @@
 <!doctype html>
 <html lang="tr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>HızlıTuttur Giriş Adresi | Güncel Link</title>
-  <meta name="description" content="HızlıTuttur güncel giriş adresi, duyurular ve yönlendirmeler. Tek tıkla güvenli giriş." />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="/" />
+    <title>HızlıTuttur Giriş | Güncel Giriş Adresi</title>
+    <meta
+      name="description"
+      content="HızlıTuttur güncel giriş adresi ve yönlendirme sayfası. Tek tıkla HızlıTuttur'a giriş yap."
+    />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="/" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="HızlıTuttur Giriş Adresi" />
-  <meta property="og:description" content="Güncel giriş adresi ve duyurular. Tek tıkla giriş." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="/assets/banner.png" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="HızlıTuttur Giriş | Güncel Giriş Adresi" />
+    <meta
+      property="og:description"
+      content="HızlıTuttur güncel giriş adresi ve yönlendirme sayfası. Tek tıkla giriş."
+    />
+    <meta property="og:type" content="website" />
 
-  <link rel="stylesheet" href="style.css" />
-</head>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
 
-<body>
-  <!-- Lightning FX canvas (arkada) -->
-  <canvas id="lightningCanvas" aria-hidden="true"></canvas>
+  <body>
+    <!-- Lightning layer (behind content) -->
+    <canvas id="lightningCanvas" aria-hidden="true"></canvas>
+    <div id="flash" aria-hidden="true"></div>
 
-  <header class="topbar">
-    <div class="container topbar__inner">
-      <a class="brand" href="/" aria-label="HızlıTuttur">
-        <img src="assets/logo.png" alt="HızlıTuttur Logo" class="brand__logo" />
-      </a>
-    </div>
-  </header>
+    <!-- Header (WHITE background) -->
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="#" aria-label="HızlıTuttur">
+          <img class="brand__logo" src="./assets/logo.png" alt="HızlıTuttur Logo" />
+        </a>
+      </div>
+    </header>
 
-  <nav class="nav">
-    <div class="container nav__inner">
-      <a class="nav__pill" href="#canli-tv">Canlı HızlıTuttur TV</a>
-      <a class="nav__pill" href="#giris-adresi">HızlıTuttur Giriş Adresi</a>
-    </div>
-  </nav>
+    <!-- NAV (green bg, yellow pills) -->
+    <nav class="nav">
+      <div class="container">
+        <ul class="nav__list">
+          <li>
+            <a class="nav__pill" href="#tv">Canlı HızlıTuttur TV</a>
+          </li>
+          <li>
+            <a class="nav__pill" href="#giris">HızlıTuttur Giriş Adresi</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-  <main class="main">
-    <div class="container">
-      <!-- Banner -->
-      <section class="hero" aria-label="HızlıTuttur Banner">
-        <a class="hero__bannerLink"
-           href="https://hizlituttur1.com/?referralCode=3083672195"
-           target="_blank" rel="noopener"
-           aria-label="HızlıTuttur'a git">
-          <div class="hero__banner">
-            <img src="assets/banner.png" alt="HızlıTuttur Kampanya Banner" loading="eager" />
+    <main class="main">
+      <div class="container">
+        <!-- Banner (clickable) -->
+        <a
+          class="banner"
+          href="https://hizlituttur1.com/?referralCode=3083672195"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="HızlıTuttur'a git"
+        >
+          <img src="./assets/banner.png" alt="HızlıTuttur Kampanya Banner" />
+          <span class="banner__glow" aria-hidden="true"></span>
+        </a>
+
+        <!-- CTA image button (cta.png) under banner -->
+        <div class="ctaWrap">
+          <a
+            class="ctaImg"
+            href="https://hizlituttur1.com/?referralCode=3083672195"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="HızlıTuttur'a Giriş İçin Tıkla"
+          >
+            <img src="./assets/cta.png" alt="Hızlıtuttur’a Giriş İçin Tıkla" />
+          </a>
+        </div>
+
+        <!-- SEO / içerik blokları (aralara yazı ekleyebiliriz) -->
+        <section class="seo" id="giris">
+          <h1 class="seo__title">HızlıTuttur Güncel Giriş Adresi</h1>
+          <p class="seo__lead">
+            HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim seni bekliyor. Güncel giriş adresi
+            değiştiğinde bu sayfa üzerinden tek tıkla doğru adrese yönlenebilirsin.
+          </p>
+
+          <div class="cards">
+            <article class="card">
+              <h2 class="card__title">HızlıTuttur Giriş Adresi</h2>
+              <p class="card__text">
+                En güncel bağlantı burada paylaşılır. Tek tıkla yönlendirme ile doğru adrese git.
+              </p>
+            </article>
+
+            <article class="card" id="tv">
+              <h2 class="card__title">Canlı HızlıTuttur TV</h2>
+              <p class="card__text">
+                Canlı yayınlar, karşılaşmalar ve güncel içerikler için bağlantıları takip et.
+              </p>
+            </article>
+
+            <article class="card">
+              <h2 class="card__title">Duyurular & Güncellemeler</h2>
+              <p class="card__text">
+                Kampanyalar, giriş güncellemeleri ve bilgilendirmeler düzenli olarak burada yer alır.
+              </p>
+            </article>
           </div>
-        </a>
 
-        <!-- CTA (bannerin hemen altı) CTA görseli kullanmak istemezsen bu buton yeter -->
-        <a class="cta"
-           href="https://hizlituttur1.com/?referralCode=3083672195"
-           target="_blank" rel="noopener">
-          HızlıTuttur’a Giriş İçin Tıkla
-        </a>
+          <div class="note">
+            <strong>Not:</strong> Bu sayfadaki görseller tıklanabilir. Tıklayınca otomatik olarak
+            güncel linke yönlendirir.
+          </div>
+        </section>
+      </div>
+    </main>
 
-        <p class="hero__note">
-          HızlıTuttur ile hızlı, güvenli ve kesintisiz deneyim. Tek tıkla güncel bağlantıya yönlen.
-        </p>
-      </section>
-
-      <!-- SEO / İçerik blokları (aralara yazılar) -->
-      <section class="cards" aria-label="Bilgilendirme">
-        <article class="card" id="canli-tv">
-          <h2>Canlı HızlıTuttur TV</h2>
-          <p>
-            Canlı yayınlar, karşılaşmalar ve güncel içerikler için burada kal. En iyi deneyim için
-            güncel bağlantıları kullan.
-          </p>
-        </article>
-
-        <article class="card" id="giris-adresi">
-          <h2>HızlıTuttur Giriş Adresi</h2>
-          <p>
-            Güncel giriş adresi değiştiğinde buradan anında ulaşabilirsin. Tek tık yönlendirme ile
-            doğru adrese git.
-          </p>
-        </article>
-
-        <article class="card">
-          <h2>Güncel Duyurular</h2>
-          <p>
-            Kampanya, bonus ve bilgilendirme duyuruları bu sayfada paylaşılır. Hızlı erişim için
-            sayfayı kaydedebilirsin.
-          </p>
-        </article>
-      </section>
-
-      <footer class="footer">
+    <footer class="footer">
+      <div class="container footer__inner">
         <span>© <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.</span>
-      </footer>
-    </div>
-  </main>
+      </div>
+    </footer>
 
-  <script src="script.js"></script>
-</body>
+    <script src="./script.js"></script>
+  </body>
 </html>
