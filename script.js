@@ -1,164 +1,155 @@
-// Year
-document.getElementById("year").textContent = new Date().getFullYear();
+(() => {
+  // Footer year
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// Lightning (better long bolts + yellow glow + flash)
-const canvas = document.getElementById("lightningCanvas");
-const ctx = canvas.getContext("2d", { alpha: true });
+  // Reduced motion? then stop
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if (reduceMotion) return;
 
-const flash = document.getElementById("flash");
+  const canvas = document.getElementById("lightning-canvas");
+  const flash = document.getElementById("flash");
+  if (!canvas) return;
 
-let w = 0, h = 0, dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  const ctx = canvas.getContext("2d", { alpha: true });
 
-function resize(){
-  w = Math.floor(window.innerWidth);
-  h = Math.floor(window.innerHeight);
-  canvas.width = Math.floor(w * dpr);
-  canvas.height = Math.floor(h * dpr);
-  canvas.style.width = w + "px";
-  canvas.style.height = h + "px";
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-window.addEventListener("resize", resize);
-resize();
+  let W = 0, H = 0, DPR = 1;
 
-// Respect reduced motion
-const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-function rand(min, max){ return Math.random() * (max - min) + min; }
-function randi(min, max){ return Math.floor(rand(min, max + 1)); }
-
-function makeBolt(startX){
-  const points = [];
-  let x = startX;
-  let y = 0;
-  points.push({x, y});
-
-  // Long bolt
-  const stepY = rand(16, 28);
-  const maxSteps = randi(18, 34);
-
-  for(let i=0;i<maxSteps;i++){
-    y += stepY + rand(-5, 8);
-    x += rand(-38, 38);
-
-    // Slightly bias downward, keep inside
-    x = Math.max(0, Math.min(w, x));
-
-    points.push({x, y});
-
-    if(y > h * rand(0.72, 0.95)) break;
-
-    // Occasional branching
-    if(Math.random() < 0.14 && i > 4){
-      const branch = makeBranch({x, y});
-      points.branch = points.branch || [];
-      points.branch.push(branch);
-    }
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = Math.floor(window.innerWidth);
+    H = Math.floor(window.innerHeight);
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
-  return points;
-}
+  window.addEventListener("resize", resize, { passive: true });
+  resize();
 
-function makeBranch(from){
-  const points = [];
-  let x = from.x;
-  let y = from.y;
-  points.push({x, y});
+  // Lightning bolt generator (long, jagged)
+  function makeBolt() {
+    const startX = W * (0.2 + Math.random() * 0.6);
+    const startY = -20;
 
-  const stepY = rand(10, 20);
-  const maxSteps = randi(5, 10);
+    const segments = 16 + Math.floor(Math.random() * 10);
+    const stepY = (H + 80) / segments;
 
-  for(let i=0;i<maxSteps;i++){
-    y += stepY + rand(-3, 6);
-    x += rand(-55, 55);
-    x = Math.max(0, Math.min(w, x));
-    points.push({x, y});
-    if(y > h * 0.95) break;
-  }
-  return points;
-}
+    let x = startX;
+    let y = startY;
 
-function drawPath(points, width, alpha){
-  ctx.beginPath();
-  ctx.moveTo(points[0].x, points[0].y);
-  for(let i=1;i<points.length;i++){
-    ctx.lineTo(points[i].x, points[i].y);
-  }
-  ctx.lineWidth = width;
-  ctx.globalAlpha = alpha;
-  ctx.stroke();
-}
+    const points = [{ x, y }];
 
-function strike(){
-  if(reduceMotion) return;
+    for (let i = 0; i < segments; i++) {
+      y += stepY * (0.8 + Math.random() * 0.5);
+      // Jagged movement
+      const sway = 22 + Math.random() * 38; // sideways
+      x += (Math.random() - 0.5) * sway;
 
-  ctx.clearRect(0,0,w,h);
+      // Keep within canvas bounds
+      x = Math.max(20, Math.min(W - 20, x));
+      points.push({ x, y });
 
-  // Strike count "rain"
-  const strikes = (Math.random() < 0.25) ? randi(2,3) : 1;
-
-  for(let s=0; s<strikes; s++){
-    const startX = rand(w*0.15, w*0.85);
-    const bolt = makeBolt(startX);
-
-    // Outer glow
-    ctx.save();
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    // Big glow
-    ctx.strokeStyle = "rgba(255, 225, 100, 0.65)";
-    ctx.shadowColor = "rgba(255, 220, 80, 0.95)";
-    ctx.shadowBlur = 28;
-    drawPath(bolt, 7, 0.22);
-
-    // Core
-    ctx.strokeStyle = "rgba(255, 245, 210, 0.95)";
-    ctx.shadowColor = "rgba(255, 240, 170, 1)";
-    ctx.shadowBlur = 14;
-    drawPath(bolt, 2.4, 0.95);
-
-    // Branches
-    if(bolt.branch){
-      for(const br of bolt.branch){
-        ctx.strokeStyle = "rgba(255, 225, 100, 0.55)";
-        ctx.shadowBlur = 18;
-        drawPath(br, 3.5, 0.35);
-
-        ctx.strokeStyle = "rgba(255, 245, 210, 0.90)";
-        ctx.shadowBlur = 10;
-        drawPath(br, 1.6, 0.85);
+      // Occasionally add branch
+      if (Math.random() < 0.22 && i > 3 && i < segments - 3) {
+        const bx = x + (Math.random() < 0.5 ? -1 : 1) * (30 + Math.random() * 60);
+        const by = y + (10 + Math.random() * 40);
+        points.push({ x: bx, y: by, branch: true });
       }
     }
+
+    return {
+      points,
+      life: 1.0,
+      decay: 0.06 + Math.random() * 0.05,
+      thick: 1.6 + Math.random() * 1.2,
+      glow: 18 + Math.random() * 18,
+      flashPower: 0.20 + Math.random() * 0.22
+    };
+  }
+
+  const bolts = [];
+  let nextStrikeAt = performance.now() + 700 + Math.random() * 1600;
+
+  function doFlash(power) {
+    if (!flash) return;
+    flash.style.opacity = String(power);
+    // quick fade
+    setTimeout(() => {
+      flash.style.opacity = "0";
+    }, 60 + Math.random() * 80);
+  }
+
+  function drawBolt(b) {
+    const alpha = Math.max(0, b.life);
+
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    // glow
+    ctx.shadowColor = `rgba(255, 212, 0, ${0.85 * alpha})`;
+    ctx.shadowBlur = b.glow;
+
+    // core line
+    ctx.strokeStyle = `rgba(255, 232, 120, ${0.9 * alpha})`;
+    ctx.lineWidth = b.thick;
+
+    ctx.beginPath();
+    let moved = false;
+
+    for (let i = 0; i < b.points.length; i++) {
+      const p = b.points[i];
+      if (!moved) {
+        ctx.moveTo(p.x, p.y);
+        moved = true;
+      } else {
+        ctx.lineTo(p.x, p.y);
+      }
+    }
+    ctx.stroke();
+
+    // brighter inner core
+    ctx.shadowBlur = b.glow * 0.55;
+    ctx.strokeStyle = `rgba(255, 255, 255, ${0.55 * alpha})`;
+    ctx.lineWidth = Math.max(0.9, b.thick * 0.55);
+    ctx.stroke();
 
     ctx.restore();
   }
 
-  // Flash
-  flash.style.opacity = "0.45";
-  setTimeout(() => { flash.style.opacity = "0"; }, 120);
+  function tick() {
+    const now = performance.now();
 
-  // Fade out the bolt quickly
-  setTimeout(() => { ctx.clearRect(0,0,w,h); }, 160);
-}
+    // Clear with slight fade (keeps afterglow)
+    ctx.fillStyle = "rgba(0,0,0,0.22)";
+    ctx.fillRect(0, 0, W, H);
 
-function loop(){
-  if(reduceMotion) return;
+    // Strike scheduling
+    if (now >= nextStrikeAt) {
+      const boltCount = Math.random() < 0.32 ? 2 : 1; // sometimes double strike
+      for (let i = 0; i < boltCount; i++) bolts.push(makeBolt());
 
-  // Random storm timing
-  const next = randi(900, 2400);
+      // flash effect
+      const power = bolts[bolts.length - 1]?.flashPower ?? 0.25;
+      doFlash(power);
 
-  // sometimes double-tap strike
-  const multi = Math.random() < 0.18;
-
-  setTimeout(() => {
-    strike();
-    if(multi){
-      setTimeout(strike, randi(90, 220));
+      // next time
+      nextStrikeAt = now + (900 + Math.random() * 2200);
     }
-    loop();
-  }, next);
-}
 
-if(!reduceMotion){
-  loop();
-}
+    // Draw & decay
+    for (let i = bolts.length - 1; i >= 0; i--) {
+      const b = bolts[i];
+      drawBolt(b);
+      b.life -= b.decay;
+
+      if (b.life <= 0) bolts.splice(i, 1);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // start
+  tick();
+})();
