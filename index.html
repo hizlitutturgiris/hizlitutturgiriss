@@ -5,84 +5,122 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>HızlıTuttur Güncel Giriş Adresi</title>
-  <meta name="description" content="HızlıTuttur güncel giriş adresi, hızlı ödeme garantisi ve kesintisiz hizmet." />
+  <meta name="description" content="HızlıTuttur güncel giriş adresi ve bağlantılar. Tek tıkla güvenli yönlendirme ile giriş yap." />
 
+  <!-- ✅ Favicon -->
   <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
 
   <link rel="stylesheet" href="style.css" />
   <script src="script.js" defer></script>
 </head>
 
 <body>
-  <!-- Lightning -->
-  <canvas id="lightning-canvas"></canvas>
-  <div id="flash"></div>
+  <!-- Lightning overlay -->
+  <canvas id="lightning-canvas" aria-hidden="true"></canvas>
+  <div id="flash" aria-hidden="true"></div>
 
   <!-- TOP BAR -->
   <header class="topbar">
     <div class="topbar__inner">
+      <!-- ✅ Logo büyük ama abartısız -->
       <img class="brand" src="assets/logo.png" alt="HızlıTuttur" />
 
-      <nav class="nav">
-        <a class="nav__btn" href="#giris">Hızlıtuttur Giriş</a>
-        <a class="nav__btn" href="#casino">Hızlıtuttur Casino</a>
-        <a class="nav__btn" href="#spor">Hızlıtuttur Spor</a>
-        <a class="nav__btn" href="#canli">Hızlıtuttur Canlı Casino</a>
-      </nav>
+      <!-- ✅ Sürekli kayan butonlar (sağa doğru) -->
+      <div class="nav-marquee" aria-label="HızlıTuttur menü">
+        <div class="nav-track">
+          <nav class="nav">
+            <a class="nav__btn" href="#giris">Hızlıtuttur Giriş</a>
+            <a class="nav__btn" href="#casino">Hızlıtuttur Casino</a>
+            <a class="nav__btn" href="#spor">Hızlıtuttur Spor</a>
+            <a class="nav__btn" href="#canli">Hızlıtuttur Canlı Casino</a>
+          </nav>
+
+          <!-- ikinci kopya (marquee için) -->
+          <nav class="nav" aria-hidden="true">
+            <a class="nav__btn" href="#giris">Hızlıtuttur Giriş</a>
+            <a class="nav__btn" href="#casino">Hızlıtuttur Casino</a>
+            <a class="nav__btn" href="#spor">Hızlıtuttur Spor</a>
+            <a class="nav__btn" href="#canli">Hızlıtuttur Canlı Casino</a>
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
 
   <main class="page">
-    <!-- HERO -->
     <section class="hero">
+      <!-- Banner -->
       <div class="banner">
         <img src="assets/banner.png" alt="HızlıTuttur %100" />
       </div>
 
+      <!-- CTA -->
       <a
         class="hero-cta"
         href="https://hizlituttur1.com/?referralCode=3083672195"
         target="_blank"
         rel="noopener"
+        aria-label="Hızlıtuttur'a giriş için tıkla"
       >
-        <img src="assets/cta.png" alt="HızlıTuttur Giriş" />
+        <img src="assets/cta.png" alt="Hızlıtuttur'a Giriş İçin Tıkla" />
       </a>
     </section>
 
     <!-- CONTENT -->
     <section class="content">
-
-      <!-- ⭐ SADECE EKLENEN YENİ METİNLER -->
-      <div class="card card--highlight">
+      <!-- ✅ En başa: Hızlı Ödeme Garantisi -->
+      <div class="card" id="odeme">
         <h2>Hızlı Ödeme Garantisi</h2>
         <p>
-          HızlıTuttur’da para çekim işlemleri <strong>en geç 30 dakika içinde</strong> tamamlanır.
-          Sürenin aşılması durumunda, çekim tutarı kadar
-          <strong>ek bakiye kullanıcı hesabına tanımlanır</strong>.
-          Bu uygulama, HızlıTuttur’un kullanıcılarına sunduğu
-          <strong>net ve şeffaf bir garantidir</strong>.
+          HızlıTuttur’da çekimler en geç <strong>30 dakika</strong> içinde tamamlanır.
+          Süre aşımı durumunda, çekim tutarı kadar <strong>ek bakiye</strong> kullanıcı hesabına tanımlanır.
         </p>
       </div>
 
-      <div class="card">
-        <h3>HızlıTuttur Vizyonu</h3>
+      <!-- ✅ CEO / Vizyon yazısı -->
+      <div class="card" id="giris">
+        <h2>HızlıTuttur Vizyonu</h2>
         <p>
-          HızlıTuttur, oyuncularına <strong>kesintisiz hizmet</strong>, güçlü altyapı ve net kurallar sunan
-          bir online oyun platformudur. Hız ve güvenilirlik, markamızın değişmez standartlarıdır.
-        </p>
-        <p>
-          Bonus sistemimiz kullanıcı dostudur; karmaşık şartlar yerine
-          <strong>oynanabilir ve avantajlı</strong> kampanyalar sunarız.
-          Casino, canlı casino ve spor bahisleri dahil olmak üzere
-          geniş ve kaliteli bir oyun portföyü sunarız.
-        </p>
-        <p>
-          HızlıTuttur yalnızca bir oyun platformu değil, aynı zamanda
-          <strong>canlı futbol ve basketbol yayınlarının</strong> da izlenebildiği
-          kapsamlı bir eğlence alanıdır.
+          HızlıTuttur, oyuncularına <strong>kesintisiz hizmet</strong> sunan ve hızlı işlem altyapısıyla öne çıkan bir platformdur.
+          Kullanıcı odaklı yaklaşımımızla; güvenilirlik, hız ve eğlenceyi tek noktada birleştiriyoruz.
+          Bonus sistemimiz <strong>oynanabilir ve kazandıran</strong> kampanyalar üzerine kuruludur.
+          Casino, canlı casino ve spor bahisleri dahil geniş oyun portföyümüzle Türkiye ve Avrupa pazarında,
+          hız ve güven denildiğinde ilk akla gelen markalardan biri olmaktan gurur duyuyoruz.
+          Ayrıca platformumuz üzerinden <strong>canlı futbol</strong> ve <strong>basketbol</strong> yayınlarını da izleyebilirsiniz.
         </p>
       </div>
 
+      <div class="card" id="duyuru">
+        <h3>Güncel Bağlantı ve Duyurular</h3>
+        <p>
+          Giriş adresi değiştiğinde bu sayfa üzerinden anında ulaşabilirsin. Mobil ve masaüstünde hızlı açılır.
+          Kampanyalar ve önemli bilgilendirmeler burada paylaşılır.
+        </p>
+      </div>
+
+      <div class="card" id="canli">
+        <h3>HızlıTuttur Canlı Casino</h3>
+        <p>
+          Canlı yayınlar, etkinlik içerikleri ve güncel duyurular için resmi yönlendirme bağlantısını kullan.
+          En iyi deneyim için güncel linki tercih et.
+        </p>
+      </div>
+
+      <div class="card" id="casino">
+        <h3>HızlıTuttur Casino</h3>
+        <p>
+          Casino içerikleri ve promosyonlar için güncel bağlantıları buradan takip edebilirsin.
+          Güvenli yönlendirme ile doğru adrese git.
+        </p>
+      </div>
+
+      <div class="card" id="spor">
+        <h3>HızlıTuttur Spor</h3>
+        <p>
+          Spor bahisleri ve etkinlik bağlantıları için güncel linkleri kullan. Anlık güncellemeler bu sayfada yer alır.
+        </p>
+      </div>
     </section>
 
     <footer class="footer">
