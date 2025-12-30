@@ -1,58 +1,51 @@
-// CHANGE THIS LINK ONCE, everything clickable uses it
-const TARGET_URL = "https://hizlituttur1.com";
+// yıl
+document.getElementById("year").textContent = new Date().getFullYear();
 
-// Make sure all clickable items go to TARGET_URL
-document.addEventListener("DOMContentLoaded", () => {
-  // Update hero + CTA links safely
-  document.querySelectorAll('a[href="https://hizlituttur1.com"]').forEach(a => {
-    a.href = TARGET_URL;
-  });
+// Lightning rain (hafif, mobilde de boğmaz)
+const layer = document.querySelector(".lightning-layer");
 
-  startLightningRain();
-});
+// Hız kontrolü (istersen düşür/çoğalt)
+const SETTINGS = {
+  spawnEveryMs: 220,     // ne sıklıkla düşsün (küçük = daha yoğun)
+  minDuration: 1100,     // ms
+  maxDuration: 2200,     // ms
+  minSize: 10,           // px
+  maxSize: 20,           // px
+};
 
-function startLightningRain() {
-  const layer = document.getElementById("lightning-layer");
+function rand(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function spawnBolt() {
   if (!layer) return;
 
-  // Respect reduced motion
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
+  const bolt = document.createElement("div");
+  bolt.className = "bolt";
 
-  // spawn bolts
-  const spawn = () => {
-    const bolt = document.createElement("div");
-    bolt.className = "bolt";
-    bolt.textContent = "⚡";
+  const left = rand(0, 100);
+  const duration = rand(SETTINGS.minDuration, SETTINGS.maxDuration);
+  const size = rand(SETTINGS.minSize, SETTINGS.maxSize);
 
-    const x = Math.random() * 100; // vw
-    const size = 16 + Math.random() * 18; // px
-    const dur = 1200 + Math.random() * 1400; // ms
-    const rot = (-20 + Math.random() * 40) + "deg";
+  bolt.style.left = `${left}vw`;
+  bolt.style.animationDuration = `${duration}ms`;
+  bolt.style.width = `${size}px`;
+  bolt.style.height = `${size * 4}px`;
+  bolt.style.opacity = "1";
 
-    bolt.style.left = x + "vw";
-    bolt.style.setProperty("--size", size + "px");
-    bolt.style.setProperty("--dur", dur + "ms");
-    bolt.style.setProperty("--rot", rot);
+  // biraz sağa sola kayma hissi
+  bolt.style.transform = `translateY(-80px) rotate(${rand(-6, 10)}deg)`;
 
-    layer.appendChild(bolt);
+  layer.appendChild(bolt);
 
-    // cleanup
-    setTimeout(() => bolt.remove(), dur + 200);
-  };
+  // bitince sil
+  setTimeout(() => {
+    bolt.remove();
+  }, duration + 200);
+}
 
-  // speed control: lower = more bolts
-  const interval = setInterval(() => {
-    // on mobile, reduce density
-    const isMobile = window.innerWidth < 720;
-    const count = isMobile ? 1 : 2;
-    for (let i = 0; i < count; i++) spawn();
-  }, 180);
-
-  // optional: stop when tab hidden (saves CPU)
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      clearInterval(interval);
-    }
-  }, { once: true });
+// prefers-reduced-motion ise hiç başlatma
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!reduceMotion) {
+  setInterval(spawnBolt, SETTINGS.spawnEveryMs);
 }
