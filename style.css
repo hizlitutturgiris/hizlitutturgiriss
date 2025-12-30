@@ -15,11 +15,19 @@ body{
 }
 
 /* Lightning */
-#lightning-canvas{ position:fixed; inset:0; z-index:1; }
+#lightning-canvas{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
 #flash{
-  position:fixed; inset:0;
+  position:fixed;
+  inset:0;
   background: radial-gradient(circle, rgba(255,220,120,.25), transparent 60%);
-  opacity:0; z-index:2;
+  opacity:0;
+  pointer-events:none;
+  z-index:2;
 }
 
 .page{ position:relative; z-index:3; }
@@ -40,27 +48,21 @@ body{
 }
 .brand{ height:56px; }
 
-/* Nav ticker */
-.nav-ticker{ width:100%; overflow:hidden; }
-.nav-track{
+/* Nav */
+.nav{
   display:flex;
-  gap:12px;
-  width:max-content;
-  animation: scroll 18s linear infinite;
-}
-@keyframes scroll{
-  from{ transform:translateX(0); }
-  to{ transform:translateX(-50%); }
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
 }
 .nav__btn{
   background:var(--yellow);
   color:#064b33;
-  padding:12px 20px;
+  padding:10px 16px;
   border-radius:999px;
   font-weight:800;
-  text-decoration:none;
   border:2px solid #064b33;
-  white-space:nowrap;
+  text-decoration:none;
 }
 
 /* Hero */
@@ -85,7 +87,7 @@ body{
 .card h2,.card h3{ color:var(--yellow); }
 .card p{ line-height:1.6; }
 
-/* ⭐ Highlight card */
+/* ⭐ Highlight */
 .card--highlight{
   background: linear-gradient(180deg, rgba(255,210,46,.18), rgba(8,56,36,.95));
   border:2px solid var(--yellow);
@@ -93,4 +95,8 @@ body{
 }
 
 /* Footer */
-.footer{ padding:20px; text-align:center; font-size:13px; }
+.footer{
+  padding:20px;
+  text-align:center;
+  font-size:13px;
+}
