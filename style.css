@@ -1,212 +1,143 @@
-:root{
-  --bg-1:#071a13;      /* koyu yeşil */
-  --bg-2:#0b2a1f;      /* koyu yeşil 2 */
-  --card:#0f3a2a;      /* orta yeşil */
-  --green:#27d67a;     /* açık yeşil vurgu */
-  --yellow:#f5c400;    /* sarı vurgu */
-  --text:#eaf8f0;
-  --muted:#bfe9d4;
-  --shadow: 0 16px 40px rgba(0,0,0,.35);
-  --radius: 16px;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
 body{
-  margin:0;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
-  color:var(--text);
-  background: radial-gradient(1200px 600px at 50% 0%, #124d36 0%, var(--bg-2) 40%, var(--bg-1) 100%);
+  background:#0f2f1f;
+  color:#eaffea;
   overflow-x:hidden;
 }
 
-/* layout */
+/* HEADER */
+.header{
+  background:#ffffff;
+  padding:14px 0;
+  text-align:center;
+  position:relative;
+  z-index:3;
+}
+
+.logo{
+  height:42px;
+}
+
+/* CONTAINER */
 .container{
-  width:min(980px, 92vw);
-  margin-inline:auto;
+  width:92%;
+  max-width:1000px;
+  margin:auto;
 }
 
-/* top bar (beyaz) */
-.topbar{
-  background:#fff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
-.topbar-inner{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 14px 0;
-}
-.brand{ display:inline-flex; align-items:center; justify-content:center; }
-.brand-logo{
-  height:44px;
-  width:auto;
-  display:block;
-}
-
-/* nav */
-.navwrap{
-  background: rgba(0,0,0,.12);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-.menu{
-  list-style:none;
-  margin:0;
-  padding: 10px 0;
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-.menu-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding: 10px 14px;
-  border: 2px solid var(--yellow);
-  color: var(--green);
-  text-decoration:none;
-  border-radius: 999px;
-  font-weight: 700;
-  letter-spacing:.2px;
-  background: rgba(7,26,19,.55);
-  transition: transform .12s ease, background .12s ease, box-shadow .12s ease;
-  box-shadow: 0 8px 22px rgba(0,0,0,.25);
-}
-.menu-btn:hover{
-  transform: translateY(-1px);
-  background: rgba(15,58,42,.7);
-}
-
-/* main */
-.page{ padding: 28px 0 40px; }
-
+/* BANNER */
 .banner{
-  display:block;
-  border-radius: var(--radius);
+  margin-top:24px;
+  border-radius:18px;
   overflow:hidden;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255,255,255,.08);
+  position:relative;
+  z-index:2;
+  box-shadow:0 20px 50px rgba(0,0,0,.45);
 }
+
 .banner img{
   width:100%;
   height:auto;
   display:block;
+  object-fit:cover;
 }
 
-/* text blocks */
-.text-block{
-  margin-top: 22px;
-  background: rgba(15,58,42,.55);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: var(--radius);
-  padding: 18px 18px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.22);
+/* CONTENT */
+.content{
+  text-align:center;
+  padding:40px 10px;
 }
-.text-block h1{
-  margin:0 0 8px;
-  font-size: clamp(22px, 3.2vw, 34px);
-  color: var(--green);
+
+.content h1{
+  color:#7dff7d;
+  margin-bottom:14px;
 }
-.text-block h2{
-  margin:0 0 8px;
-  font-size: clamp(18px, 2.6vw, 24px);
-  color: var(--green);
-}
-.text-block p{
-  margin:0;
-  color: var(--muted);
-  line-height: 1.65;
-  font-size: 15.5px;
+
+.content p{
+  max-width:600px;
+  margin:0 auto 28px;
+  line-height:1.6;
+  font-size:15px;
 }
 
 /* CTA */
-.cta{
-  margin-top: 18px;
-  display:flex;
-  justify-content:center;
+.cta-btn{
+  display:inline-block;
+  padding:14px 26px;
+  border-radius:30px;
+  border:2px solid #f5c400;
+  color:#f5c400;
+  font-weight:bold;
   text-decoration:none;
-}
-.cta img{
-  width: min(520px, 92vw);
-  height:auto;
-  display:block;
-  border-radius: 999px;
-  box-shadow: 0 12px 30px rgba(0,0,0,.30);
-  border: 2px solid rgba(245,196,0,.7);
-  transition: transform .12s ease, filter .12s ease;
-}
-.cta:hover img{
-  transform: translateY(-1px) scale(1.01);
-  filter: brightness(1.03);
+  transition:.25s;
 }
 
-/* footer */
+.cta-btn:hover{
+  background:#f5c400;
+  color:#0f2f1f;
+}
+
+/* FOOTER */
 .footer{
-  margin-top: 30px;
-  padding: 18px 0 26px;
-  color: rgba(255,255,255,.75);
   text-align:center;
-  border-top: 1px solid rgba(255,255,255,.06);
-  background: rgba(0,0,0,.10);
+  padding:20px 0;
+  font-size:13px;
+  color:#caffca;
 }
 
-/* --- Lightning Rain Effect --- */
+/* ⚡ YILDIRIM */
 .lightning-layer{
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 5;
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
 }
 
-/* tek bir yıldırım parçası */
 .bolt{
   position:absolute;
-  top:-60px;
-  width: 16px;
-  height: 60px;
-  opacity:.0;
-  filter: drop-shadow(0 6px 10px rgba(245,196,0,.25));
-  animation: fall linear forwards;
+  width:14px;
+  height:120px;
+  opacity:.85;
+  animation:flash 1.2s ease-out forwards;
 }
+
 .bolt::before{
   content:"";
   position:absolute;
   inset:0;
-  background: linear-gradient(180deg,
+  background:linear-gradient(
+    180deg,
     rgba(245,196,0,0) 0%,
-    rgba(245,196,0,.95) 40%,
-    rgba(39,214,122,.95) 85%,
-    rgba(39,214,122,0) 100%);
+    rgba(245,196,0,1) 35%,
+    rgba(245,196,0,1) 65%,
+    rgba(245,196,0,0) 100%
+  );
   clip-path: polygon(
-    40% 0%,
+    45% 0%,
     65% 0%,
     50% 40%,
-    75% 40%,
-    35% 100%,
-    50% 58%,
-    30% 58%
+    70% 40%,
+    30% 100%,
+    48% 60%,
+    28% 60%
   );
-  border-radius: 4px;
 }
 
-/* anim: yukarıdan aşağı */
-@keyframes fall{
-  0%   { transform: translateY(-80px) rotate(0deg); opacity: 0; }
-  10%  { opacity: .9; }
-  100% { transform: translateY(calc(100vh + 120px)) rotate(6deg); opacity: 0; }
+@keyframes flash{
+  0%{opacity:0; transform:scaleY(0);}
+  10%{opacity:1; transform:scaleY(1);}
+  100%{opacity:0;}
 }
 
-/* mobil düzeltmeler */
-@media (max-width: 520px){
-  .topbar-inner{ padding: 12px 0; }
-  .brand-logo{ height: 38px; }
-  .text-block{ padding: 16px 14px; }
-}
-
-/* hareket hassasiyeti olanlarda efekti kapat */
-@media (prefers-reduced-motion: reduce){
-  .bolt{ display:none !important; }
+/* 📱 MOBILE */
+@media(max-width:600px){
+  .logo{height:34px;}
+  .banner{border-radius:14px;}
+  .content h1{font-size:22px;}
 }
