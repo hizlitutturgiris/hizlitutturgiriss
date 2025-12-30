@@ -1,56 +1,43 @@
 :root{
-  --bg-dark: #0b2a1b;      /* koyu yeşil */
-  --bg-mid:  #0f3a25;      /* yeşil */
-  --green:   #1aa85a;      /* açık yeşil */
-  --yellow:  #f5d100;      /* sarı */
-  --white:   #ffffff;
-  --text:    #eaf6ef;
-  --muted:   rgba(234, 246, 239, .75);
-  --card:    rgba(255,255,255,.05);
-  --border:  rgba(245, 209, 0, .6);
-  --shadow:  0 12px 30px rgba(0,0,0,.35);
+  --green-dark: #0b2a1c;
+  --green: #0f3a27;
+  --green-soft: #14523a;
+  --yellow: #f4d000;
+  --text: #eaf6ef;
+  --muted: rgba(234,246,239,.82);
+  --shadow: 0 18px 60px rgba(0,0,0,.35);
+  --radius: 18px;
 }
 
 *{ box-sizing: border-box; }
-html, body{ height: 100%; }
+html, body { height: 100%; }
 body{
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: radial-gradient(1200px 600px at 50% 0%, rgba(26,168,90,.20), transparent 60%),
-              linear-gradient(180deg, var(--bg-mid), var(--bg-dark));
+  background: linear-gradient(180deg, var(--green-dark), var(--green));
   color: var(--text);
-  overflow-x: hidden;
 }
 
-/* FX canvas */
-#fx{
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: .75;
-}
-
-/* Layout helpers */
+/* container */
 .container{
-  width: min(1100px, calc(100% - 32px));
+  width: min(1040px, calc(100% - 32px));
   margin: 0 auto;
 }
-.center{ display: flex; justify-content: center; }
 
-/* Topbar white background */
+/* WHITE top bar */
 .topbar{
   position: sticky;
   top: 0;
-  z-index: 10;
-  background: var(--white);
+  z-index: 50;
+  background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.06);
 }
 .topbar-inner{
   display: flex;
   align-items: center;
-  justify-content: center; /* logo ortada */
-  padding: 14px 0;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
 }
 .logo{
   height: 44px;
@@ -58,198 +45,148 @@ body{
   display: block;
 }
 
-/* Nav */
+/* nav buttons like your example */
 .nav{
-  background: rgba(0,0,0,.03);
-  border-top: 1px solid rgba(0,0,0,.06);
-}
-.nav-inner{
   display: flex;
-  gap: 10px;
-  justify-content: center;
   flex-wrap: wrap;
-  padding: 10px 0;
+  gap: 10px;
+  justify-content: flex-end;
 }
 .nav-btn{
   text-decoration: none;
-  color: var(--bg-mid);                 /* sayfanın yeşili */
-  border: 2px solid var(--yellow);      /* sarı çerçeve */
+  color: var(--green);
+  background: transparent;
+  border: 2px solid var(--yellow);
   padding: 8px 12px;
   border-radius: 999px;
   font-weight: 700;
   font-size: 14px;
-  background: rgba(255,255,255,.6);
   transition: transform .15s ease, background .15s ease;
 }
 .nav-btn:hover{
   transform: translateY(-1px);
-  background: rgba(255,255,255,.9);
+  background: rgba(244,208,0,.12);
 }
 
-/* HERO */
-.hero{
-  position: relative;
-  z-index: 1;
-  padding: 28px 0 18px;
-}
-.hero-grid{
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap: 22px;
-  align-items: center;
-}
+/* page spacing */
+.page{ padding: 22px 0 40px; }
 
-/* Banner is responsive (fix mobile bozuk) */
-.banner-link{ display:block; }
+/* hero banner */
+.hero{ padding: 18px 0 8px; }
+.hero-click{ display:block; }
 .banner{
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 18px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
   border: 1px solid rgba(255,255,255,.08);
-  background: rgba(0,0,0,.2);
 }
 
-/* Text */
-.hero-text{
-  background: rgba(0,0,0,.18);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 18px;
-  padding: 18px;
-  box-shadow: var(--shadow);
+/* text blocks */
+.text-block{
+  padding: 16px 0 8px;
+  text-align: center;
 }
-.title{
-  margin: 0 0 8px;
-  font-size: 34px;
-  letter-spacing: .3px;
-  color: #76ff9e;
-}
-.subtitle{
-  margin: 0 0 14px;
+.lead{
+  margin: 0 auto;
+  max-width: 760px;
   color: var(--muted);
-  line-height: 1.5;
-  font-weight: 600;
+  line-height: 1.65;
+  font-size: 15px;
 }
 
-/* CTA button */
-.cta{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: var(--yellow);
-  border: 2px solid var(--yellow);
-  padding: 12px 16px;
-  border-radius: 999px;
-  font-weight: 900;
-  background: rgba(0,0,0,.25);
-  transition: transform .15s ease, background .15s ease;
-}
-.cta:hover{
-  transform: translateY(-1px);
-  background: rgba(0,0,0,.35);
-}
-.cta-wide{
-  min-width: 280px;
-}
-.note{
-  margin: 12px 0 0;
-  font-size: 12px;
-  color: rgba(234,246,239,.65);
-}
-
-/* Content sections */
-.content{
-  position: relative;
-  z-index: 1;
-  padding: 26px 0;
-}
-.content.alt{
-  background: rgba(255,255,255,.03);
-  border-top: 1px solid rgba(255,255,255,.06);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-.section-title{
-  margin: 0 0 10px;
-  font-size: 22px;
-  color: #b6ffd0;
-}
-.text{
-  margin: 0 0 14px;
-  color: var(--muted);
-  line-height: 1.7;
-  font-weight: 600;
-}
-
-/* Simple image-cta style */
-.img-cta{
-  text-decoration: none;
-}
-.img-cta-btn{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 26px;
-  border-radius: 999px;
-  font-weight: 900;
-  color: #0a2318;
-  background: var(--yellow);
-  border: 3px solid rgba(0,0,0,.15);
-  box-shadow: 0 10px 24px rgba(0,0,0,.25);
-}
-
-/* Cards */
-.cards{
+/* CTA */
+.cta-wrap{
+  padding: 18px 0 10px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
   gap: 14px;
 }
-.card{
+.cta-img{
+  width: min(520px, 100%);
+  height: auto;
   display: block;
+  border-radius: 999px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35);
+}
+.cta-btn{
   text-decoration: none;
-  color: var(--text);
-  background: var(--card);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 16px;
-  padding: 14px;
-  box-shadow: var(--shadow);
-  transition: transform .15s ease;
-}
-.card:hover{ transform: translateY(-2px); }
-.card h3{
-  margin: 0 0 6px;
-  color: var(--yellow);
-}
-.card p{
-  margin: 0;
-  color: var(--muted);
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-/* Footer */
-.footer{
-  position: relative;
-  z-index: 1;
-  padding: 18px 0 26px;
-  border-top: 1px solid rgba(255,255,255,.06);
-  background: rgba(0,0,0,.15);
-}
-.footer-inner{
-  display: flex;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  color: rgba(234,246,239,.7);
-  font-weight: 700;
-  font-size: 13px;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--yellow);
+  color: var(--yellow);
+  background: rgba(0,0,0,.15);
+  font-weight: 800;
+  transition: transform .15s ease, background .15s ease;
+}
+.cta-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(244,208,0,.10);
 }
 
-/* MOBILE FIX (senin “bozuk” görünümün için asıl kritik yer) */
-@media (max-width: 900px){
-  .hero-grid{
-    grid-template-columns: 1fr;   /* banner üstte, text altta */
-  }
-  .title{ font-size: 30px; }
-  .cards{ grid-template-columns: 1fr; }
-  .logo{ height: 40px; }
+/* article blocks */
+.article{
+  margin-top: 22px;
+  padding: 18px;
+  border-radius: var(--radius);
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.06);
+}
+.article h2{
+  margin: 0 0 10px;
+  color: #7dffb1; /* light green */
+  font-size: 18px;
+}
+.article p{
+  margin: 0 0 10px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 14px;
+}
+.article p:last-child{ margin-bottom: 0; }
+
+.footer{
+  margin-top: 26px;
+  padding: 18px 0 0;
+  text-align: center;
+  color: rgba(244,208,0,.85);
+  font-size: 12px;
+}
+
+/* ---------- Lightning rain effect ---------- */
+#lightning-layer{
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40; /* below sticky header z=50 */
+  overflow: hidden;
+}
+
+.bolt{
+  position: absolute;
+  top: -60px;
+  font-size: var(--size, 22px);
+  opacity: 0;
+  filter: drop-shadow(0 6px 10px rgba(244,208,0,.35));
+  animation: fall var(--dur, 1600ms) linear forwards;
+  transform: translate3d(0,0,0);
+}
+
+@keyframes fall{
+  0%   { transform: translateY(-60px) rotate(var(--rot, 0deg)); opacity: 0; }
+  10%  { opacity: .9; }
+  100% { transform: translateY(calc(100vh + 80px)) rotate(calc(var(--rot, 0deg) + 20deg)); opacity: 0; }
+}
+
+/* mobile tweaks */
+@media (max-width: 720px){
+  .topbar-inner{ flex-direction: column; align-items: center; }
+  .nav{ justify-content: center; }
+  .logo{ height: 52px; }
+  .cta-img{ border-radius: 18px; } /* CTA image looks better on mobile */
 }
