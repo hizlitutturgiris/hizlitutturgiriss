@@ -10,6 +10,7 @@
 
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
+
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
@@ -40,73 +41,97 @@ body{
   transition: opacity 120ms linear;
 }
 
-.page{ position:relative; z-index:3; }
+.page{
+  position:relative;
+  z-index:3;
+}
 
-/* Top bar */
+/* Top bar (mobilde de görünür, sabit ve net) */
 .topbar{
   background:#fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
+
 .topbar__inner{
   max-width:1100px;
   margin:0 auto;
   padding:10px 14px 12px;
   display:flex;
-  flex-direction:column;      /* ✅ Logo üstte, butonlar altta */
+  flex-direction:column;
   align-items:center;
   gap:10px;
 }
 
-/* Logo */
+.brandwrap{
+  width:100%;
+  display:flex;
+  justify-content:center;
+}
+
 .brand{
-  height:46px;
+  height:56px; /* büyük görünsün ama aşırı değil */
   width:auto;
   display:block;
 }
 
-/* Nav buttons */
-.nav{
+/* Nav marquee wrapper */
+.nav-marquee{
   width:100%;
+  overflow:hidden;
+  position:relative;
+
+  /* kenarlara soft fade */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+}
+
+.nav__track{
   display:flex;
   gap:12px;
-  flex-wrap:wrap;
-  justify-content:center;
+  align-items:center;
+  width:max-content;
+  padding:4px 6px;
+  will-change: transform;
+
+  /* JS ölçüp --loop-x basıyor */
+  animation: navscroll var(--scroll-duration, 26s) linear infinite;
+}
+.nav-marquee:hover .nav__track,
+.nav-marquee:focus-within .nav__track{
+  animation-play-state: paused;
 }
 
-/* ✅ Sağdan yavaş kayma animasyonu */
-@keyframes slideInRight {
-  from { transform: translateX(40px); opacity: 0; }
-  to   { transform: translateX(0); opacity: 1; }
+@keyframes navscroll{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(calc(-1 * var(--loop-x, 520px))); }
 }
 
+/* Nav buttons */
 .nav__btn{
   text-decoration:none;
   color:#064b33;
   background: var(--yellow);
   border: 2px solid #064b33;
-  padding:12px 18px;          /* ✅ daha büyük */
+  padding:11px 18px;          /* buton biraz daha büyük */
   border-radius:999px;
   font-weight:800;
   font-size:14px;
   line-height:1;
+  letter-spacing:.2px;
   box-shadow: 0 10px 26px rgba(0,0,0,.18);
   transition: transform .15s ease, filter .15s ease;
-
-  /* animasyon */
-  opacity:0;
-  animation: slideInRight 1.25s ease forwards;
-  will-change: transform, opacity;
+  white-space:nowrap;
 }
 .nav__btn:hover{
   transform: translateY(-1px);
   filter: brightness(1.02);
 }
-
-/* ✅ Butonlara sırayla gecikme */
-.nav__btn:nth-child(1){ animation-delay: .10s; }
-.nav__btn:nth-child(2){ animation-delay: .25s; }
-.nav__btn:nth-child(3){ animation-delay: .40s; }
-.nav__btn:nth-child(4){ animation-delay: .55s; }
+.nav__btn:active{
+  transform: translateY(0px) scale(.99);
+}
 
 /* Hero */
 .hero{
@@ -130,7 +155,6 @@ body{
   display:block;
 }
 
-/* CTA */
 .hero-cta{
   display:inline-block;
   margin:14px auto 10px;
@@ -197,21 +221,28 @@ body{
   font-size:13px;
 }
 
-/* Mobile */
+/* Mobile tweaks */
 @media (max-width:520px){
-  .brand{ height:42px; }
+  .brand{ height:48px; }       /* mobilde biraz küçülsün */
+  .nav__btn{ font-size:13px; padding:11px 16px; }
+  .nav__track{ gap:10px; }
+  .nav__track{ animation-duration: 20s; } /* mobilde biraz daha akıcı */
+  .card{ padding:14px; }
+  .card h2{ font-size:20px; }
+}
 
-  /* ✅ Mobilde yarım görünme yok: 2 kolon grid */
-  .nav{
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-    align-items:stretch;
-  }
-  .nav__btn{
-    width:100%;
-    text-align:center;
-    padding:13px 12px;
-    font-size:13px;
-  }
+/* Reduced motion: kaydırma yok, butonlar alt satıra geçsin */
+.reduce-motion .nav-marquee{
+  -webkit-mask-image:none;
+  mask-image:none;
+  overflow:visible;
+}
+.reduce-motion .nav__track{
+  width:100%;
+  flex-wrap:wrap;
+  justify-content:center;
+  animation:none !important;
+}
+.reduce-motion .is-clone{
+  display:none;
 }
