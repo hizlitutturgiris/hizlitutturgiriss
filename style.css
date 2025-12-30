@@ -1,214 +1,111 @@
-:root{
-  --green-0:#062012;
-  --green-1:#08301a;
-  --green-2:#0b3a22;
-  --green-3:#0f4a2b;
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  --yellow:#ffd400;
-  --yellow-soft:#ffe36a;
+  <title>HızlıTuttur Güncel Giriş Adresi</title>
+  <meta name="description" content="HızlıTuttur güncel giriş adresi, yönlendirme bağlantıları ve duyurular. HızlıTuttur Giriş, Casino, Spor ve Canlı Casino için tek tıkla erişim." />
 
-  --text:#e9fff3;
-  --muted:#bfe9d1;
+  <!-- Favicon (sekme ikonu) -->
+  <link rel="icon" type="image/png" href="../assets/logo.png" />
 
-  --shadow: 0 18px 50px rgba(0,0,0,.55);
-  --radius: 18px;
-}
+  <!-- Open Graph (paylaşımda güzel gözüksün) -->
+  <meta property="og:title" content="HızlıTuttur Güncel Giriş Adresi" />
+  <meta property="og:description" content="HızlıTuttur giriş bağlantıları ve duyurular. Tek tıkla yönlendirme." />
+  <meta property="og:image" content="../assets/banner.png" />
+  <meta property="og:type" content="website" />
 
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--text);
-  background:
-    radial-gradient(1200px 700px at 50% 10%, rgba(255,212,0,.16), transparent 60%),
-    radial-gradient(900px 600px at 20% 30%, rgba(0,255,153,.08), transparent 60%),
-    linear-gradient(180deg, #020905 0%, #000 60%, #000 100%);
-  overflow-x:hidden;
-}
+  <link rel="stylesheet" href="./style.css" />
+</head>
 
-/* Flash overlay */
-#flash{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  background: radial-gradient(circle at 40% 20%, rgba(255,212,0,.55), rgba(255,212,0,0) 55%);
-  opacity:0;
-  transition: opacity 260ms ease;
-  z-index: 5;
-}
+<body>
+  <!-- YILDIRIM ARKA PLAN (içeriğin arkasında) -->
+  <canvas id="stormCanvas" aria-hidden="true"></canvas>
+  <div id="flash" aria-hidden="true"></div>
 
-/* Canvas lightning */
-#lightning-canvas{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  z-index: 4;
-  mix-blend-mode: screen;
-}
+  <!-- ÜST BEYAZ BAR (logo arkası beyaz) -->
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="#top" aria-label="HızlıTuttur Ana Sayfa">
+        <img src="../assets/logo.png" alt="HızlıTuttur Logo" />
+      </a>
+    </div>
+  </header>
 
-/* Top bar */
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background: #fff; /* logo arkası beyaz */
-  box-shadow: 0 6px 22px rgba(0,0,0,.25);
-}
-.topbar-inner{
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 10px 14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-.brand img{
-  height: 34px;
-  width:auto;
-  display:block;
-}
+  <!-- NAV BUTONLAR -->
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a class="pill" href="#giris">Hızlıtuttur Giriş</a>
+      <a class="pill" href="#casino">Hızlıtuttur Casino</a>
+      <a class="pill" href="#spor">Hızlıtuttur Spor</a>
+      <a class="pill" href="#canli">Hızlıtuttur Canlı Casino</a>
+    </div>
+  </nav>
 
-/* Nav buttons: arkaplan yeşil, kutu içi sarı, çerçeve yeşil, yazı yeşil */
-.nav{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:flex-end;
-}
-.nav-pill{
-  text-decoration:none;
-  color: var(--green-2);
-  background: var(--yellow);
-  border: 2px solid var(--green-2);
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-weight: 800;
-  letter-spacing:.2px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.18);
-  transition: transform .12s ease, filter .12s ease;
-}
-.nav-pill:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-.nav-pill:active{ transform: translateY(0px); }
+  <main id="top" class="wrap main">
+    <!-- BANNER -->
+    <section class="hero">
+      <div class="hero__frame">
+        <img class="hero__img" src="../assets/banner.png" alt="HızlıTuttur Bonus Banner" />
+      </div>
 
-/* Page */
-.page{
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 26px 14px 10px;
-}
+      <!-- CTA (resimli buton) -->
+      <div class="ctaWrap">
+        <a
+          class="ctaLink"
+          href="https://hizlituttur1.com/?referralCode=3083672195"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="HızlıTuttur’a giriş için tıkla"
+        >
+          <img class="ctaImg" src="../assets/cta.png" alt="HızlıTuttur’a Giriş İçin Tıkla" />
+        </a>
+      </div>
+    </section>
 
-.hero{
-  padding: 18px 0 12px;
-  display:flex;
-  justify-content:center;
-}
-.hero-card{
-  width: min(980px, 100%);
-  padding: 18px;
-  border-radius: var(--radius);
-  background: rgba(6, 32, 18, .70);
-  border: 1px solid rgba(255,212,0,.22);
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(6px);
-  text-align:center;
-}
+    <!-- SEO / İÇERİK KARTLARI -->
+    <section class="cards">
+      <article id="giris" class="card">
+        <h2>HızlıTuttur Güncel Giriş Adresi</h2>
+        <p>
+          HızlıTuttur’a en güncel bağlantı üzerinden güvenli şekilde ulaşmak için bu sayfayı kullanabilirsin.
+          Bağlantılar düzenli olarak güncellenir. Tek tıkla yönlendirme ile giriş yap.
+        </p>
+      </article>
 
-/* Banner controlled size */
-.banner{
-  width: 100%;
-  max-width: 860px;          /* çok büyük görünmesin */
-  height: auto;
-  border-radius: 16px;
-  display:block;
-  margin: 0 auto;
-  box-shadow: 0 14px 44px rgba(0,0,0,.55);
-  border: 1px solid rgba(255,212,0,.18);
-}
+      <article id="casino" class="card">
+        <h2>HızlıTuttur Casino</h2>
+        <p>
+          Casino oyunları ve kampanyalar için güncel bağlantıları bu sayfadan takip edebilirsin.
+          Güvenli erişim için tek noktadan yönlendirme tercih et.
+        </p>
+      </article>
 
-/* CTA image button */
-.cta{
-  display:inline-block;
-  margin: 14px auto 8px;
-  border-radius: 999px;
-  overflow:hidden;
-  box-shadow: 0 18px 55px rgba(0,0,0,.65);
-  outline: 2px solid rgba(255,212,0,.35);
-  transition: transform .12s ease, filter .12s ease;
-}
-.cta img{
-  display:block;
-  width: min(560px, 92vw);
-  height:auto;
-}
-.cta:hover{ transform: translateY(-1px); filter: brightness(1.02); }
-.cta:active{ transform: translateY(0); }
+      <article id="spor" class="card">
+        <h2>HızlıTuttur Spor</h2>
+        <p>
+          Spor bahisleri için güncel giriş adresi değiştiğinde buradan anında ulaşabilirsin.
+          Mobil ve masaüstünde hızlı açılır.
+        </p>
+      </article>
 
-.hero-note{
-  margin: 10px auto 0;
-  color: var(--muted);
-  max-width: 860px;
-  line-height: 1.5;
-  font-weight: 600;
-}
+      <article id="canli" class="card">
+        <h2>HızlıTuttur Canlı Casino</h2>
+        <p>
+          Canlı casino yayınları, etkinlik içerikleri ve duyurular için resmi yönlendirme bağlantısını kullan.
+          En iyi deneyim için güncel linki tercih et.
+        </p>
+      </article>
+    </section>
 
-/* Content cards */
-.content{
-  margin: 18px auto 22px;
-  display:grid;
-  gap: 14px;
-  width: min(980px, 100%);
-  padding: 0 2px;
-}
-.info-card{
-  background: rgba(11, 58, 34, .72);
-  border: 1px solid rgba(255,212,0,.20);
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  box-shadow: 0 14px 44px rgba(0,0,0,.45);
-}
-.info-card h2{
-  margin: 0 0 8px;
-  color: var(--yellow);
-  font-size: 18px;
-  letter-spacing:.2px;
-}
-.info-card p{
-  margin:0;
-  color: #dfffee;
-  line-height: 1.55;
-  font-weight: 550;
-}
+    <footer class="footer">
+      <div class="footer__inner">
+        © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
+      </div>
+    </footer>
+  </main>
 
-/* Footer */
-.footer{
-  margin-top: 18px;
-  padding: 18px 14px 24px;
-  border-top: 1px solid rgba(255,212,0,.14);
-  color: rgba(255,255,255,.65);
-}
-.footer-inner{
-  max-width: 1100px;
-  margin:0 auto;
-  text-align:center;
-  font-weight:600;
-}
-
-/* Mobile tweaks */
-@media (max-width: 720px){
-  .topbar-inner{ justify-content:center; flex-direction:column; }
-  .nav{ justify-content:center; }
-  .brand img{ height: 32px; }
-  .hero-card{ padding: 14px; }
-  .info-card{ padding: 14px 14px; }
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce){
-  #lightning-canvas{ display:none; }
-  #flash{ display:none; }
-  .cta, .nav-pill{ transition:none; }
-}
+  <script src="./script.js"></script>
+</body>
+</html>
