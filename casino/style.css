@@ -1,0 +1,155 @@
+:root{
+  --bg-0:#03150f;
+  --green:#0da86d;
+  --yellow:#ffd22e;
+  --text:#e8fff3;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family: system-ui, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(900px 500px at 50% 30%, rgba(10,168,109,.18), transparent 60%),
+    radial-gradient(700px 450px at 50% 90%, rgba(255,210,46,.10), transparent 55%),
+    linear-gradient(180deg, var(--bg-0), #000);
+  overflow-x:hidden;
+}
+
+/* Lightning */
+#lightning-canvas{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+#flash{
+  position:fixed;
+  inset:0;
+  background: radial-gradient(900px 600px at 50% 35%, rgba(255, 223, 110, .22), transparent 60%);
+  opacity:0;
+  pointer-events:none;
+  z-index:2;
+}
+
+.page{ position:relative; z-index:3; }
+
+/* Topbar */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.1);
+}
+.topbar__inner{
+  max-width:1100px;
+  margin:auto;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+}
+.brand{ height:54px; }
+
+/* Nav marquee */
+.nav-marquee{
+  width:100%;
+  overflow:hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+}
+.nav-track{
+  display:flex;
+  width:max-content;
+  gap:14px;
+  animation: marquee-right 18s linear infinite;
+}
+@keyframes marquee-right{
+  from{ transform:translateX(-50%); }
+  to{ transform:translateX(0); }
+}
+.nav{
+  display:flex;
+  gap:12px;
+}
+.nav__btn{
+  background:var(--yellow);
+  color:#064b33;
+  padding:12px 18px;
+  border-radius:999px;
+  font-weight:800;
+  text-decoration:none;
+  border:2px solid #064b33;
+  white-space:nowrap;
+}
+
+/* HERO – ALT BOŞLUK AZALTILDI */
+.hero{
+  max-width:1100px;
+  margin:0 auto;
+  padding:18px 14px 0; /* ⬅️ önemli */
+  text-align:center;
+}
+
+.banner{
+  max-width:860px;
+  margin:12px auto 0;
+  border-radius:16px;
+  overflow:hidden;
+}
+.banner img{ width:100%; }
+
+.hero-cta{
+  display:inline-block;
+  margin:10px auto 4px; /* ⬅️ CTA alt boşluk azaltıldı */
+}
+.hero-cta img{
+  width:min(720px, 92vw);
+  border-radius:18px;
+}
+
+/* CONTENT – ÜSTTEN DAHA YAKIN */
+.content{
+  max-width:920px;
+  margin:0 auto;
+  padding:8px 14px 10px; /* ⬅️ önemli */
+  display:grid;
+  gap:12px; /* ⬅️ kartlar yakın */
+}
+
+.card{
+  background: linear-gradient(180deg, rgba(8,56,36,.86), rgba(5,30,20,.86));
+  border:1px solid rgba(255,210,46,.20);
+  border-radius:16px;
+  padding:16px;
+}
+.card h2,.card h3{ color:var(--yellow); }
+.card p{ line-height:1.7; }
+
+/* ⭐ SARİ PREMIUM GARANTİ */
+.card--highlight{
+  background: linear-gradient(
+    180deg,
+    rgba(255,210,46,.28),
+    rgba(8,56,36,.92)
+  );
+  border:2px solid var(--yellow);
+  box-shadow:
+    0 0 35px rgba(255,210,46,.35),
+    inset 0 0 18px rgba(255,210,46,.18);
+}
+.card--highlight h2{
+  text-shadow:0 0 22px rgba(255,210,46,.45);
+}
+
+/* Footer */
+.footer{
+  padding:20px;
+  text-align:center;
+  font-size:13px;
+}
