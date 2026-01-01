@@ -1,3 +1,4 @@
+/* script.js */
 (() => {
   // Footer year
   const yearEl = document.getElementById("year");
