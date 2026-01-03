@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!doctype html>
 <html lang="tr">
 <head>
@@ -8,9 +7,13 @@
   <title>HızlıTuttur Giriş | Casino • Canlı Casino • Spor Bahisleri</title>
   <meta name="description" content="HızlıTuttur güncel giriş adresi. Casino, canlı casino ve spor bahisleri. Hızlı ödeme garantisi ve kesintisiz hizmet." />
 
-  <link rel="icon" type="image/png" href="assets/favicon.png" />
-  <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
+  <!-- Favicon (en sağlam yöntem) -->
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <!-- İstersen PNG de dursun -->
+  <link rel="icon" type="image/png" href="/assets/favicon.png" />
+
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/script.js" defer></script>
 </head>
 
 <body>
@@ -19,23 +22,24 @@
 
   <header class="topbar">
     <div class="topbar__inner">
-      <a class="brandLink" href="index.html" aria-label="Ana sayfa">
-        <img class="brand" src="assets/logo.png" alt="HızlıTuttur" />
+      <a class="brandLink" href="/" aria-label="Ana sayfa">
+        <img class="brand" src="/assets/logo.png" alt="HızlıTuttur" />
       </a>
 
       <div class="nav-marquee">
         <div class="nav-track">
           <nav class="nav">
-            <a class="nav__btn" href="index.html#giris">Giriş</a>
-            <a class="nav__btn" href="casino.html">Casino</a>
-            <a class="nav__btn" href="spor.html">Spor</a>
-            <a class="nav__btn" href="canli-casino.html">Canlı Casino</a>
+            <a class="nav__btn" href="/giris/">Giriş</a>
+            <a class="nav__btn" href="/casino/">Casino</a>
+            <a class="nav__btn" href="/spor/">Spor</a>
+            <a class="nav__btn" href="/canlicasino/">Canlı Casino</a>
           </nav>
+
           <nav class="nav" aria-hidden="true">
-            <a class="nav__btn" href="index.html#giris">Giriş</a>
-            <a class="nav__btn" href="casino.html">Casino</a>
-            <a class="nav__btn" href="spor.html">Spor</a>
-            <a class="nav__btn" href="canli-casino.html">Canlı Casino</a>
+            <a class="nav__btn" href="/giris/">Giriş</a>
+            <a class="nav__btn" href="/casino/">Casino</a>
+            <a class="nav__btn" href="/spor/">Spor</a>
+            <a class="nav__btn" href="/canlicasino/">Canlı Casino</a>
           </nav>
         </div>
       </div>
@@ -45,7 +49,7 @@
   <main class="page">
     <section class="hero">
       <div class="banner">
-        <img src="assets/banner.png" alt="HızlıTuttur" />
+        <img src="/assets/banner.png" alt="HızlıTuttur" />
       </div>
 
       <a
@@ -54,7 +58,7 @@
         target="_blank"
         rel="noopener"
       >
-        <img src="assets/cta.png" alt="HızlıTuttur'a Giriş İçin Tıkla" />
+        <img src="/assets/cta.png" alt="HızlıTuttur'a Giriş İçin Tıkla" />
       </a>
     </section>
 
@@ -77,11 +81,13 @@
           Casino, canlı casino ve spor bahisleri seçenekleriyle geniş bir oyun deneyimi sunar.
         </p>
         <p class="quickLinks">
-          <a class="textLink" href="casino.html">→ Casino sayfası</a>
-          <a class="textLink" href="canli-casino.html">→ Canlı casino sayfası</a>
-          <a class="textLink" href="spor.html">→ Spor bahisleri sayfası</a>
+          <a class="textLink" href="/casino/">→ Casino sayfası</a>
+          <a class="textLink" href="/canlicasino/">→ Canlı casino sayfası</a>
+          <a class="textLink" href="/spor/">→ Spor bahisleri sayfası</a>
         </p>
       </div>
+    </section> <!-- ✅ bu kapanış sende eksikti -->
+
     <footer class="footer">
       <div class="footer__inner">
         © <span id="year"></span> HızlıTuttur. Tüm hakları saklıdır.
@@ -90,4 +96,3 @@
   </main>
 </body>
 </html>
-
